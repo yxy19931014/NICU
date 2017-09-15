@@ -1,0 +1,45 @@
+// H5 plus事件处理
+
+		function pickTime(){
+		var two=document.getElementsByClassName('two')[0];
+		var MRN=plus.webview.currentWebview().MRN;
+		plus.nativeUI.pickTime( function(e){
+			var d=e.date;
+			var h=d.getHours()<10?'0'+d.getHours():d.getHours();
+			var m=d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes();
+			two.previousElementSibling.value=h+":"+m;
+			two.innerHTML=h+':'+m;
+			mui.ajax({
+				url:url,
+				type:'get',
+				data:{
+					msgBody:JSON.stringify({                   				
+		                Time:currentDate.innerHTML+" "+two.innerHTML,
+		                ColumnID:parseInt(two.getAttribute('index'))+3+'',
+		                PatientMRN:MRN
+		            }),                   
+		            msgHeader:JSON.stringify({
+				        ServerName:'UpdateTime',
+				        Format: 'json',
+				        CallOperator: '',
+				        Certificate:'123456'
+			        })
+				},
+				dataType:'json',
+				success:function(data){
+					if(data.Code==0){
+						mui.toast('时间修改成功');
+						var changeIndex=two.getAttribute('index');
+						timeArr[changeIndex]=two.innerHTML;
+						two.innerHTML=two.previousElementSibling.value;
+						two.style.display='block';				
+					}				
+				},
+				error:function(){
+					mui.toast('服务器异常，请稍后再试');
+				}
+			})
+		},function(e){
+			console.log( "未选择时间："+e.message );
+		});
+		}

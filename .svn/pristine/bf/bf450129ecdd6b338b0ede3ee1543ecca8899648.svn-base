@@ -1,0 +1,160 @@
+@charset "utf-8";
+
+@import "var";
+
+@import "mixin";
+
+@import "normalize";
+
+@import "adpater";
+/*主体容器*/
+.mui-backdrop {
+    top:0;
+}
+.loginBox{
+    
+  max-width: 750px;
+  min-width: 320px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  .selectArea {
+    width:80%;
+    left: 50%;
+    margin-left: -40%;
+    position: fixed;
+    top:400/100rem;
+    z-index: 999; 
+    border:1px solid #ccc;
+    display: none;
+    color:#fff;  
+    h2{
+        width:100%;
+        height: 60/100rem;
+        line-height: 60/100rem;  
+        font-size: 36/100rem;
+        font-weight: 400;
+        background: @MainColor;
+        padding-left: 20/100rem;
+    }
+    ul {
+        li {
+            width: 100%;
+            height: 60/100rem;
+            line-height: 60/100rem;
+            font-size: 32/100rem;
+            background: #fff;
+            border-bottom: 1px solid #ccc;
+            padding-left: 20/100rem;
+            color:@MainColor;
+        }
+    }
+}
+  .top {
+      width: 100%;
+      height: 390/100rem;
+      background: url(../imgs/login/topBj.png) no-repeat center / 750/100rem 390/100rem;
+      position:relative;
+      .logo {
+          width: 160/100rem;
+          height: 160/100rem;
+          position:absolute;
+          left: 295/100rem;
+          top:146/100rem;
+          background:url(../imgs/login/logo.png)no-repeat center / 160/100rem 160/100rem;
+      }
+  }
+  .content {
+      width: 100%;
+      height:944/100rem;
+      background: url(../imgs/login/bj.png) no-repeat center / 750/100rem 944/100rem;
+      overflow: hidden;
+        div.mui-input-row {
+            width: 554/100rem;
+            height: 80/100rem;
+            margin-bottom: 20/100rem;
+            margin-left: 98/100rem;
+            &:nth-child(1){
+                margin-top: 90/100rem;
+            }
+            .selectItem {
+                width:100%;
+                height: 100%;
+                background: url(../imgs/login/input.png)no-repeat center / 554/100rem 80/100rem;
+                padding-left: 83/100rem;
+                font-size: 28/100rem;
+                color: #aaa;
+                font-weight: bold;
+                line-height: 80/100rem;
+            }
+            input {
+            width:100%;
+            height: 100%;
+            padding-left: 83/100rem;
+            font-size: 28/100rem;
+            color: #aaa;
+            font-weight: bold;
+            background: url(../imgs/login/input.png)no-repeat center/ 554/100rem 80/100rem;
+            border: none;
+            -webkit-appearance: none; -moz-appearance: none; -o-appearance: none; appearance: none;
+            -webkit-user-select: none;
+            }
+            
+            span[class^="icon"] {
+                width:42/100rem;
+                height: 42/100rem;
+                position: absolute;
+                top:14/100rem;
+                left: 16/100rem;
+                background:url(../imgs/login/user.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.icon-pwd{
+                  background:url(../imgs/login/pwd.png)no-repeat center / 42/100rem 42/100rem;
+                }
+                span.icon-floor{
+                  background:url(../imgs/login/floor.png)no-repeat center / 42/100rem 42/100rem;
+                }
+                span.icon-area{
+                  background:url(../imgs/login/area.png)no-repeat center / 42/100rem 42/100rem;
+                }
+            
+      }
+      .mui-button-row{
+                border: none;
+                margin-top:145/100rem;
+                margin-bottom: 0;
+                position: relative;
+                em {
+                    width:100%;
+                    height: 70/100rem;
+                    position: absolute;
+                    font-size: 36/100rem;
+                    color:@MainColor;
+                    font-style: normal;
+                    text-align: center;
+                    bottom:70/100rem;
+                    left: 0;
+                }
+                button {
+                    width: 558/100rem;
+                    height: 80/100rem;
+                    background: @MainColor;
+                    font-size: 36/100rem;
+                    color:#fff;
+                    border:none;
+                    font-weight: bold;
+                }
+                
+            }
+      .company {
+          width: 554/100rem;
+          height: 235/100rem;
+          font-size: 28/100rem;
+          color:#999;
+          margin: 0 auto;
+          border:0;
+          text-align: center;
+          padding-top: 160/100rem;
+      }
+  }
+}

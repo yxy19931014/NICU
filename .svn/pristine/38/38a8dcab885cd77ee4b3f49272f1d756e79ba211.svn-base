@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>登录</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet/less" href="../less/public.less" />
+    <link rel="stylesheet/less" href="../less/login.less" />
+    <script src="../lib/less/less.min.js"></script>
+</head>
+<body>
+	<div class="loginBox">
+			<div class="selectArea"id='selectArea'>
+				<h2>请选择</h2>
+				<ul id='itemCon'class="itemCon">
+					<li>043</li>
+					<li>044</li>
+					<li>047</li>
+				</ul>
+			</div>
+
+		<div class="top">
+			<span class="logo"></span>
+			<p>NICU移动护理系统</p>
+		</div>
+		<div class="content">
+    			<div class="mui-input-row">
+    				<input type="text" class="mui-input-clear user" placeholder="请输入账号"id='user'>
+    				<span class="icon-user"></span>
+    			</div>
+    			<div class="mui-input-row">
+        			<input type="password" class="mui-input-password pwd" placeholder="请输入密码"id='pwd'>
+    				<span class="icon-pwd"></span>
+    			</div>
+    			<!--<div class="mui-input-row">
+    				<span class="icon-floor"></span>
+    				<div class="selectItem">				
+    					请选择楼层
+    				</div>			
+    			</div>-->
+    			<div class="mui-input-row">
+    				<span class="icon-area"></span>
+    				<div class="selectItem"id='illAreaId'>					
+    					请选择病区
+    				</div>		
+    			</div>
+    			<div class="mui-button-row">
+        			<button type="button" class="mui-btn mui-btn-primary" id='loginBtn'>登录</button>
+    			</div>
+			<div class="company">
+				<span class="com_logo"></span><span class="com_text">北京康瑞德医疗器械有限公司</span>
+			</div>
+		</div>
+	</div>
+	<script src="../js/config.js"></script>
+	<script>
+//		下拉选项
+		var selectDom=document.getElementsByClassName('selectItem');
+			var selectArea=document.getElementById('selectArea');
+			var mask = mui.createMask(function(){
+				selectArea.style.display='none';
+				selectArea.classList.remove('hasShow');
+			});
+			function selectInfo(ele){
+				if(ele.classList.contains('hasShow')){
+						ele.classList.remove('hasShow');
+						selectArea.style.display='none';
+						mask.close();
+						return;
+					}else {
+						ele.classList.add('hasShow');
+						selectArea.style.display='block';
+						mask.show();
+					}
+					var lis=document.getElementsByClassName('itemCon')[0].getElementsByTagName('li');
+							for(var i=0;i<lis.length;i++){
+								lis[i].addEventListener('tap',function(){
+									ele.setAttribute('area',this.innerHTML);
+									ele.innerHTML=this.innerHTML;
+									selectArea.style.display='none';
+									mask.close();
+								})
+								
+					}
+					
+			}
+			
+			for(var i=0;i<selectDom.length;i++){
+				selectDom[i].addEventListener('tap',function(){
+					selectInfo(this);
+				});
+			}
+			
+	</script>
+	<script>
+		mui.init();
+		var loginBtn=document.getElementById('loginBtn');
+		var userDom=document.getElementById('user');
+		var pwdDom=document.getElementById('pwd');
+		var areaDom=document.getElementById('illAreaId');
+		loginBtn.addEventListener('tap',function(){		
+			if(userDom.value.length==0 || pwdDom.value.length==0){
+				mui.toast('请填写用户名和密码');
+				return;
+			}	
+			if(areaDom.getAttribute('area')==null){
+				mui.toast('请选择病区');
+				return;
+			}
+			mui.ajax({
+			url: url,
+            type:'post',
+            data:{
+                msgBody:JSON.stringify({
+                    UserName: userDom.value,
+                    Password: pwd.value,
+                    DeptCode: areaDom.getAttribute('area')
+                }),                   
+                msgHeader:JSON.stringify({
+                    ServerName:'ICULogin',
+                    Format: 'json',
+                    CallOperator: '',
+                    Certificate:'123456'})
+            },
+            dataType:'json',
+            beforeSend:function(){
+            	
+            	plus.nativeUI.showWaiting('登录中…');
+     
+            },
+            success:function(data){
+                if(data.Code=='0'){              	
+                	window.localStorage.setItem('loginInfo',JSON.stringify(data.Contents));
+                	setTimeout(function(){  
+                		plus.nativeUI.closeWaiting();               		
+                		mui.openWindow({
+                			url:'../index.html',
+                			id:'index.html',
+                			aniShow:'none'
+                		})
+                		userDom.value='';
+                		pwdDom.value='';
+                		areaDom.innerHTML='';
+                	},2000);              	
+                }else {
+                	loginBtn.innerHTML='登录';
+                	plus.nativeUI.closeWaiting();
+                	mui.toast('服务器或网络异常，请稍后重试');              	
+                }
+            },
+            error:function(data){
+            	plus.nativeUI.closeWaiting();
+            	mui.toast('服务器或网络异常');
+            	loginBtn.innerHTML='登录';
+            }
+		
+			})
+		})
+		
+	</script>
+</body>
+</html>

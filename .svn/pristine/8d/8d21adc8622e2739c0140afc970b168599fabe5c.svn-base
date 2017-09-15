@@ -1,0 +1,386 @@
+@charset "utf-8";
+
+@import "var";
+
+@import "mixin";
+
+@import "normalize";
+
+@import "adpater";
+/*样式处理*/
+body,form,input, button,fieldset,h1,h2 {  
+  margin:0;  
+  padding:0;  
+  border:none;
+}  
+html {
+    height: 100%;
+}
+body{
+  font-size: 14px;
+//height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;;
+}
+*,::before,::after,input[type="search"]{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ul{
+  list-style: none;
+}
+.clearfix::after,
+.clearfix::before{
+  content: "";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  line-height: 0;
+  clear: both;
+}
+.nextPre {
+    width: 100%;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    z-index: 100;
+    display: none;
+    button {
+        width: 50%;
+        color:#fff;
+        height: 80/100rem;
+        background: @MainColor;
+        border:1px solid #fff;
+    }
+}
+.mui-backdrop {
+    height: 100%;
+    position: fixed;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 998;
+    background-color: rgba(0,0,0,.3);
+    
+}
+#popover {
+        width: 100%;
+        background: #fff;
+        padding: 0 20/100rem 0 20/100rem;
+        position:fixed;
+        top:100/100rem;
+        left: 0;
+        z-index: 999;
+        display: none;
+        .search{
+        width:100%;
+        height: 75/100rem;
+        margin-top: 20/100rem;
+        .search_box {
+            width: 100%;
+            height: 60/100rem;
+            margin: 0 auto;
+            background: #fff;
+            position: relative;
+//          margin-top: -1px;
+            form {
+                width: 100%;
+                padding-right: 150/100rem;
+                outline: none;
+                .mui-input-row {
+                    height: 58/100rem;
+                }
+                input {
+                    width: 100%;
+                    height: 58/100rem;
+                    border-radius: 30/100rem;
+                    background: #fff;
+                    text-align: left;
+                    outline: none;
+                    border:1px solid @MainColor;
+                }
+            }
+            .search_btn {
+                    width:42/100rem;
+                    height: 42/100rem;
+                    position:absolute;
+                    background: url(../imgs/observation/search_select.png)no-repeat center / 41/100rem 41/100rem;
+                    top:9/100rem;
+                    right: 170/100rem;
+                }
+        }
+    }
+        .historyData, {
+            display: flex;
+            flex-wrap: wrap;
+            width:100%;
+            height: 500/100rem;
+            overflow: auto;
+            padding-bottom: 20/100rem;
+            .singleBox {
+                width: 33.33%;
+                height: 70/100rem;
+                margin-bottom: 20/100rem;
+                .single {
+                    width: 95%;
+                    height: 100%;
+                    background: #eee;
+                    border-radius: 3px;
+                    display: inline-block;
+                    span {
+                        line-height: 70/100rem;
+                    }
+                }
+                
+            }
+            .singleBox.selected {
+                    .single {
+                        span {
+                           color:@MainColor; 
+                        }
+                    }
+                    
+                }
+        }
+        .currentData .single {
+            span {
+                color:@MainColor;
+            }
+        }
+        .historyData .single {
+            span {
+                color:#333;
+            }
+        }
+        .pullBox {
+            width: 100%;
+            height: 80/100rem;
+            background: #fff;
+            position: relative;
+            span {
+                width:32/100rem;
+                height: 18/100rem;
+                background: url(../imgs/observation/pull.png)no-repeat center / 32/100rem 18/100rem;
+                display: inline-block;
+                position: absolute;
+                left: 50%;
+                margin-left: -32/100rem;
+                top:30/100rem;
+            }
+        }
+}
+.selectArea {
+    width:80%;
+    left: 50%;
+    margin-left: -40%;
+    position: fixed;
+    top:200/100rem;
+    z-index: 999; 
+    display: none;
+    color:#fff; 
+    h2{
+        width:100%;
+        height: 80/100rem;
+        line-height: 80/100rem;  
+        font-size: 36/100rem;
+        font-weight: 400;
+        background: @MainColor;
+        padding-left: 20/100rem;
+        border-radius: 10px 10px 0 0;
+    }
+    .liCon {
+        width:100%;
+        height: 500/100rem;
+        background: #fff;
+        overflow: auto;
+    }
+    ul {
+        li {
+            width: 100%;
+            height: 80/100rem;
+            line-height: 80/100rem;
+            font-size: 32/100rem;
+            background: #fff;
+            padding: 0 20/100rem 0 20/100rem;
+            color:@MainColor;
+            position: relative;
+            .hook {
+                font-size: 36/100rem;
+                position: absolute;
+                right: 10%;
+                display: none;
+            }
+            .itemConName{
+                width: 100%;
+                height: 100%;
+                display: inline-block;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+    }
+    .nextOper {
+        padding: 0;
+        display: flex;
+        border-radius: 10px;
+           button {
+               width: 50%;
+               background: @MainColor;
+               border-radius: 0 0 10px 0;
+           }
+           #clear {
+               border-right: 1px solid #fff;
+               border-radius: 0 0 0 10px;
+           }
+        
+    }
+}
+
+.observationBox {
+    header {
+        width:100%;
+        height: 100/100rem;
+        background: @MainColor;
+        position:fixed;
+        z-index: 1000;
+    h1 {
+        width:100%;
+        text-align: center;
+        font-size: 36/100rem;
+        color:#fff;
+        font-weight: bold;
+        line-height: 100/100rem;
+        .title_icon {
+            margin-left: 10/100rem;
+        }
+    }
+    .leftBack {
+        positon:absolute;
+        width:150/100rem;
+        top:0;
+        left: 20/100rem;   
+        z-index: 1001;     
+        .text {
+            font-size: 28/100rem;
+            color:#fff;
+            line-height: 100/100rem;
+            cursor: pointer;
+            display: inline-block;
+        }
+    }
+    }
+}
+//  日期时间部分
+    .dataTime {
+        width:100%;
+        height: 70/100rem;
+        margin-top: 20/100rem;
+        border-top:1px solid #bebebe;
+        border-bottom:1px solid #bebebe;
+        background: #fff;
+        overflow: hidden;
+//      margin-top: 120/100rem;
+        #currentDate {
+            height: 70/100rem;
+            line-height: 70/100rem;
+            display: inline-block;
+            padding-left: 20/100rem;
+        }
+        .time {
+            width:510/100rem;
+            float: right;
+            height: 100%;
+            position: relative;
+            
+            span {
+                width:170/100rem;
+                height: 100%;  
+                position:absolute;
+                top:0;    
+                left: 0;  
+                cursor: pointer;
+                input {
+                    width:100%;
+                    height: 100%;
+                    border:none;
+                    color:@MainColor;
+                    font-size: 28/100rem;
+                }
+                i {
+                    width:100%;
+                    height: 100%;
+                    color:#ccc;
+                    font-size: 28/100rem;
+                    display: block;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    background: #fff;
+                    font-style:normal;
+                    text-align: center;
+                    line-height: 70/100rem;
+                }
+            }
+            span.now {
+                i {
+                    color:@MainColor;                    
+                } 
+            }
+            
+        }
+    }
+//  .selectPatient {
+//      width: 100%;
+//      position: fixed;
+//      top:100/100rem;
+//      height: 500/100rem;
+//  }
+//  底部导航部分
+    .footer {
+        height: 88/100rem;
+        a{
+            span.mui-icon {
+                width:42/100rem;
+                height: 42/100rem;
+            }
+            span.oberItem {
+                background: url(../imgs/observation/eye_gray.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.bedOper {
+                background: url(../imgs/observation/operate_gray.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.out {
+                background: url(../imgs/observation/out_gray.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.in {
+                background: url(../imgs/observation/in_gray.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.life {
+                background: url(../imgs/observation/lift_gray.png)no-repeat center / 42/100rem 42/100rem;
+            }
+            span.mui-tab-label {
+                font-size: 24/100rem;
+                color:#999;
+            }
+        }
+        .active span.mui-tab-label {
+          font-size: 24/100rem;
+          color:@MainColor;
+        }
+        .active .oberItem {
+          background: url(../imgs/observation/eye.png)no-repeat center / 42/100rem 42/100rem;
+        }
+        .active .bedOper {
+          background: url(../imgs/observation/operate.png)no-repeat center / 42/100rem 42/100rem;
+        }
+        .active .out {
+          background: url(../imgs/observation/out.png)no-repeat center / 42/100rem 42/100rem;
+        }
+        .active .in {
+          background: url(../imgs/observation/in.png)no-repeat center / 42/100rem 42/100rem;
+        }
+        .active .life {
+          background: url(../imgs/observation/lift.png)no-repeat center / 42/100rem 42/100rem;
+        }
+    }

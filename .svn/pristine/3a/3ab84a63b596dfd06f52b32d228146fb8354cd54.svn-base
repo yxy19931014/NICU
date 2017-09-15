@@ -1,0 +1,520 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet/less" href="../less/public.less" />
+		<link rel="stylesheet/less" href="../less/life.less" />
+		<script src="../lib/less/less.min.js"></script>
+	</head>
+	
+	<body>
+		<script src="../js/mui.min.js"></script>
+		
+		<div class="observationBox">
+			<!--患者选择-->
+	    	<div class="dataTime">
+	    		<span id="currentDate"></span>
+	    		<span class="time">
+	    			<span><i class="one"></i></span>
+	    			<span class="now"><input type="button"value="12:45" onclick="pickTime()"  /><i class="two"></i></span>
+	    			<span><i class="three"></i></span>
+	    		</span>
+	    	</div>	    	
+	    	
+	    	<div class="listcontainer">
+	    		<div class="vitalBox">
+	    			<div class="VitalSigns">
+		    		<ul>
+		    			<li>
+		    				<label for="HRVALUE"><span class="vitalName">心率</span></label>
+		    				
+		    				<input type="number"  name="HRVALUE"id='HRVALUE'/>	    				
+		    			</li>
+		    			<li>
+		    				<label for="PULSEVALUE"><span class="vitalName">脉搏</span></label>
+		    				
+		    				<input type="number"name="PULSEVALUE" id='PULSEVALUE'/>	    				
+		    			</li>
+		    			<li>
+		    				<label for="RESPVALUE"><span class="vitalName">呼吸</span></label>
+		    				
+		    				<input type="number" name="RESPVALUE"id='RESPVALUE'/>	    				
+		    			</li>
+		    			<li>
+		    				<label for="NIBPSVALUE"><span class="vitalName">无创收缩压</span></label>
+		    				
+		    				<input type="number"name="NIBPSVALUE"id='NIBPSVALUE' />	    				
+		    			</li>
+		    			<li>
+		    				<label for="NIBPDVALUE"><span class="vitalName">无创舒张压</span></label>
+		    				
+		    				<input type="number"name="NIBPDVALUE"id='NIBPDVALUE' />	    				
+		    			</li>
+		    			<li>
+		    				<label for="ARTSVALUE"><span class="vitalName">有创收缩压</span></label>
+		    				
+		    				<input type="number"name="ARTSVALUE"id='ARTSVALUE' />	    				
+		    			</li>
+		    			<li>
+		    				<label for="ARTDVALUE"><span class="vitalName">无创舒张压</span></label>
+		    				
+		    				<input type="number" name="ARTDVALUE"id='ARTDVALUE'/>	    				
+		    			</li>
+		    			<li class="lastLi">
+		    				<label for="SPO2VALUE"><span class="vitalName">血氧</span></label>
+		    				
+		    				<input type="number"name="SPO2VALUE"id='SPO2VALUE' />	    				
+		    			</li>
+		    		</ul>
+	    		</div>
+
+	    		</div>
+	    		<div class="operBtn saveBack">
+	    			<button class="import"id='import'>自动获取数据&nbsp;&nbsp;<span id='count'></span></button>
+	    			<div class="submitBtn">
+	    				<button class="reset"id='reset'>清空</button>
+	    				<button class="save"id='saveBtn'>保存并上传</button>
+	    			</div>
+	    			
+	    		</div>
+	    	</div>	    		
+			
+		</div>
+		<script src="../lib/template/template.js"></script>
+		<script type='text/template'id='selectPatient'>
+			{{each list as value i}}
+			<div class="singleBox"MRN='{{value.MRN}}'PatientName='{{value.PatientName}}'PatientNumber='{{value.PatientNumber}}'id='hisData'>
+			  <a class="single"><span>{{value.Bed}}</span>&nbsp;<span>{{value.PatientName}}</span></a>
+			</div>
+			{{/each}}
+		</script>	
+		<script type="text/javascript"src="../js/config.js"></script>
+		<script src="../js/tool.js"></script>
+		<script src="../js/public.js"></script>
+		<!--时间控件-->
+		<script>
+			var timeArr=[];
+			function plusReady(){
+			//			处理床位列表传值
+			var w=plus.webview.currentWebview();
+			var patientBed=w.PatientBed;
+			var patientName=w.PatientName;
+			var patientNumber=w.PatientNumber;
+			var MRN=w.MRN;
+			//			获取时间dom
+			var three=document.getElementsByClassName('three')[0];
+			var one=document.getElementsByClassName('one')[0];
+			var two=document.getElementsByClassName('two')[0];
+			//			获取基本操作dom
+			var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');		
+			var currentDate=document.getElementById('currentDate');
+			currentDate.innerHTML=new Date().Format("yyyy-MM-dd");
+			document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+//			获取时间列表
+			mui.ajax({
+				url:url,
+				type:'post',
+				data:{
+					msgBody:JSON.stringify({
+                   		PatientMRN:MRN,
+                    	CurrentTime:new Date().Format("yyyy-MM-dd hh:mm:ss")
+                	}),                   
+                	msgHeader:JSON.stringify({
+                    	ServerName:'GetTimeList',
+                    	Format: 'json',
+                    	CallOperator: '',
+                    	Certificate:'123456'})
+				},
+				dataType:'json',
+				success:function(data){
+					for(var i=0;i<data.Contents.length;i++){
+						timeArr.push(data.Contents[i].Time);
+					}
+					var hour=new Date().getHours();
+					
+					//设置时间的默认值为当前时间
+					for(var i=0;i<timeArr.length;i++){
+						var colonIndex=timeArr[i].indexOf(':');
+						var nextIndex=i+1>=timeArr.length-1?timeArr.length-1:i+1;
+						if(timeArr[i].substring(0,colonIndex)<=hour && timeArr[nextIndex].substring(0,colonIndex)>hour){					
+							two.innerHTML=timeArr[i];
+							two.setAttribute('index',i);
+							if(i<=0){
+								three.innerHTML=timeArr[i+1];
+								three.setAttribute('index',i+1);						
+								one.innerHTML=timeArr[timeArr.length-1];
+								one.setAttribute('index',timeArr.length-1);
+								continue;
+							}
+							if(i>=timeArr.length-1){
+								one.innerHTML=timeArr[i-1];
+								one.setAttribute('index',i-1);
+								three.innerHTML=timeArr[0];
+								three.setAttribute('index',0);
+								continue;
+							}
+							one.innerHTML=timeArr[i-1];
+							one.setAttribute('index',i-1);
+							three.innerHTML=timeArr[i+1];
+							three.setAttribute('index',i+1);
+						}
+					}		
+//					查找当前时间的记录
+					mui.ajax({
+							url:url,
+							type:'post',
+							data:{
+								msgBody:JSON.stringify({
+		                   			PatientMRN:MRN,
+		                    		OperateTime:currentDate.innerHTML+" "+two.innerHTML+":00",
+                				}),                   
+                				msgHeader:JSON.stringify({
+                    				ServerName:'GetMonitorByTime',
+                    				Format: 'json',
+                    				CallOperator: '',
+                    				Certificate:'123456'})
+								},
+							dataType:'json',
+							beforeSend:function(){
+								plus.nativeUI.showWaiting('正在加载数据…');
+							},
+							success:function(data){
+								setTimeout(function(){
+									plus.nativeUI.closeWaiting();
+									if(data.Code==0){
+									if(parseInt(two.innerHTML.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
+										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+										for(var i=0;i<inputs.length;i++){
+											inputs[i].value='';
+										}
+										return;
+									}
+									for(var key in data.Contents){
+										if(key=='OperateTime'){
+											continue;
+										}
+										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										document.getElementsByName(key)[0].value=data.Contents[key];
+										
+									}
+								}else {
+										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+										for(var i=0;i<inputs.length;i++){
+											inputs[i].value='';
+										} 
+								}
+								},2000);
+									console.log(data);
+								
+								
+							},error:function(){
+					mui.toast('服务器异常，请稍后再试');
+				}
+					})
+					var timeBoxs=document.getElementsByClassName('time')[0].children;
+					//设置位置
+					for(var i=0;i<timeBoxs.length;i++){
+						timeBoxs[i].style.left=170*i/100+'rem';
+					}
+//					修改时间
+					two.addEventListener('tap',function(){
+						this.style.display='none';
+						this.previousElementSibling.value=this.innerHTML;
+						
+					})
+//					查询最近的记录
+					one.addEventListener('tap',function(){
+						if(!this.innerHTML){
+							return;
+						}
+						var thisInnerHtml=this.innerHTML;
+						var tapIndex=parseInt(one.getAttribute('index'));
+						if(tapIndex==9){
+							currentDate.innerHTML=getPreDay(currentDate.innerHTML);
+						}
+							two.innerHTML=timeArr[tapIndex];
+							two.setAttribute('index',tapIndex);
+							three.innerHTML=timeArr[tapIndex+1];
+							three.setAttribute('index',parseInt(tapIndex+1));
+							if(tapIndex<=0){
+								one.innerHTML='';
+								one.setAttribute('index',0);
+							}else {
+								one.innerHTML=timeArr[tapIndex-1];
+								one.setAttribute('index',tapIndex-1);
+							}									
+						document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+						mui.ajax({
+							url:url,
+							type:'post',
+							data:{
+								msgBody:JSON.stringify({
+		                   			PatientMRN:MRN,
+		                    		OperateTime:currentDate.innerHTML+" "+thisInnerHtml+":00"                				}),                   
+                				msgHeader:JSON.stringify({
+                    				ServerName:'GetMonitorByTime',
+                    				Format: 'json',
+                    				CallOperator: '',
+                    				Certificate:'123456'})
+								},
+								beforeSend:function(){
+									plus.nativeUI.showWaiting('加载中…');
+							},
+							dataType:'json',
+							success:function(data){
+								console.log(data);
+								plus.nativeUI.closeWaiting();
+								if(data.Code==0){
+									console.log(parseInt(thisInnerHtml.substr(0,2)));
+									console.log(parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":"))));
+									if(parseInt(thisInnerHtml.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
+										document.getElementsByClassName('listcontainer')[0].classList.add('OtherData');
+									}
+									for(var key in data.Contents){
+										if(key=='OperateTime'){
+											continue;
+										}
+										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										document.getElementsByName(key)[0].value=data.Contents[key];
+										
+									}
+								}else {
+										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+										for(var i=0;i<inputs.length;i++){
+											inputs[i].value='';
+										}										
+								}
+							},
+							error:function(){
+					mui.toast('服务器异常，请稍后再试');
+				}
+						})
+					})
+//					切换到最新的时间
+					three.addEventListener('tap',function(){						
+						if(!this.innerHTML){
+							return;
+						}
+						var thisInnerHtml=this.innerHTML;
+						var tapIndex=parseInt(three.getAttribute('index'));
+						if(tapIndex==10){
+							currentDate.innerHTML=getNextDay();
+						}
+								two.innerHTML=timeArr[tapIndex];
+								two.setAttribute('index',tapIndex);
+								one.innerHTML=timeArr[tapIndex-1];
+								one.setAttribute('index',tapIndex-1);
+								if(tapIndex>=timeArr.length-1){									
+									three.innerHTML="";
+									three.setAttribute('index',timeArr.length-1);
+								}else {
+									three.innerHTML=timeArr[tapIndex+1];
+									three.setAttribute('index',parseInt(tapIndex+1));
+								}	
+						
+						mui.ajax({
+							url:url,
+							type:'post',
+							data:{
+								msgBody:JSON.stringify({
+		                   			PatientMRN:MRN,
+		                    		OperateTime:currentDate.innerHTML+" "+thisInnerHtml+":00"
+                				}),                   
+                				msgHeader:JSON.stringify({
+                    				ServerName:'GetMonitorByTime',
+                    				Format: 'json',
+                    				CallOperator: '',
+                    				Certificate:'123456'})
+								},
+								
+							beforeSend:function(){
+								plus.nativeUI.showWaiting('加载中…');
+							},
+							dataType:'json',
+							success:function(data){
+								plus.nativeUI.closeWaiting();
+								if(data.Code==0){
+									if(parseInt(thisInnerHtml.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
+										document.getElementsByClassName('listcontainer')[0].classList.add('OtherData');
+									}
+									for(var key in data.Contents){
+										if(key=='OperateTime'){
+											continue;
+										}
+										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										document.getElementsByName(key)[0].value=data.Contents[key];
+										
+									}
+								}else {
+										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+										for(var i=0;i<inputs.length;i++){
+											inputs[i].value='';
+										}
+								}
+								},
+								error:function(){
+					mui.toast('服务器异常，请稍后再试');
+				}
+							});
+							});
+										
+//					保存并上传数据
+					document.getElementById('saveBtn').addEventListener('tap',function(e){
+					var saveObj={
+						PatientMRN:MRN,
+						PatientNumber: patientNumber,
+						PatientName:patientName,
+						ColumnId:parseInt(two.getAttribute('index'))+3+'',
+						OperateTime:currentDate.innerHTML+" "+two.innerHTML+":00"
+						};
+						var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+						for(var i=0;i<inputs.length;i++){
+							var nameInputAttr=inputs[i].getAttribute('name');
+							saveObj[nameInputAttr]=inputs[i].value;
+						}
+						mui.ajax({
+							url:url,
+							type:'post',
+							data:{
+								msgBody:JSON.stringify(saveObj),                   
+		                		msgHeader:JSON.stringify({
+		                    	ServerName:'SaveMonitor',
+		                    	Format: 'json',
+		                    	CallOperator: '',
+		                    	Certificate:'123456'})
+							},
+							beforeSend:function(){
+									plus.nativeUI.showWaiting('保存中…');
+							},
+							dataType:'json',
+							success:function(data){
+								console.log(data.Code);
+								setTimeout(function(){
+									if(data.Code==0){
+									mui.toast('数据保存成功');
+									plus.nativeUI.closeWaiting();
+									document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+									document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+								}else {
+									mui.toast('服务器异常');
+									plus.nativeUI.closeWaiting();
+								}
+								},1500);
+								
+							},
+							error:function(){
+								mui.toast('服务器异常，请稍后再试');
+								plus.nativeUI.closeWaiting();
+							}
+						})
+					});
+//					清空数据
+					var reset=document.getElementById('reset');
+					reset.addEventListener('tap',function(){
+						if(this.classList.contains('active')){
+							var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+							for(var i=0;i<inputs.length;i++){
+								inputs[i].value='';
+							}	
+							this.classList.remove('active');
+						}															
+					});
+					//					导入设备数据
+					var count=document.getElementById('count');
+					document.getElementById('import').addEventListener('tap',function(){
+						if(this.classList.contains('notActive')){
+							return;
+						}
+						var _this=this;
+						this.classList.add('notActive');
+						var n=11;
+						getData();
+						var timeId=setInterval(function(){
+							if(n<=0){
+								count.innerHTML='';
+								_this.classList.remove('notActive');
+								clearInterval(timeId);
+								
+							}else {
+								n--;
+								count.innerHTML=n;
+							}
+						},1000);
+						function getData(){
+						mui.ajax({
+							url:url,
+							type:'post',
+							data:{
+								msgBody:JSON.stringify(
+									{
+										PatientMRN:'1006357',
+		                    			OperateTime:'2017-08-13 09:00:00'
+									}
+								),
+		                		msgHeader:JSON.stringify({
+		                    	ServerName:'GetMonitor',
+		                    	Format: 'json',
+		                    	CallOperator: '',
+		                    	Certificate:'123456'})
+							},
+							beforeSend:function(){
+								plus.nativeUI.showWaiting('正在导入数据，请稍后');
+							},
+							dataType:'json',
+							success:function(data){
+								console.log(data);
+								setTimeout(function(){
+									plus.nativeUI.closeWaiting();
+									if(data.Code==0){
+									mui.toast('成功导入数据');
+									document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+									document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+									for(var key in data.Contents){
+										if(key=='OperateTime'){
+											continue;
+										}
+										document.getElementsByName(key)[0].value=data.Contents[key];
+										
+									}
+									reset.classList.add('active');
+									}else {
+										plus.nativeUI.closeWaiting();
+										mui.toast('导入数据失败');
+									}
+								
+								},1500);
+								
+							},
+							error:function(){
+								plus.nativeUI.closeWaiting();
+								mui.toast('服务器异常，请稍后重试');
+							}
+						})
+
+						}
+					})
+				}
+				,error:function(){
+					mui.toast('服务器异常，请稍后再试');
+				}
+			})
+
+		}
+				if(window.plus){
+					plusReady();
+				}else{
+					document.addEventListener("plusready",plusReady,false);
+				}
+		</script>		
+		<script src="../js/updateTime.js"></script>
+	</body>
+
+</html>

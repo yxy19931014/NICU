@@ -1,0 +1,21 @@
+//子页面input获取焦点后底部选项卡和保存按钮的显示状态
+var inputs=document.getElementsByTagName('input');
+			for(var i=0;i<inputs.length;i++){
+				inputs[i].addEventListener('focus',function(){
+//					document.getElementsByClassName('footer')[0].style.display='none';
+					if(document.body.querySelector('.saveBack')){
+						document.body.querySelector('.saveBack').style.display='none';
+					}
+				})
+				inputs[i].addEventListener('blur',function(){
+//					document.getElementsByClassName('footer')[0].style.display='table';
+					if(document.body.querySelector('.saveBack')){
+						document.body.querySelector('.saveBack').style.display='block';
+					}
+				})
+			}
+//时间控件显示	
+var currentDate=document.getElementById('currentDate');
+currentDate.innerHTML=new Date().Format("yyyy-MM-dd");
+
+//选择患者

@@ -1,0 +1,16 @@
+@charset "utf-8";
+//适配mixin
+// for(var i = 0 ; i < list.length ; i++){}
+// .lessFuc()when(){}
+
+//怎么获取数组长度  length(@list)
+//怎么获取到当前序号对应的值 extract(@list,index);
+
+.adapterFuc(@index)when(@index > 0){
+  @media (min-width: extract(@adapterList,(@len - @index + 1))) {
+    html{
+      font-size: extract(@adapterList,(@len - @index + 1))/@size*@baseFontSize;
+    }
+  }
+  .adapterFuc(@index - 1);
+}

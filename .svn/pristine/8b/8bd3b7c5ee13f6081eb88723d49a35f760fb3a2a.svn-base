@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet/less" href="../less/public.less" />
+		<link rel="stylesheet/less" href="../less/bedOperate.less" />
+		<script src="../lib/less/less.min.js"></script>
+	</head>
+	<body>		
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="OperateBox">
+					<div class="dataTime">
+	    				<span id="currentDate"></span>	    		
+	    			</div>
+	    			<div class="list"id='bedListId'>
+	    				
+	    			</div>    		
+
+				</div>
+	    			
+			</div>
+		</div> 
+		<script src="../js/mui.min.js"></script>
+		<script src="../lib/template/template.js"></script>
+		<script type='text/template'id='selectPatient'>
+			{{each list as value i}}
+			<div class="singleBox"MRN='{{value.MRN}}'PatientName='{{value.PatientName}}'PatientNumber='{{value.PatientNumber}}'id='hisData'>
+			  <a class="single"><span>{{value.Bed}}</span>&nbsp;<span>{{value.PatientName}}</span></a>
+			</div>
+			{{/each}}
+		</script>	
+		<script type='text/template'id='getBedListTpl'>
+			<div class="listcontainer">
+			    		<div class="mouth">
+			    			<h2 class="mouthTitle">口腔护理</h2>
+				    		<ul>
+				    			<li>
+				    				<span>操作时间</span>
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('mouth')"id='mouth'name='mouth'/>
+				    			</li>
+				    			<li class="lastLi"><span>口腔黏膜</span>
+				    				<select name="" id="">
+				    					<option value="请选择">请选择</option>
+				    				</select>
+				    			</li>
+				    		</ul>
+			    		</div>
+			    		<div class="skin">
+			    			<h2 class="skinTitle">皮肤护理</h2>
+				    		<ul>
+				    			<li>
+				    				<span>操作时间</span>
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('skin')"id='skin' name='skin'/>
+				    			</li>
+				    			<li class="lastLi">
+				    				<span>臂红</span>
+				    				<select name="" id="">
+				    					<option value="请选择">请选择</option>
+				    				</select>
+				    			</li>
+				    		</ul>
+			    		</div>
+						<div class="cannula">
+			    			<h2 class="cannulaTitle">插管</h2>
+				    		<ul>
+				    			<li>
+				    				<label for="Incubator"><span>插管口径</span></label>
+				    				<input type="number" class="testName num" name='Incubator'id='Incubator'/>
+				    				<span class="unit">mm</span>
+				    			</li>
+				    			<li class="lastLi">
+				    				
+				    				<label for="Humidity"><span>插管深度</span></label>
+				    				<input type="number" class="testName num" name='Humidity'id='Humidity'/>
+				    				<span class="unit">mm</span>
+				    			</li>
+				    		</ul>
+			    		</div>	
+			    		{{each list as value i}}
+			    		{{if value.OperateShortName=='光疗'}}
+			    		<div class="light">
+			    			<h2 class="lightTitle">光疗</h2>
+				    		<ul>
+				    			<li class="lastLi">
+				    				<span>{{value.OperateName}}</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('lightTimes')"name='' />
+				    			</li>
+				    		</ul>
+				    		<div class="times"id='lightTimes'>
+				    			<span class="clearBtn"></span>
+				    		</div>
+			    		</div>
+			    		{{/if}}
+			    		{{/each}}
+			    		<div class="sputum">
+			    			<h2 class="sputumTitle">吸痰</h2>
+				    		<ul>
+				    			<li class="lastLi">
+				    				<span>新生儿呼吸道清Q3H</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('sputumTimes')"name='' />
+				    			</li>
+				    		</ul>
+				    		<div class="times"id='sputumTimes'>
+				    			<span class="clearBtn"></span>
+				    		</div>
+			    		</div>
+			    		<div class="other">
+			    			<h2 class="otherTitle">其他</h2>
+				    		<ul>
+				    			<li>
+				    				<span>气管插管护理Q3H</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('tracheaTimes')"name='' />
+				    			</li>
+				    			<div class="times"id='tracheaTimes'>
+				    			<span class="clearBtn"></span>
+				    			</div>
+				    		</ul>
+				    		<ul>
+				    			<li>
+				    				<span>呼吸机辅助呼吸</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('breachTimes')"name='' />
+				    			</li>
+				    			<div class="times"id='breachTimes'>
+				    				<span class="clearBtn"></span>
+				    			</div>
+				    		</ul>
+				    		<ul>
+				    			<li>
+				    				<span>新生儿疾病筛查ONCE</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('illTimes')"name='' />
+				    			</li>
+				    			<div class="times"id='illTimes'>
+				    				<span class="clearBtn"></span>
+				    			</div>
+				    		</ul>
+				    		<ul>
+				    			<li class="lastLi">
+				    				<span>新生儿听力筛查ONCE</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('hearTimes')"name='' />
+				    			</li>
+				    			<div class="times"id='hearTimes'>
+				    				<span class="clearBtn"></span>
+				    			</div>
+				    		</ul>
+			    		</div>
+			    		<button class="save saveBack"id='saveBtn'>保存并上传</button>
+	    			</div>	
+		</script>
+		<script src="../js/config.js"></script>
+		<script src="../js/tool.js"></script>
+		<script src="../js/public.js"></script>
+		<script>
+			// H5 plus事件处理
+			function pickTime(id){
+		plus.nativeUI.pickTime( function(e){
+			var d=e.date;
+			var h=d.getHours()<10?'0'+d.getHours():d.getHours();
+			var m=d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes();
+			document.getElementById(id).value=h+":"+m;
+		},function(e){
+			console.log( "未选择时间："+e.message );
+		});
+		}
+				function pickTimes(id){
+					plus.nativeUI.pickTime( function(e){
+					var d=e.date;
+					var h=d.getHours()<10?'0'+d.getHours():d.getHours();
+					var m=d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes();
+					var newTime=document.createElement('span');
+					newTime.classList.add('singleTime');
+					newTime.innerHTML=h+":"+m
+					document.getElementById(id).appendChild(newTime);
+					document.getElementById(id).style.display='block';
+					},function(e){
+						console.log( "未选择时间："+e.message );
+					});
+		
+				}
+
+		function plusReady(){
+			//			处理床位列表传值
+				var w=plus.webview.currentWebview();
+				var patientBed=w.PatientBed;
+				var patientName=w.PatientName;
+				var patientNumber=w.PatientNumber;
+				var MRN=w.MRN;
+				
+			//		获取要处理的dom
+			var bedList=document.getElementById('bedListId');
+			
+			// 选择时间
+			mui.init();
+						//动态获取数据和渲染页面
+			mui.ajax({
+				url:'http://192.168.6.6:8088/ICUMobileInterface.asmx/CallInterface',
+				type:'get',
+				data:{
+					msgBody:JSON.stringify({
+                    PatientMRN:MRN,
+                    StartTime:"2017-08-16 07:01:00",
+                    EndTime:'2017-08-17 07:00:00'
+                }),                   
+                	msgHeader:JSON.stringify({
+                    ServerName:'GetBedSide',
+                    Format: 'json',
+                    CallOperator: '',
+                    Certificate:'123456'})
+				},
+				dataType:'json',
+				success:function(data){
+					data.Contents=[
+					{"ID":"15936","OperateTime":"2017/8/16 15:40:00","OperateName":"完整","OperateShortName":"口腔黏膜","OperateContent":""},
+					{"ID":"15937","OperateTime":"2017/8/16 15:40:00","OperateName":"无","OperateShortName":"臀红","OperateContent":""},
+					{"ID":"15938","OperateTime":"2017/8/16 15:40:00","OperateName":"插管口径","OperateShortName":"插管","OperateContent":"2.5"},
+					{"ID":"15939","OperateTime":"2017/8/16 15:40:00","OperateName":"插管深度","OperateShortName":"插管","OperateContent":"3.5"},
+					{"ID":"15940","OperateTime":"2017/8/16 15:40:00","OperateName":"吸痰 Q6h","OperateShortName":"吸痰","OperateContent":"11:00-17:00-23:00-5:00"},
+					{"ID":"15941","OperateTime":"2017/8/16 15:40:00","OperateName":"冷光源照射 ONCE","OperateShortName":"光疗","OperateContent":"14:30-4:30"},
+					{"ID":"15942","OperateTime":"2017/8/16 15:40:00","OperateName":"血压监测 Q6h","OperateShortName":"其他","OperateContent":"11:00-17:00"},
+					{"ID":null,"OperateTime":"2017/8/23 14:33:57","OperateName":"","OperateShortName":"营养","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"新生儿经皮测定胆红素 Qd","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"血氧饱和度监测 ","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"PICC小换药一次 2次/周","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"置胃管 ONCE","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"中抢救 ONCE","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"静脉置管护理常规 Qd","OperateShortName":"其他","OperateContent":""},
+					{"ID":null,"OperateTime":null,"OperateName":"静脉高营养治疗 ","OperateShortName":"其他","OperateContent":""}];
+					var html=template('getBedListTpl',{list:data.Contents});
+					bedList.innerHTML=html;
+					var times=document.getElementsByClassName('times');
+					var clearBtns=document.getElementsByClassName('clearBtn');
+		for(var i=0;i<times.length;i++){
+			if(times[i].children.length==1){
+				times[i].style.display='none';
+			}else {
+				times[i].style.display='block';
+			}
+		}
+				mui('.times').on('tap','.clearBtn',function(){			
+			this.parentNode.removeChild(this.parentNode.lastElementChild);
+			if(!this.nextElementSibling){
+				this.parentNode.style.display='none';
+			}
+		});
+				}
+			})
+			
+			
+
+			
+		}
+		if(window.plus){
+			plusReady();
+		}else{
+			document.addEventListener("plusready",plusReady,false);
+		}
+	
+		
+
+//		下拉刷新
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						contentrefresh: '正在加载...',
+						callback: pulldownRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 1500);
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			
+		</script>
+	</body>
+</html>

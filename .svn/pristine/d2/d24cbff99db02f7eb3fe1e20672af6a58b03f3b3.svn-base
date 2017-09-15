@@ -1,0 +1,238 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>床位概览</title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet/less" href="less/bed.less" />
+    <script src="lib/less/less.min.js"></script>
+</head>
+<body>
+	<div class="bedBox">
+		<!--头部-->
+		<header class="mui-bar mui-bar-nav">
+        <h1 class="mui-title">床位概览</h1> 
+        <ul class="leftUser">
+	        <a  href="javascript:;"id='userIconId'>
+	        	<span class="leftIcon"></span>
+        		<span class="text"id='loginNameDom'></span>
+	        </a>
+	        <div id='outLogin'>
+	            <p>退出登录</p>
+	        </div>
+    	</ul>	   	
+        <ul class="rightOnline">
+	        <a  href="javascript:;"id='onLine'>
+	        	<span>在科</span>
+	        	<span class="downIcon"></span>
+	        </a>
+	        <div id='downContent'style='display: none;'>
+	            <p id='outLine'>出科</p>
+	        </div>
+    	</ul>	
+    	</header>
+    	<!--搜索框-->
+    	<div class="search">
+        <div class="search_box">
+            <!--使得虚拟键盘的enter键变为搜索键-->
+            <form action="#">
+            	<div class="mui-input-row">
+            		<input type="text" id='strWhere'class="mui-input-clear"placeholder="可输入患者姓名、床号、病历号…"/>
+            	</div> 
+            </form>
+              <a href="javascript:;" class="search_btn"id='searchBtn'></a>
+        </div> 
+    </div>
+    	<!--床位展示-->
+    	<div class="beds"id='bedListId'>    		
+    	</div>
+    	<!--底部导航栏-->
+		<nav class="mui-bar mui-bar-tab footer">
+		    <a id="defaultTab" class="mui-tab-item mui-active active" href="#">
+		        <span class="mui-icon bedview"></span>
+		        <span class="mui-tab-label">床位概览</span>
+		    </a>
+      		<a class="mui-tab-item total" href="javascript:;"id='footerSearch'>
+                <span class="mui-icon two"></span>
+                <span class="mui-tab-label">统计查询</span>
+       		</a>
+      		<a class="mui-tab-item knowledegbase" href="javascript:;">
+                <span class="mui-icon three"></span>
+                <span class="mui-tab-label">知识库</span>
+      		</a>       
+    	</nav>
+	</div>
+	<script>
+//		判断登录
+		if(!window.localStorage.getItem('loginInfo')){
+			location.href='views/login.html';
+		}else {
+			var loginName=JSON.parse(window.localStorage.getItem('loginInfo')).UserName;
+			var loginNameDom=document.getElementById('loginNameDom');
+			loginNameDom.innerHTML=loginName;
+		}
+		
+	</script>
+	<script src="lib/template/template.js"></script>
+	<script type="text/template"id='bedListTpl'>
+		{{each list as value i}}
+		<div class="bedBox">
+    		<div class="bed"MRN='{{value.MRN}}'PatientName='{{value.PatientName}}'PatientNumber='{{value.PatientNumber}}'PatientBed='{{value.Bed}}'>
+    			<p class="bedNum">{{value.Bed}}</p>
+    			<p>
+    				{{if value.Sex=='女'}}  
+    					<span class="formale"></span>
+					{{else}}  
+				  		<span class="male"></span>
+					{{/if}}   				
+    				<span class="name">{{value.PatientName}}</span>
+    				<span class="inTime">{{value.Indays}}</span>
+    			</p>
+    		</div>		
+    	</div>
+    	{{/each}}
+	</script>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script src="js/tool.js"></script>
+	<script src="js/public.js"></script>
+	<script>
+		var strWhereDom=document.getElementById('strWhere');
+		strWhereDom.value='';
+		mui.init(); 
+		var DeptCode=GetRequest(location.search).DeptCode?GetRequest(location.search).DeptCode:JSON.parse(localStorage.getItem('loginInfo')).DeptCode; 
+			sendAjax(strWhereDom.value,'GetBedList');
+			document.getElementById('searchBtn').addEventListener('tap',function(){
+					sendAjax(strWhereDom.value,'GetBedList');			
+			});
+			function sendAjax(strWhere,ajaxName){
+				mui.ajax({
+				url:url,
+				type:'get',
+				data:{
+					msgBody:JSON.stringify({
+                   		DeptCode:DeptCode,//deptCode
+                    	StrWhere:strWhere
+                	}),                   
+                	msgHeader:JSON.stringify({
+                    	ServerName:ajaxName,
+                    	Format: 'json',
+                    	CallOperator: '',
+                    	Certificate:'123456'})
+				},
+				dataType:'json',
+				success:function(data){
+					if(data.Code==0){						
+						var html=template('bedListTpl',{list:data.Contents});
+						document.getElementById('bedListId').innerHTML=html;
+						var beds=document.getElementsByClassName('bed');
+						for(var i=0;i<beds.length;i++){
+							beds[i].addEventListener('tap',function(){
+								var thisMRN=this.getAttribute('MRN');
+								var thisName=this.getAttribute('PatientName');
+								var thisNumber=this.getAttribute('PatientNumber');
+								var thisBed=this.getAttribute('PatientBed');
+								mui.openWindow({
+								    url:'views/detail_main.html',
+								    id:'detail_main.html',
+								    extras:{
+								    	MRN:thisMRN,
+								    	PatientName:thisName,
+								    	PatientNumber:thisNumber,
+								    	PatientBed:thisBed
+								    }
+								    
+								});
+							})
+						}
+					}
+				}
+			})
+			}
+	
+	</script>
+	
+	<script>
+//		在科和出科的切换
+		mui('.rightOnline').on('tap','#onLine',function(e){
+			e.stopPropagation();
+			document.getElementById('outLogin').style.display='none';
+			document.getElementById('userIconId').classList.remove('show');
+			var that=this;
+			if(this.classList.contains('down')){
+				document.getElementById('downContent').style.display='none';
+				that.classList.remove('down');		
+				
+			}else{
+				if(that.classList.contains('show')){
+					document.getElementById('downContent').firstElementChild.innerHTML='在科';
+				
+				}else{
+					document.getElementById('downContent').firstElementChild.innerHTML='出科';
+				}
+				document.getElementById('downContent').style.display='block';
+				this.classList.add('down');
+			}			
+		})
+		mui('.rightOnline').on('tap','#outLine',function(e){
+				e.stopPropagation();
+				if(document.getElementById('onLine').classList.contains('show')){
+					document.getElementById('onLine').firstElementChild.innerHTML='在科';
+					document.getElementById('onLine').classList.remove('show');
+					document.getElementById('downContent').style.display='none';
+					document.getElementById('onLine').classList.remove('down');
+					sendAjax(strWhereDom.value,'GetInPatientList');
+				}else {
+					document.getElementById('onLine').firstElementChild.innerHTML='出科';
+					document.getElementById('onLine').classList.add('show');
+					document.getElementById('downContent').style.display='none';
+					document.getElementById('onLine').classList.remove('down');
+					sendAjax(strWhereDom.value,'GetOutPatientList');
+				}
+				})
+		
+//		退出登录
+		mui('.leftUser').on('tap','#userIconId',function(e){
+			e.stopPropagation();
+			document.getElementById('onLine').classList.remove('show');
+			document.getElementById('downContent').style.display='none';
+			document.getElementById('onLine').classList.remove('down');
+			if(this.classList.contains('show')){
+				var that=this;
+				document.getElementById('outLogin').style.display='none';
+					that.classList.remove('show');				
+			}else{
+				document.getElementById('outLogin').style.display='block';
+				this.classList.add('show');
+			}
+		})
+		mui('.leftUser').on('tap','#outLogin',function(e){
+			e.stopPropagation();
+			window.localStorage.removeItem('loginInfo');
+			location.href='views/login.html';
+		});
+		document.addEventListener('tap',function(e){
+			e.stopPropagation();
+			document.getElementById('onLine').classList.remove('show');
+			document.getElementById('downContent').style.display='none';
+			document.getElementById('onLine').classList.remove('down');
+			document.getElementById('outLogin').style.display='none';
+			document.getElementById('userIconId').classList.remove('show');	
+		})
+		var aObj=document.getElementsByTagName('nav')[0].children;
+		for(var i=0;i<aObj.length;i++){
+			aObj[i].addEventListener('tap',(function(n){
+					return function(){
+						for(var j=0;j<aObj.length;j++){
+						aObj[j].classList.remove('active');
+						}
+						this.classList.add('active');	
+					}
+				
+			})(i));
+		}
+	</script>
+
+</body>
+</html>
