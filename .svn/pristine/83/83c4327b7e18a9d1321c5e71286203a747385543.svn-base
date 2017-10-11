@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<!--<link rel="stylesheet" href="../css/public.css" />-->
+		<link rel="stylesheet" href="../css/selectPatient.css" />
+	</head>
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/config.js"></script>
+		<!--选择患者-->
+			<div id="popover">
+			  	<div class="search">
+        			<div class="search_box">
+            		<!--使得虚拟键盘的enter键变为搜索键-->
+		            <form action="#">
+		            	<div class="mui-input-row">
+		            		<input type="text" id='strWhere'class=""placeholder="可输入患者姓名、床号、病历号"/>
+		            	</div> 
+		            </form>
+              		<a href="javascript:;" class="search_btn"id='searchBtn'></a>
+        			</div> 
+    		</div>		  
+			  <div class="historyData"id='historyData'>
+			  </div>
+			  <div class="pullBox">
+			  		<span id='pull'></span>
+			  </div>
+			</div>
+
+			<script src="../lib/template/template.js"></script>
+			<script type='text/template'id='selectPatient'>
+			{{each list as value i}}
+			<div class="singleBox"MRN='{{value.MRN}}'PatientName='{{value.PatientName}}'PatientNumber='{{value.PatientNumber}}'PatientBed='{{value.Bed}}'id='hisData'>
+			  <a class="single"><span>{{value.Bed}}</span>&nbsp;<span>{{value.PatientName}}</span></a>
+			</div>
+			{{/each}}
+			</script>
+			<script>
+//				获取页面的传值
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener("plusready", plusReady, false);
+				}
+				function plusReady(){
+					var detailPage=plus.webview.getWebviewById('detail_main.html');
+					var mask = mui.createMask(function(){
+						mui.fire(detailPage,'deleteClass');
+						var selfPage=plus.webview.getWebviewById('selectPatient.html');
+						plus.webview.close(selfPage);
+							
+					});
+					mask.show();
+				}
+			
+			
+			
+			mui('.pullBox').on('tap','#pull',function(){
+				document.getElementById('historyData').style.height='auto';
+				
+			})
+//				获取页面的传值
+				mui.plusReady(function() {
+					
+					
+				var w=plus.webview.currentWebview();
+				var patientBed=w.PatientBed;
+				var patientName=w.PatientName;
+				var patientNumber=w.PatientNumber;
+				var MRN=w.MRN;	
+				var DeptCode=JSON.parse(localStorage.getItem('loginInfo')).DeptCode;
+//				获取查询条件
+				var strWhereDom=document.getElementById('strWhere');
+				strWhereDom.value='';
+				sendAjax(strWhereDom.value);
+				document.getElementById('searchBtn').addEventListener('tap',function(){
+					sendAjax(strWhereDom.value);			
+				});
+				function sendAjax(strWhere){
+			mui.ajax({
+				url:url,
+				type:'post',
+				data:{
+					msgBody:JSON.stringify({
+		                DeptCode:DeptCode,//deptCode
+		                StrWhere:strWhere,
+		                tag:'0'
+		            }),                   
+		            msgHeader:JSON.stringify({
+		                ServerName:'GetInPatientList',
+		                Format: 'json',
+		                CallOperator: '',
+		                Certificate:'123456'
+		            })
+				},
+				dataType:'json',
+				success:function(data){
+					if(data.Code==0){
+						var datas=data.Contents;
+						var html=template('selectPatient',{list:datas});
+						document.getElementById('historyData').innerHTML=html;
+						var singleBoxs=document.getElementsByClassName('singleBox');
+						for(var j=0;j<singleBoxs.length;j++){
+							if(singleBoxs[j].getAttribute('MRN')==MRN){
+								singleBoxs[j].classList.add('selected');
+							}
+						}
+						for(var i=0;i<datas.length;i++){
+							document.getElementsByClassName('singleBox')[i].addEventListener('tap',function(){
+								var thisMRN=this.getAttribute('MRN');
+								var thisName=this.getAttribute('PatientName');
+								var thisNumber=this.getAttribute('PatientNumber');
+								var thisBed=this.getAttribute('PatientBed');
+								
+								var detail=plus.webview.getWebviewById('detail_main.html');
+								mui.fire(detail,'newPatient',{
+									PatientName:thisName,
+									PatientNumber:thisNumber,
+									PatientBed:thisBed,
+									MRN:thisMRN
+								});
+								mui.fire(detail,'deleteClass');
+							})
+						}					
+					}
+						
+				}
+			})
+				}		
+				
+				});
+				
+		</script>
+	</body>
+</html>

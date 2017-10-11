@@ -41,7 +41,9 @@
 			"views/detail_main.html",
 			"js/tool.js",
 			"js/config.js",
-			"js/index.js"
+			"js/index.js",
+			"imgs/login/welcome.png",
+			"js/mui.js"
 		],
 		"refer": [
 			"views/login.html",
@@ -49,7 +51,8 @@
 			"views/observation.html",
 			"views/out.html",
 			"index.html",
-			"views/detail_main.html"
+			"views/detail_main.html",
+			"views/bedList.html"
 		]
 	},
 	"views/login.html": {
@@ -76,10 +79,13 @@
 			"imgs/login/input.png",
 			"js/config.js",
 			"less/public.less",
-			"imgs/login/com_logo.png"
+			"imgs/login/com_logo.png",
+			"css/login.css",
+			"css/public.css"
 		],
 		"refer": [
-			"index.html"
+			"index.html",
+			"views/bedList.html"
 		]
 	},
 	"views/obervation.html": {
@@ -147,7 +153,9 @@
 			"imgs/observation/in.png",
 			"js/updateTime.js",
 			"js/tool.js",
-			"js/config.js"
+			"js/config.js",
+			"css/life.css",
+			"css/public.css"
 		],
 		"refer": [
 			"views/obervation.html",
@@ -190,7 +198,9 @@
 			"views/observation.html",
 			"js/tool.js",
 			"js/config.js",
-			"js/updateTime.js"
+			"js/updateTime.js",
+			"css/observation.css",
+			"css/public.css"
 		],
 		"refer": [
 			"index.html",
@@ -244,7 +254,10 @@
 			"views/bedOperSub.html",
 			"less/public.less",
 			"js/tool.js",
-			"js/config.js"
+			"js/config.js",
+			"css/bedOperate.css",
+			"css/public.css",
+			"views/bedOperate_sub.html"
 		],
 		"refer": [
 			"views/life.html",
@@ -252,7 +265,8 @@
 			"views/out.html",
 			"index.html",
 			"views/pullrefresh_main.html",
-			"views/bedOperSub.html"
+			"views/bedOperSub.html",
+			"views/bedOperate_sub.html"
 		]
 	},
 	"views/demo.html": {
@@ -305,7 +319,9 @@
 			"less/public.less",
 			"js/updateTime.js",
 			"js/tool.js",
-			"js/config.js"
+			"js/config.js",
+			"css/out.css",
+			"css/public.css"
 		],
 		"refer": [
 			"views/observation.html",
@@ -379,7 +395,9 @@
 			"imgs/observation/eye_gray.png",
 			"js/tool.js",
 			"js/config.js",
-			"views/out.html"
+			"views/out.html",
+			"views/life.html",
+			"css/public.css"
 		],
 		"refer": [
 			"views/out.html",
@@ -406,7 +424,8 @@
 			"imgs/observation/search_select.png",
 			"lib/template/template.js",
 			"js/mui.min.js",
-			"js/config.js"
+			"js/config.js",
+			"css/selectPatient.css"
 		]
 	},
 	"views/in.html": {
@@ -434,7 +453,55 @@
 			"imgs/in/scan_black.png",
 			"imgs/in/down.png",
 			"imgs/observation/down.png",
-			"imgs/in/fail.png"
+			"imgs/in/fail.png",
+			"less/scan.less",
+			"css/public.css",
+			"css/in.css"
+		]
+	},
+	"views/bedList.html": {
+		"resources": [
+			"lib/template/template.js",
+			"less/mixin.less",
+			"less/var.less",
+			"less/adpater.less",
+			"lib/less/less.min.js",
+			"less/normalize.less",
+			"less/bed.less",
+			"js/index.js",
+			"js/config.js",
+			"imgs/bed/knowledge_gray.png",
+			"imgs/bed/formale.png",
+			"imgs/bed/user_gray.png",
+			"imgs/bed/male.png",
+			"imgs/bed/search_gray.png",
+			"imgs/bed/down.png",
+			"imgs/bed/searchBox.png",
+			"imgs/bed/bed.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"imgs/bed/search.png",
+			"imgs/bed/bed_gray.png",
+			"fonts/mui.ttf",
+			"imgs/bed/knowledge.png",
+			"css/bed.css"
+		],
+		"refer": [
+			"views/detail_main.html",
+			"views/login.html"
+		]
+	},
+	"views/bedOperate_sub.html": {
+		"resources": [
+			"css/bedOperate.css",
+			"imgs/observation/delete.png",
+			"js/tool.js",
+			"lib/template/template.js",
+			"js/mui.min.js",
+			"js/public.js",
+			"css/mui.min.css",
+			"css/public.css",
+			"js/config.js"
 		]
 	}
 }

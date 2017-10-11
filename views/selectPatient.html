@@ -5,9 +5,8 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<script src="stylesheet/less"href="../less/public.less"></script>
-		<link rel="stylesheet/less" href="../less/selectPatient.less" />
-		<script src="../lib/less/less.min.js"></script>
+		<!--<link rel="stylesheet" href="../css/public.css" />-->
+		<link rel="stylesheet" href="../css/selectPatient.css" />
 	</head>
 	<body>
 		<script src="../js/mui.min.js"></script>
@@ -42,24 +41,37 @@
 			</script>
 			<script>
 //				获取页面的传值
-			var mask = mui.createMask(function(){
-				var selfPage=plus.webview.getWebviewById('selectPatient.html');
-				plus.webview.close(selfPage);
-			});
-			mask.show();
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener("plusready", plusReady, false);
+				}
+				function plusReady(){
+					var detailPage=plus.webview.getWebviewById('detail_main.html');
+					var mask = mui.createMask(function(){
+						mui.fire(detailPage,'deleteClass');
+						var selfPage=plus.webview.getWebviewById('selectPatient.html');
+						plus.webview.close(selfPage);
+							
+					});
+					mask.show();
+				}
+			
+			
 			
 			mui('.pullBox').on('tap','#pull',function(){
-					var selfPage=plus.webview.getWebviewById('selectPatient.html');
-					plus.webview.close(selfPage);
-				})
+				document.getElementById('historyData').style.height='9.6rem';
+			})
 //				获取页面的传值
 				mui.plusReady(function() {
+					
+					
 				var w=plus.webview.currentWebview();
 				var patientBed=w.PatientBed;
 				var patientName=w.PatientName;
 				var patientNumber=w.PatientNumber;
 				var MRN=w.MRN;	
-				var DeptCode=JSON.parse(localStorage.getItem('loginInfo')).DeptCode; 
+				var DeptCode=JSON.parse(localStorage.getItem('loginInfo')).DeptCode;
 //				获取查询条件
 				var strWhereDom=document.getElementById('strWhere');
 				strWhereDom.value='';
@@ -68,54 +80,55 @@
 					sendAjax(strWhereDom.value);			
 				});
 				function sendAjax(strWhere){
-			mui.ajax({
-				url:url,
-				type:'post',
-				data:{
-					msgBody:JSON.stringify({
-		                DeptCode:DeptCode,//deptCode
-		                StrWhere:strWhere,
-		                tag:'0'
-		            }),                   
-		            msgHeader:JSON.stringify({
-		                ServerName:'GetInPatientList',
-		                Format: 'json',
-		                CallOperator: '',
-		                Certificate:'123456'
-		            })
-				},
-				dataType:'json',
-				success:function(data){
-					if(data.Code==0){
-						var datas=data.Contents;
-						var html=template('selectPatient',{list:datas});
-						document.getElementById('historyData').innerHTML=html;
-						var singleBoxs=document.getElementsByClassName('singleBox');
-						for(var j=0;j<singleBoxs.length;j++){
-							if(singleBoxs[j].getAttribute('MRN')==MRN){
-								singleBoxs[j].classList.add('selected');
+					mui.ajax({
+						url:url,
+						type:'post',
+						data:{
+							msgBody:JSON.stringify({
+				                DeptCode:DeptCode,//deptCode
+				                StrWhere:strWhere,
+				                tag:'0'
+				            }),                   
+				            msgHeader:JSON.stringify({
+				                ServerName:'GetInPatientList',
+				                Format: 'json',
+				                CallOperator: '',
+				                Certificate:'123456'
+				            })
+						},
+						dataType:'json',
+						success:function(data){
+							if(data.Code==0){
+								var datas=data.Contents;
+								var html=template('selectPatient',{list:datas});
+								document.getElementById('historyData').innerHTML=html;
+								var singleBoxs=document.getElementsByClassName('singleBox');
+								for(var j=0;j<singleBoxs.length;j++){
+									if(singleBoxs[j].getAttribute('MRN')==MRN){
+										singleBoxs[j].classList.add('selected');
+									}
+								}
+								for(var i=0;i<datas.length;i++){
+									document.getElementsByClassName('singleBox')[i].addEventListener('tap',function(){
+										var thisMRN=this.getAttribute('MRN');
+										var thisName=this.getAttribute('PatientName');
+										var thisNumber=this.getAttribute('PatientNumber');
+										var thisBed=this.getAttribute('PatientBed');
+										
+										var detail=plus.webview.getWebviewById('detail_main.html');
+										mui.fire(detail,'newPatient',{
+											PatientName:thisName,
+											PatientNumber:thisNumber,
+											PatientBed:thisBed,
+											MRN:thisMRN
+										});
+										mui.fire(detail,'deleteClass');
+									})
+								}					
 							}
-						}
-						for(var i=0;i<datas.length;i++){
-							document.getElementsByClassName('singleBox')[i].addEventListener('tap',function(){
-								var thisMRN=this.getAttribute('MRN');
-								var thisName=this.getAttribute('PatientName');
-								var thisNumber=this.getAttribute('PatientNumber');
-								var thisBed=this.getAttribute('PatientBed');
 								
-								var detail=plus.webview.getWebviewById('detail_main.html');
-								mui.fire(detail,'newPatient',{
-									PatientName:thisName,
-									PatientNumber:thisNumber,
-									PatientBed:thisBed,
-									MRN:thisMRN
-								});
-							})
-						}					
-					}
-						
-				}
-			})
+						}
+					})
 				}		
 				
 				});

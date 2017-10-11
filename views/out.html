@@ -5,10 +5,11 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet/less" href="../less/public.less" />
-		<link rel="stylesheet/less" href="../less/out.less" />
-		<script src="../lib/less/less.min.js"></script>
+		<link rel="stylesheet" href="../css/public.css" />
+		<link rel="stylesheet" href="../css/out.css" />
 	</head>
 	
 	<body>
@@ -16,12 +17,9 @@
 		<div class="obervationBox">
 			<!--患者选择-->
 			<div class="selectArea"id='selectArea'>
-				<h2>请选择<span id='itemName'></span></h2>
-				<div class="liCon">
-					<ul id='itemCon'class="itemCon">
-						<li><span class="itemConName">左上</span></li>
-						<li><span class="itemConName">右下</span></li>
-					</ul>
+				<h2><input type="text" id='selectInput'/></h2>
+				<div class="selectContainer"id='selectContainer'>
+					
 				</div>
 			</div>
 
@@ -47,6 +45,7 @@
 		    				<input type="number"  class="amountInput"placeholder="请输入"/>
 		    				<span class="unit">ml</span>
 		    			</li>
+		    			<div class="line"></div>
 						<li class="selectItem"><span class="amountName"name='粪便'>粪便</span>
 		    				<span class="selectRight"><span>请选择</span><i></i></span>	    				
 		    			</li>
@@ -54,6 +53,7 @@
 		    				<input type="number"  class="amountInput"placeholder="请输入"/>
 		    				<span class="unit">ml</span>
 		    			</li>
+		    			<div class="line"></div>
 						<li class="selectItem"><span class="amountName"name='胃肠引流量'>胃肠引流量</span>
 		    				<span class="selectRight"><span>请选择</span><i></i></span>	    				
 		    			</li>
@@ -61,6 +61,7 @@
 		    				<input type="number"  class="amountInput"placeholder="请输入"/>
 		    				<span class="unit">ml</span>
 		    			</li>
+		    			<div class="line"></div>
 						<li class="selectItem"><span class="amountName"name='其他'>其他</span>
 		    				<span class="selectRight"><span>请选择</span><i></i></span>	    				
 		    			</li>
@@ -90,35 +91,42 @@
 			{{/each}}
 		</script>
 		<script type='text/template'id='selectItemTpl'>
-			{{each list as value i}}
-		    	<li><span class="itemConName">{{value}}</span></li>
-		    {{/each}}
+				
+		    <div class="liCon"id='liCon'>
+				<ul id='itemCon'class="itemCon">
+					{{each list as value i}}
+		    			<li><span class="itemConName">{{value}}</span></li>
+		    		{{/each}}
+				</ul>
+			</div>
+			<button id='sureBtn'>确定</button>
 		</script>
 		<script type="text/javascript"src="../js/config.js"></script>
 		<script src="../js/tool.js"></script>
 		<script src="../js/public.js"></script>
 		<!--下拉选项-->
 		<script>
+			var listContainer=document.getElementsByClassName('listcontainer')[0];
 			var selectDom=document.getElementsByClassName('selectItem');
 			var selectRights=document.getElementsByClassName('selectRight');
 			var selectArea=document.getElementById('selectArea');
-			var itemName=document.getElementById('itemName');
 			var units=document.getElementsByClassName('unit');
+			var selectInput=document.getElementById('selectInput');
 			var mask = mui.createMask(function(){
 				selectArea.style.display='none';
 				selectArea.classList.remove('hasShow');
 			});
+			
 			function selectInfo(ele,num,funName){
 				if(ele.classList.contains('hasShow')){
 						ele.classList.remove('hasShow');
 						selectArea.style.display='none';
-//						itemName.innerHTML=ele.firstElementChild.innerHTML;
 						mask.close();
 						return;
 					}else {
 						ele.classList.add('hasShow');
 						selectArea.style.display='block';
-//						itemName.innerHTML=ele.firstElementChild.innerHTML;
+						selectInput.value='';
 						mask.show();
 					}
 					var obj=[{Color:"0"},{Unit:"1"}];
@@ -136,31 +144,53 @@
 						},
 						dataType:'json',
 						success:function(data){
-							console.log(data);
 							if(data.Code==0){
 								var items=data.Contents;
 								var html=template('selectItemTpl',{list:items});
-								document.getElementById('itemCon').innerHTML=html;
+								document.getElementById('selectContainer').innerHTML=html;
 							}else {
 								data.Contents=[];
 								data.Contents[0]='';
 								var items=data.Contents;
 								var html=template('selectItemTpl',{list:items});
-								document.getElementById('itemCon').innerHTML=html;
+								document.getElementById('selectContainer').innerHTML=html;
 							}
 							var lis=document.getElementsByClassName('itemCon')[0].getElementsByTagName('li');
 							for(var i=0;i<lis.length;i++){
 								lis[i].addEventListener('tap',function(){
-									if(num==0){
-										ele.lastElementChild.innerHTML=this.innerHTML;
-									}else {
-										ele.innerHTML=this.firstElementChild.innerHTML;
-									}				
-									selectArea.style.display='none';
-									mask.close();
+									selectInput.value=this.lastElementChild.innerHTML;	
+									listContainer.classList.add('hasChange');
+									if(window.plus){
+										plusReady();
+									}else{
+										document.addEventListener("plusready",plusReady,false);
+									}
+									function plusReady(){
+										var detailMain=plus.webview.getWebviewById('detail_main.html');
+										mui.fire(detailMain,'getParams',{
+										hasChange:listContainer.classList.contains('hasChange')
+										})
+									}			
+									
 								})
 								
 							}
+							var sureBtn=document.getElementById('sureBtn');
+							sureBtn.addEventListener('tap',function(){
+								if(selectInput.value.length==0){
+									mui.toast('请选择或者输入内容');
+									return;
+									
+								}else {
+									if(num==0){
+										ele.lastElementChild.innerHTML=selectInput.value;
+									}else {
+										ele.innerHTML=selectInput.value;
+									}
+									selectArea.style.display='none';
+									mask.close();
+								}
+							})
 						}
 				})
 					
@@ -180,6 +210,7 @@
 		<!--时间控件-->
 		<script>
 			var timeArr=[];
+			var listContainer=document.getElementsByClassName('listcontainer')[0];
 			function plusReady(){
 				//			处理床位列表传值
 				var w=plus.webview.currentWebview();
@@ -192,10 +223,10 @@
 				var one=document.getElementsByClassName('one')[0];
 				var two=document.getElementsByClassName('two')[0];
 				//			获取基本操作dom
-				var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');		
+				var inputs=listContainer.getElementsByTagName('input');		
 				var currentDate=document.getElementById('currentDate');
 				currentDate.innerHTML=new Date().Format("yyyy-MM-dd");
-				document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+				listContainer.classList.remove('hasSave');
 				var selectRights=document.getElementsByClassName('selectRight');
 				var units=document.getElementsByClassName('unit');
 				var amountInputs=document.getElementsByClassName('amountInput');
@@ -272,10 +303,9 @@
 									setTimeout(function(){
 										plus.nativeUI.closeWaiting();
 										if(data.Code==0){
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										listContainer.classList.add('hasSave');
 										for(var i=0;i<data.Contents.length;i++){
 											var outData=data.Contents;
-											console.log(selectRights[i]);
 											selectRights[i].firstElementChild.innerHTML=outData[i].OutPut_instruction;
 											selectRights[i].lastElementChild.style.display='none';
 											amountInputs[i].value=outData[i].OutputNumber;
@@ -283,8 +313,7 @@
 										}
 									}else {
 										plus.nativeUI.closeWaiting();
-											document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
-											var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+											listContainer.classList.remove('hasSave');
 											for(var i=0;i<amountInputs.length;i++){
 												amountInputs[i].value='';
 											}
@@ -337,7 +366,7 @@
 									one.innerHTML=timeArr[tapIndex-1];
 									one.setAttribute('index',tapIndex-1);
 								}									
-							document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+							listContainer.classList.remove('OtherData');
 							mui.ajax({
 								url:url,
 								type:'post',
@@ -359,7 +388,7 @@
 								success:function(data){
 									if(data.Code==0){
 										plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										listContainer.classList.add('hasSave');
 										for(var i=0;i<data.Contents.length;i++){
 											var outData=data.Contents;
 											selectRights[i].innerHTML=outData[i].OutPut_instruction;
@@ -369,7 +398,7 @@
 										}								
 									}else {
 										plus.nativeUI.closeWaiting();
-											document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+											listContainer.classList.remove('hasSave');
 											for(var i=0;i<amountInputs.length;i++){
 												amountInputs[i].value='';
 											}
@@ -429,7 +458,7 @@
 								success:function(data){
 									if(data.Code==0){
 										plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										listContainer.classList.add('hasSave');
 										for(var i=0;i<data.Contents.length;i++){
 											var outData=data.Contents;
 											selectRights[i].innerHTML=outData[i].OutPut_instruction;
@@ -439,7 +468,7 @@
 										}
 									}else {
 										plus.nativeUI.closeWaiting();
-											document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+											listContainer.classList.remove('hasSave');
 											for(var i=0;i<amountInputs.length;i++){
 												amountInputs[i].value='';
 											}
@@ -459,7 +488,14 @@
 								});
 											
 	//					保存并上传数据
-						document.getElementById('saveBtn').addEventListener('tap',function(e){
+						document.getElementById('saveBtn').addEventListener('tap',saveOut);
+						var detailMain=plus.webview.getWebviewById('detail_main.html');
+						
+						function saveOut(){
+							if(!listContainer.classList.contains('hasChange')){
+								mui.toast('请填写数据');
+								return;
+							}
 						var saveObj={
 								PatientMRN:MRN,
 								PatientNumber: patientNumber,
@@ -468,16 +504,27 @@
 								OperateTime:currentDate.innerHTML+" "+two.innerHTML+":00",
 								OutList:[]							
 							};
+							console.log(saveObj.PatientMRN);
+							console.log(saveObj.PatientNumber);
+							console.log(saveObj.PatientName);
+							console.log(saveObj.ColumnId);
+							console.log(saveObj.OperateTime);
+							
 							for(var i=0;i<4;i++){
+								OutPutInstruction=selectRights[i].innerHTML=='请选择<i></i>'?'':selectRights[i].innerHTML;
 								saveObj.OutList.push({
 									OperateTime:new Date().Format("yyyy-MM-dd hh:mm:ss"),
 									OutputName:amountNames[i].getAttribute('name'),
 									OutputNumber:amountInputs[i].value,
 									OutputUnit:units[i].innerHTML,
-									Output_instruction:selectRights[i].firstElementChild.innerHTML
+									Output_instruction:OutPutInstruction
 								})
 							}
-							console.log(saveObj.OutList[0].OutputUnit);
+							console.log(saveObj.OutList[1].OperateTime);
+							console.log(saveObj.OutList[1].OutputName);
+							console.log(saveObj.OutList[1].OutputNumber);
+							console.log(saveObj.OutList[1].OutputUnit);
+							console.log(saveObj.OutList[1].Output_instruction);
 							mui.ajax({
 								url:url,
 								type:'post',
@@ -494,13 +541,16 @@
 								},
 								dataType:'json',
 								success:function(data){
-									console.log(data);
 									if(data.Code==0){
 										setTimeout(function(){
 											mui.toast('数据保存成功');
 											plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
-										document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+											listContainer.classList.add('hasSave');
+											listContainer.classList.remove('OtherData');
+											listContainer.classList.remove('hasChange');
+											mui.fire(detailMain,'getParams',{
+												hasChange:listContainer.classList.contains('hasChange')
+											})
 										},1500);
 										
 									}else {
@@ -513,15 +563,43 @@
 									mui.toast('服务器异常，请稍后再试');
 								}
 							})
-						});
-	
+						}
+						for(var i=0;i<inputs.length;i++){
+						inputs[i].addEventListener('change',function(){
+							listContainer.classList.add('hasChange');
+							mui.fire(detailMain,'getParams',{
+								hasChange:listContainer.classList.contains('hasChange')
+							})
+						})
+					
+						}
+						//					未保存的提示
+					window.addEventListener('hasChange',function(){
+						mui.confirm('当前存在未保存的数据，是否保存？',function(e){
+							if(e.index==1){
+								saveOut();
+								mui.fire(detailMain,'selectTrue',{
+									isSave:true
+								})
+							}else {
+								listContainer.classList.remove('hasChange');
+								mui.fire(detailMain,'getParams',{
+									hasChange:listContainer.classList.contains('hasChange')
+								})
+								mui.fire(detailMain,'selectTrue',{
+									isSave:false
+								})
+							}
+						})
+					})
+
 					}
 					,error:function(){
 						mui.toast('服务器异常，请稍后再试');
 						plus.nativeUI.closeWaiting();
 					}
 				})
-
+				
 			}
 				if(window.plus){
 					plusReady();

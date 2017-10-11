@@ -1,0 +1,54 @@
+  <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>床位概览</title>
+    <style>
+    	html,body {
+    		width: 100%;
+    		height: 100%;
+    		padding: 0;
+    		margin: 0;
+    		
+    	}
+    	img {
+    			width: 100%;
+    			height: 100%;
+    		}
+    </style>
+</head>
+<body>
+	<img src="imgs/login/welcome.png" alt="" />
+	<script src="js/mui.min.js"></script>
+<script>
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
+		
+			function plusReady(){
+					if(!localStorage.getItem('loginInfo')){
+						
+						mui.openWindow({
+							url:'views/login.html',
+							id:'login.html',
+							show:{
+								aniShow:'none'
+							}
+						})
+				}else {
+						mui.openWindow({
+							url:'views/bedList.html',
+							id:'login.html',
+							show:{
+								aniShow:'none'
+							}
+					})
+					
+					}
+			}
+	</script>
+</body>
+</html>

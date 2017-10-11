@@ -16,7 +16,7 @@ function getPreDay(str){
         var d = new Date(str);
         d = d - 1000*60*60*24;
         d = new Date(d);
-        var m=d.getMonth()+1<10?'0'+parseInt(d.getMonth()+1):d.getMonth();
+        var m=d.getMonth()+1<10?'0'+parseInt(d.getMonth()+1):d.getMonth()+1;
         var day=d.getDate()<10?'0'+d.getDate():d.getDate();
         return d.getFullYear()+"-"+m+"-"+day;      
    }
@@ -24,7 +24,7 @@ function getNextDay(){
         var d = new Date();
         d = +d + 1000*60*60*24;
         d = new Date(d);
-        var m=d.getMonth()+1<10?'0'+parseInt(d.getMonth()+1):d.getMonth();
+        var m=d.getMonth()+1<10?'0'+parseInt(d.getMonth()+1):d.getMonth()+1;
         var day=d.getDate()<10?'0'+d.getDate():d.getDate();
         return d.getFullYear()+"-"+m+"-"+day;      
    }

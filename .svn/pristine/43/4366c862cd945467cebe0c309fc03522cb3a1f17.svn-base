@@ -1,0 +1,324 @@
+@charset "utf-8";
+
+@import "var";
+
+@import "mixin";
+
+@import "normalize";
+
+@import "adpater";
+
+/*样式处理*/
+body,form,input, button,fieldset,p {  
+  margin:0;  
+  padding:0;  
+  border:none;
+}  
+body{
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;
+  display: none;
+}
+*,::before,::after,input[type="search"]{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ul{
+  list-style: none;
+}
+.clearfix::after,
+.clearfix::before{
+  content: "";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  line-height: 0;
+  clear: both;
+}
+/*主体容器*/
+.mui-bar {
+    -webkit-box-shadow:none;
+    box-shadow:none;
+}
+.mui-bar-nav {
+    -webkit-box-shadow:none;
+    box-shadow:none;
+}
+.bedBox {
+    //  头部
+    header {
+        width:100%;
+        height: 100/100rem;
+        background: @MainColor;
+        position:fixed;
+    h1 {
+    width:100%;
+    text-align: center;
+    font-size: 36/100rem;
+    color:#fff;
+    font-weight: bold;
+    line-height: 100/100rem;
+    }
+    .leftUser {
+        positon:absolute;
+        top:0;
+        left: 20/100rem;
+        width:140/100rem;
+        height: 100/100rem;
+        a { 
+            height: 100%;
+            width: 100%;
+            display: inline-block;
+            cursor: pointer;
+            .leftIcon {
+            width:30/100rem;
+            height: 30/100rem;
+            position:absolute;
+            left: 20/100rem;
+            top:35/100rem;
+            background:url(../imgs/bed/user_gray.png)no-repeat center / 29/100rem 29/100rem;
+            cursor: pointer;
+            }
+            .text {
+                font-size: 28/100rem;
+                color:#fff;
+                line-height: 100/100rem;
+                margin-left: 30/100rem;
+                cursor: pointer;
+            }
+        }
+        #outLogin {
+            width: 100%;
+            height: 100%;
+            line-height: 100/100rem;
+            background: #6acccc;
+            display: none;
+            cursor: pointer;
+            margin-left: -20/100rem;
+            text-align: center;
+            p {
+                color:#fff;
+            }
+            
+        }
+        
+        
+    }
+    .mui-table-view-cell.mui-active{
+    background-color: @MainColor;
+}
+    .rightOnline {
+        width:140/100rem;
+        position:absolute;
+        right:20/100rem;
+        top:0;
+        z-index: 99;
+            a {
+                width:100%;
+            font-size:28/100rem;
+            height: 100/100rem;
+            line-height: 100/100rem;
+            text-align: center;
+            color:#fff;
+            background:@MainColor;
+            position:absolute;
+            .downIcon {
+                width: 30/100rem;
+                height: 30/100rem;
+                position: absolute;
+                background: url(../imgs/bed/down.png)no-repeat center / 30/100rem 30/100rem;
+                top:35/100rem;
+                right: 0rem;
+            }
+            }
+            #downContent {
+                width:100%;
+                height: 100/100rem;
+                position: absolute;
+                top:100/100rem;
+                right: 0;
+                text-align: center;
+                font-size: 28/100rem;
+                line-height: 100/100rem;
+                background:#6acccc;
+                margin-right: -20/100rem;
+                #all,#outLine {
+                    width: 100%;
+                    height: 100%;
+                    line-height: 100/100rem;
+                    background: #6acccc;
+                    cursor: pointer;   
+                    text-align: center;
+                    color: #fff;
+            
+                } 
+            }
+        
+    }
+    }
+    
+    //  搜索框部分  
+    .search{
+        width:100%;
+        height: 75/100rem;
+        background: @MainColor;
+        position: fixed;
+        top:100/100rem;
+        
+        .search_box {
+            width: 100%;
+            height: 60/100rem;
+            margin: 0 auto;
+            background: #fff;
+            position: relative;
+            background: @MainColor;
+//          margin-top: -1px;
+            form {
+                width: 100%;
+                padding-left: 20/100rem;
+                padding-right: 75/100rem;
+                outline: none;
+                .mui-input-row {
+                    height: 58/100rem;
+                }
+                input {
+                    width: 100%;
+                    height: 58/100rem;
+                    border-radius: 30/100rem;
+                    padding-left: 20/100rem;
+                    background: #fff;
+                    text-align: left;
+                    outline: none;
+                    border:none;
+                }
+            }
+            .search_btn {
+                    width:42/100rem;
+                    height: 42/100rem;
+                    position:absolute;
+                    background: url(../imgs/bed/searchBox.png)no-repeat center / 42/100rem 42/100rem;
+                    top:9/100rem;
+                    right: 20/100rem;
+                }
+        }
+    }
+    //  床位展示部分
+    .beds {
+        width:100%;
+        padding-top: 20/100rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: 150/100rem;
+        margin-top: 175/100rem;
+        .bedBox {
+            width:50%;
+            height: 120/100rem;
+            margin-bottom: 10/100rem;
+            &:nth-child(2n+1){
+                padding-left: 20/100rem;
+                padding-right: 5/100rem;
+            }
+            &:nth-child(2n) {
+                padding-left: 5/100rem;
+                padding-right: 20/100rem;
+            }
+            .bed {
+                background: #fff;
+                height: 100%;
+                border-radius: 8px;
+                .bedNum {
+                    font-size: 36/100rem;
+                    color:#333;
+                    font-weight: bold;
+                    padding-top: 18/100rem;
+                    padding-left: 15/100rem;
+                    margin-bottom: 10/100rem;
+                    .name {
+                    font-size: 28/100rem;
+                    color:#333;
+                    line-height: 30/100rem;
+                    margin-left: 15/100rem;
+                    font-weight: 400;
+                }
+                .name.empty {
+                    color:#ccc;
+                }
+                }
+                .bedNum.medium {
+                    color:#2084ff;
+                }
+                .bedNum.danger {
+                    color:#49bcbc;
+                }
+                .bedNum.serious {
+                    color:#ffa10e;
+                }
+                .bedNum.special {
+                    color:#f04a4a;
+                }
+                .formale {
+                    width:30/100rem;
+                    height: 30/100rem;
+                    display: inline-block;
+                    background: url(../imgs/bed/formale.png)no-repeat center / 29/100rem 29/100rem;
+                    margin-left: 15/100rem;
+                    
+                }
+                .male {
+                    width:30/100rem;
+                    height: 30/100rem;
+                    display: inline-block;
+                    background: url(../imgs/bed/male.png)no-repeat center / 29/100rem 29/100rem;
+                    margin-left: 15/100rem;
+                    
+                }
+                
+                .inTime {
+                    font-size: 28/100rem;
+                    color:#333;
+                    line-height: 30/100rem;
+                    margin-left: 65/100rem;
+                }
+            }
+        }
+    }
+    
+//  底部导航部分
+    .footer {
+        height: 88/100rem;
+        a{
+            span.mui-icon {
+                width:46/100rem;
+                height: 46/100rem;
+            }
+            span.bedview {
+                background: url(../imgs/bed/bed_gray.png)no-repeat center / 46/100rem 46/100rem;
+            }
+            span.two {
+                background: url(../imgs/bed/search_gray.png)no-repeat center / 46/100rem 46/100rem;
+            }
+            span.three {
+                background: url(../imgs/bed/knowledge_gray.png)no-repeat center / 46/100rem 46/100rem;
+            }
+            span.mui-tab-label {
+                font-size: 24/100rem;
+                color:#999;
+            }
+        }
+        .active span.mui-tab-label {
+          font-size: 24/100rem;
+          color:@MainColor;
+        }
+        .active .bedview {
+          background: url(../imgs/bed/bed.png)no-repeat center / 46/100rem 46/100rem;
+        }
+        .active .two {
+          background: url(../imgs/bed/search.png)no-repeat center / 46/100rem 46/100rem;
+        }
+        .active .three {
+          background: url(../imgs/bed/knowledge.png)no-repeat center / 46/100rem 46/100rem;
+        }
+    }
+}

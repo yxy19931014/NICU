@@ -1,0 +1,559 @@
+@charset "utf-8";
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+/*适配模块*/
+@media (min-width: 320px) {
+  html {
+    font-size: 42.66666667px;
+  }
+}
+@media (min-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media (min-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media (min-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media (min-width: 412px) {
+  html {
+    font-size: 54.93333333px;
+  }
+}
+@media (min-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media (min-width: 424px) {
+  html {
+    font-size: 56.53333333px;
+  }
+}
+@media (min-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media (min-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media (min-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media (min-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+/*主体容器*/
+.selectArea .liCon {
+  border-radius: 0 0 10px 10px;
+}
+.OperateBox {
+  background: #efefef;
+}
+.OperateBox .listcontainer {
+  padding-bottom: 0.88rem;
+}
+.OperateBox .listcontainer .mouth,
+.OperateBox .listcontainer .skin,
+.OperateBox .listcontainer .cannula,
+.OperateBox .listcontainer .light,
+.OperateBox .listcontainer .sputum,
+.OperateBox .listcontainer .other {
+  width: 100%;
+}
+.OperateBox .listcontainer .mouth .mouthTitle,
+.OperateBox .listcontainer .skin .mouthTitle,
+.OperateBox .listcontainer .cannula .mouthTitle,
+.OperateBox .listcontainer .light .mouthTitle,
+.OperateBox .listcontainer .sputum .mouthTitle,
+.OperateBox .listcontainer .other .mouthTitle,
+.OperateBox .listcontainer .mouth .skinTitle,
+.OperateBox .listcontainer .skin .skinTitle,
+.OperateBox .listcontainer .cannula .skinTitle,
+.OperateBox .listcontainer .light .skinTitle,
+.OperateBox .listcontainer .sputum .skinTitle,
+.OperateBox .listcontainer .other .skinTitle,
+.OperateBox .listcontainer .mouth .cannulaTitle,
+.OperateBox .listcontainer .skin .cannulaTitle,
+.OperateBox .listcontainer .cannula .cannulaTitle,
+.OperateBox .listcontainer .light .cannulaTitle,
+.OperateBox .listcontainer .sputum .cannulaTitle,
+.OperateBox .listcontainer .other .cannulaTitle,
+.OperateBox .listcontainer .mouth .lightTitle,
+.OperateBox .listcontainer .skin .lightTitle,
+.OperateBox .listcontainer .cannula .lightTitle,
+.OperateBox .listcontainer .light .lightTitle,
+.OperateBox .listcontainer .sputum .lightTitle,
+.OperateBox .listcontainer .other .lightTitle,
+.OperateBox .listcontainer .mouth .sputumTitle,
+.OperateBox .listcontainer .skin .sputumTitle,
+.OperateBox .listcontainer .cannula .sputumTitle,
+.OperateBox .listcontainer .light .sputumTitle,
+.OperateBox .listcontainer .sputum .sputumTitle,
+.OperateBox .listcontainer .other .sputumTitle,
+.OperateBox .listcontainer .mouth .otherTitle,
+.OperateBox .listcontainer .skin .otherTitle,
+.OperateBox .listcontainer .cannula .otherTitle,
+.OperateBox .listcontainer .light .otherTitle,
+.OperateBox .listcontainer .sputum .otherTitle,
+.OperateBox .listcontainer .other .otherTitle {
+  width: 100%;
+  height: 0.68rem;
+  line-height: 0.68rem;
+  background: #efefef;
+  font-size: 0.28rem;
+  font-weight: 400;
+  padding-left: 0.2rem;
+  border-bottom: 1px solid #bebebe;
+}
+.OperateBox .listcontainer .mouth .skinTitle,
+.OperateBox .listcontainer .skin .skinTitle,
+.OperateBox .listcontainer .cannula .skinTitle,
+.OperateBox .listcontainer .light .skinTitle,
+.OperateBox .listcontainer .sputum .skinTitle,
+.OperateBox .listcontainer .other .skinTitle,
+.OperateBox .listcontainer .mouth .cannulaTitle,
+.OperateBox .listcontainer .skin .cannulaTitle,
+.OperateBox .listcontainer .cannula .cannulaTitle,
+.OperateBox .listcontainer .light .cannulaTitle,
+.OperateBox .listcontainer .sputum .cannulaTitle,
+.OperateBox .listcontainer .other .cannulaTitle,
+.OperateBox .listcontainer .mouth .lightTitle,
+.OperateBox .listcontainer .skin .lightTitle,
+.OperateBox .listcontainer .cannula .lightTitle,
+.OperateBox .listcontainer .light .lightTitle,
+.OperateBox .listcontainer .sputum .lightTitle,
+.OperateBox .listcontainer .other .lightTitle,
+.OperateBox .listcontainer .mouth .sputumTitle,
+.OperateBox .listcontainer .skin .sputumTitle,
+.OperateBox .listcontainer .cannula .sputumTitle,
+.OperateBox .listcontainer .light .sputumTitle,
+.OperateBox .listcontainer .sputum .sputumTitle,
+.OperateBox .listcontainer .other .sputumTitle,
+.OperateBox .listcontainer .mouth .otherTitle,
+.OperateBox .listcontainer .skin .otherTitle,
+.OperateBox .listcontainer .cannula .otherTitle,
+.OperateBox .listcontainer .light .otherTitle,
+.OperateBox .listcontainer .sputum .otherTitle,
+.OperateBox .listcontainer .other .otherTitle {
+  border-top: 1px solid #bebebe;
+}
+.OperateBox .listcontainer .mouth ul,
+.OperateBox .listcontainer .skin ul,
+.OperateBox .listcontainer .cannula ul,
+.OperateBox .listcontainer .light ul,
+.OperateBox .listcontainer .sputum ul,
+.OperateBox .listcontainer .other ul {
+  width: 100%;
+  padding: 0 0.2rem 0 0.2rem;
+  background: #fff;
+}
+.OperateBox .listcontainer .mouth ul li,
+.OperateBox .listcontainer .skin ul li,
+.OperateBox .listcontainer .cannula ul li,
+.OperateBox .listcontainer .light ul li,
+.OperateBox .listcontainer .sputum ul li,
+.OperateBox .listcontainer .other ul li {
+  width: 100%;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  background: #fff;
+  border-bottom: 1px solid #bebebe;
+  overflow: hidden;
+}
+.OperateBox .listcontainer .mouth ul li:last-child,
+.OperateBox .listcontainer .skin ul li:last-child,
+.OperateBox .listcontainer .cannula ul li:last-child,
+.OperateBox .listcontainer .light ul:last-child li,
+.OperateBox .listcontainer .sputum ul:last-child li,
+.OperateBox .listcontainer .other ul li:last-child {
+  border: none;
+}
+.OperateBox .listcontainer .mouth ul li span,
+.OperateBox .listcontainer .skin ul li span,
+.OperateBox .listcontainer .cannula ul li span,
+.OperateBox .listcontainer .light ul li span,
+.OperateBox .listcontainer .sputum ul li span,
+.OperateBox .listcontainer .other ul li span {
+  width: 50%;
+  height: 0.88rem;
+  float: left;
+  font-size: 0.28rem;
+  color: #333;
+  line-height: 0.88rem;
+}
+.OperateBox .listcontainer .mouth ul li select,
+.OperateBox .listcontainer .skin ul li select,
+.OperateBox .listcontainer .cannula ul li select,
+.OperateBox .listcontainer .light ul li select,
+.OperateBox .listcontainer .sputum ul li select,
+.OperateBox .listcontainer .other ul li select,
+.OperateBox .listcontainer .mouth ul li .num,
+.OperateBox .listcontainer .skin ul li .num,
+.OperateBox .listcontainer .cannula ul li .num,
+.OperateBox .listcontainer .light ul li .num,
+.OperateBox .listcontainer .sputum ul li .num,
+.OperateBox .listcontainer .other ul li .num {
+  width: 50%;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  font-size: 0.28rem;
+  float: left;
+  border: 0;
+  text-align: right;
+  margin-bottom: 0;
+  padding: 0;
+  padding-left: 30%;
+  color: #999;
+}
+.OperateBox .listcontainer .mouth ul li .num,
+.OperateBox .listcontainer .skin ul li .num,
+.OperateBox .listcontainer .cannula ul li .num,
+.OperateBox .listcontainer .light ul li .num,
+.OperateBox .listcontainer .sputum ul li .num,
+.OperateBox .listcontainer .other ul li .num {
+  width: 45%;
+  margin-left: -0.2rem;
+  padding-right: 0.1rem;
+}
+.OperateBox .listcontainer .mouth ul li .selectTime,
+.OperateBox .listcontainer .skin ul li .selectTime,
+.OperateBox .listcontainer .cannula ul li .selectTime,
+.OperateBox .listcontainer .light ul li .selectTime,
+.OperateBox .listcontainer .sputum ul li .selectTime,
+.OperateBox .listcontainer .other ul li .selectTime {
+  width: 50%;
+  height: 0.86rem;
+  line-height: 0.86rem;
+  font-size: 0.28rem;
+  float: left;
+  border: 0;
+  margin-bottom: 0;
+  padding: 0;
+  text-align: right;
+  color: #999;
+}
+.OperateBox .listcontainer .mouth ul li .unit,
+.OperateBox .listcontainer .skin ul li .unit,
+.OperateBox .listcontainer .cannula ul li .unit,
+.OperateBox .listcontainer .light ul li .unit,
+.OperateBox .listcontainer .sputum ul li .unit,
+.OperateBox .listcontainer .other ul li .unit {
+  width: 5%;
+  height: 0.88rem;
+  float: none;
+  font-size: 0.28rem;
+  line-height: 0.88rem;
+  color: #999;
+  display: inline-block;
+}
+.OperateBox .listcontainer .mouth ul .selectItem span,
+.OperateBox .listcontainer .skin ul .selectItem span,
+.OperateBox .listcontainer .cannula ul .selectItem span,
+.OperateBox .listcontainer .light ul .selectItem span,
+.OperateBox .listcontainer .sputum ul .selectItem span,
+.OperateBox .listcontainer .other ul .selectItem span {
+  width: 50%;
+  display: inline-block;
+}
+.OperateBox .listcontainer .mouth ul .selectItem .selectRight,
+.OperateBox .listcontainer .skin ul .selectItem .selectRight,
+.OperateBox .listcontainer .cannula ul .selectItem .selectRight,
+.OperateBox .listcontainer .light ul .selectItem .selectRight,
+.OperateBox .listcontainer .sputum ul .selectItem .selectRight,
+.OperateBox .listcontainer .other ul .selectItem .selectRight {
+  text-align: right;
+  color: #999;
+}
+.OperateBox .listcontainer .mouth .times,
+.OperateBox .listcontainer .skin .times,
+.OperateBox .listcontainer .cannula .times,
+.OperateBox .listcontainer .light .times,
+.OperateBox .listcontainer .sputum .times,
+.OperateBox .listcontainer .other .times {
+  padding-right: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  background: #fff;
+  border-bottom: 1px solid #bebebe;
+}
+.OperateBox .listcontainer .mouth .times .singleTime,
+.OperateBox .listcontainer .skin .times .singleTime,
+.OperateBox .listcontainer .cannula .times .singleTime,
+.OperateBox .listcontainer .light .times .singleTime,
+.OperateBox .listcontainer .sputum .times .singleTime,
+.OperateBox .listcontainer .other .times .singleTime {
+  width: 25%;
+  display: inline-block;
+  margin: 0;
+  height: 0.88rem;
+  line-height: 0.88rem;
+  border: 0;
+  color: #999;
+}
+.OperateBox .listcontainer .mouth .times .clearBtn,
+.OperateBox .listcontainer .skin .times .clearBtn,
+.OperateBox .listcontainer .cannula .times .clearBtn,
+.OperateBox .listcontainer .light .times .clearBtn,
+.OperateBox .listcontainer .sputum .times .clearBtn,
+.OperateBox .listcontainer .other .times .clearBtn {
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-top: 0.23rem;
+  background: url(../imgs/observation/delete.png) no-repeat center / 0.42rem 0.42rem;
+  position: absolute;
+  right: 0.05rem;
+  top: 0.06rem;
+}
+.OperateBox .listcontainer .other {
+  border-bottom: 1px solid #bebebe;
+}
+.OperateBox .listcontainer.hasSave .mouth ul li .num,
+.OperateBox .listcontainer.hasSave .skin ul li .num,
+.OperateBox .listcontainer.hasSave .cannula ul li .num,
+.OperateBox .listcontainer.hasSave .light ul li .num,
+.OperateBox .listcontainer.hasSave .sputum ul li .num,
+.OperateBox .listcontainer.hasSave .other ul li .num {
+  color: #333;
+}
+.OperateBox .listcontainer.hasSave .mouth ul li .selectItem .selectRight,
+.OperateBox .listcontainer.hasSave .skin ul li .selectItem .selectRight,
+.OperateBox .listcontainer.hasSave .cannula ul li .selectItem .selectRight,
+.OperateBox .listcontainer.hasSave .light ul li .selectItem .selectRight,
+.OperateBox .listcontainer.hasSave .sputum ul li .selectItem .selectRight,
+.OperateBox .listcontainer.hasSave .other ul li .selectItem .selectRight {
+  color: #333;
+}
+.OperateBox .listcontainer.hasSave .mouth ul li .times .singleTime,
+.OperateBox .listcontainer.hasSave .skin ul li .times .singleTime,
+.OperateBox .listcontainer.hasSave .cannula ul li .times .singleTime,
+.OperateBox .listcontainer.hasSave .light ul li .times .singleTime,
+.OperateBox .listcontainer.hasSave .sputum ul li .times .singleTime,
+.OperateBox .listcontainer.hasSave .other ul li .times .singleTime {
+  color: #333;
+}
+.OperateBox .listcontainer.hasSave .mouth ul li .selectTime,
+.OperateBox .listcontainer.hasSave .skin ul li .selectTime,
+.OperateBox .listcontainer.hasSave .cannula ul li .selectTime,
+.OperateBox .listcontainer.hasSave .light ul li .selectTime,
+.OperateBox .listcontainer.hasSave .sputum ul li .selectTime,
+.OperateBox .listcontainer.hasSave .other ul li .selectTime {
+  color: #333;
+}
+.OperateBox .listcontainer.hasSave .mouth ul li .unit,
+.OperateBox .listcontainer.hasSave .skin ul li .unit,
+.OperateBox .listcontainer.hasSave .cannula ul li .unit,
+.OperateBox .listcontainer.hasSave .light ul li .unit,
+.OperateBox .listcontainer.hasSave .sputum ul li .unit,
+.OperateBox .listcontainer.hasSave .other ul li .unit {
+  color: #333;
+}
+.saveBack {
+	width: 100%;
+	margin-top: 0.4rem;
+	position: fixed;
+  bottom: 0;
+	background: #efefef;
+}
+.save {
+	  width: 7.1rem;
+	  height: 0.7rem;
+	  background: #48bebb;
+	  margin-left: 0.2rem;
+	  color: #fff;
+	  font-size: 0.28rem;
+	  font-weight: bold;
+	  margin-bottom: 0.2rem;
+}
+

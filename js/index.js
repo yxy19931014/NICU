@@ -41,10 +41,12 @@
 					beforeSend:function(){
 						plus.nativeUI.showWaiting('加载中…');
 					},
+					tiemOut:20000,		
 					success:function(data){
 						if(data.Code==0){	
 							setTimeout(function(){
-								plus.nativeUI.closeWaiting();   
+								plus.nativeUI.closeWaiting(); 
+								
 							for(var i=0;i<data.Contents.length;i++){
 								if(data.Contents[i].PatientName==''){
 									data.Contents[i].PatientName='空床';
@@ -52,15 +54,27 @@
 							}
 							var html=template('bedListTpl',{list:data.Contents});
 							document.getElementById('bedListId').innerHTML=html;
-							var beds=document.getElementsByClassName('bed');
+							var names=document.getElementsByClassName('name');
+							for(var i=0;i<names.length;i++){
+								if(names[i].innerHTML=='空床'){
+									names[i].style.color='#ccc';
+									names[i].parentNode.style.color='#ccc';
+									names[i].style.fontSize='0.36rem';
+								}		
+							}
+							var beds=document.getElementsByClassName('bed');							
 							for(var i=0;i<beds.length;i++){
 								beds[i].addEventListener('tap',function(){
+									if(this.getElementsByClassName('name')[0].innerHTML=='空床'){
+										mui.toast('无法对空床进行相关操作');
+										return;
+									}
 									var thisMRN=this.getAttribute('MRN');
 									var thisName=this.getAttribute('PatientName');
 									var thisNumber=this.getAttribute('PatientNumber');
 									var thisBed=this.getAttribute('PatientBed');
 									mui.openWindow({
-										url:'views/detail_main.html',
+										url:'detail_main.html',
 										id:'detail_main.html',
 										extras:{
 											MRN:thisMRN,
@@ -75,17 +89,14 @@
 								})
 							}
 							
-								var names=document.getElementsByClassName('name');
-								for(var i=0;i<names.length;i++){
-									if(names[i].innerHTML=='空床'){
-										names[i].style.color='#ccc';
-										names[i].parentNode.style.color='#ccc';
-										names[i].style.fontSize='0.36rem';
-									}
-									
-								}
-							},2000);
+								
+							},1000);
 							
+							}else {
+								plus.nativeUI.closeWaiting(); 
+								mui.toast('没有查找该条记录');
+							
+
 							}
 					}
 				})
@@ -130,7 +141,8 @@
 							}
 						}
 						outArr.push(showHtml);
-						sendAjax(strWhereDom.value,'GetBedList',onLine.getAttribute('tag'));
+						sendAjax('','GetBedList',onLine.getAttribute('tag'));
+						strWhereDom.value='';
 					})
 			}
 
@@ -158,13 +170,16 @@
 		mui('.leftUser').on('tap','#outLogin',function(e){
 			e.stopPropagation();
 			window.localStorage.removeItem('loginInfo');
-			mui.openWindow({
-				url:'views/login.html',
-				id:'login.html',
-				show:{
-						aniShow:'none'
-					}
-			})
+			plus.webview.open('login.html','login.html',{
+					top:0
+				},{
+					aniShow:'none'
+				},{
+					duration:'1ms'
+				},function(){
+					var currentBedList=plus.webview.currentWebview();
+					plus.webview.close(currentBedList);
+			});	
 		});
 		document.addEventListener('tap',function(e){
 			e.stopPropagation();
@@ -180,19 +195,20 @@
 		for(var i=0;i<aObj.length;i++){
 			aObj[i].addEventListener('tap',(function(n){
 					return function(){
-						for(var j=0;j<aObj.length;j++){
-						aObj[j].classList.remove('active');
-						}
-						this.classList.add('active');	
+						if(n!=0){
+							mui.toast('功能开发中...');
+						}	
 					}
 				
 			})(i));
 		}
 //		设置文本框的显示和隐藏
 	var footer=document.getElementsByClassName('footer')[0];
-	strWhereDom.addEventListener('focus',function(){
-		footer.style.display='none';
-	})
-	strWhereDom.addEventListener('blur',function(){
-		footer.style.display='table';
-	})
+	window.onresize=function(){
+		var windowHeight=document.documentElement.clientHeight;
+		if(windowHeight>500){
+			footer.style.display='table';
+		}else if(windowHeight<500){
+			footer.style.display='none';
+		}
+	}

@@ -1,0 +1,643 @@
+@charset "utf-8";
+
+@import "var";
+
+@import "mixin";
+
+@import "normalize";
+
+@import "adpater";
+//第一次扫描出来的页面
+.firstScan,.rescan {
+    width: 100%;
+    height: 1100/100rem;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 1200;
+    background: #fff;
+    display: none;
+    .firstScanCon {
+        width: 100%;
+        height: 850/100rem;
+        overflow: auto;
+    }
+    h3 {
+        width: 100%;
+        height: 88/100rem;
+        margin: 0;
+        padding: 0;
+        padding-right: 20/100rem;
+        .close {
+            font-size: 70/100rem;
+            float: right;
+            width: 88/100rem;
+            height: 88/100rem;
+            line-height: 88/100rem;
+            font-weight: 400;
+            text-align: center;  
+        }
+    }
+    .medicationScan {
+        padding-left: 20/100rem;
+        li {
+            height: 70/100rem;
+            line-height: 70/100rem;
+            width: 100%;
+        }
+    }
+    .scanDetail {
+        padding: 0 20/100rem 0 20/100rem;
+        li {
+            width: 100%;
+            height: 88/100rem;
+            line-height: 88/100rem;
+            border-bottom: 1px solid #bdbdbd;
+            overflow: hidden;
+            .liquid {
+                float: left;
+            }
+            .liquidNum {
+                float: right;
+                #activeTime,#doTime {
+                    height: 88/100rem;
+                    border:none;
+                }
+                
+                input {
+                    border:none;
+                    text-align: right;
+                }
+                
+            }
+            .liquidUnit {
+                    float: right;
+                }
+            &:last-child {
+                border:none;
+            }
+        }
+    }
+    .scanOper {
+        position: absolute;
+        bottom:70/100rem;
+        #firstSure {
+            width: 710/100rem;
+            background: @MainColor;
+            height: 70/100rem;
+            margin-left: 20/100rem;
+            margin-bottom: 20/100rem;
+            color:#fff;
+            font-weight: 700;
+        }
+        #restart {
+            width: 710/100rem;
+            background: @MainColor;
+            height: 70/100rem;
+            margin-left: 20/100rem;
+            margin-bottom: 30/100rem;
+            color:#fff;
+            font-weight: 700;
+        }
+        #sure {
+            width: 710/100rem;
+            background: @MainColor;
+            height: 70/100rem;
+            margin-left: 20/100rem;
+            margin-bottom: 20/100rem;
+            color:#fff;
+            font-weight: 700;
+        }
+        #rescanBtn {
+            width: 710/100rem;
+            background: @MainColor;
+            height: 70/100rem;
+            margin-left: 20/100rem;
+            margin-bottom: 30/100rem;
+            color:#fff;
+            font-weight: 700;
+        }
+    }
+}
+.rescan {
+//  display: block;
+    .rescanCon {
+        width: 100%;
+        height: 850/100rem;
+        overflow: auto;
+    }
+    #ActiveTime {
+        height: 88/100rem;
+        border:none;
+    }
+    h4 {
+        width: 100%;
+        background: @MainColor;
+        height: 88/100rem;
+        padding-right: 20/100rem;
+        position: relative;
+        .operName {
+            color:#fff;
+            line-height: 88/100rem;
+            float: right;
+            position: relative;
+            padding-right: 40/100rem;
+            i {
+                width: 30/100rem;
+                height: 30/100rem;
+                background: url(../imgs/in/down.png)no-repeat center / 30/100rem 30/100rem;
+                position: absolute;
+                top:25 /100rem;
+                right: 7/100rem;
+            }
+        }
+        .operItem {
+            width: 200/100rem;
+            position: absolute;
+            top:88/100rem;
+            right:0;
+            display: none;
+           li {
+               height: 88/100rem;
+               color:#fff;
+               width: 100%;
+               border-bottom: 1px solid #fff;
+               line-height: 88/100rem;
+               background: @MainColor;
+               font-weight: 400;
+               text-align: center;
+           }
+            
+        }
+    }
+}
+.notHave {
+    width: 100%;
+    height: 1100/100rem;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 1200;
+    background: #fff;
+    display: none;
+    h3 {
+        width: 100%;
+        height: 88/100rem;
+        margin: 0;
+        padding: 0;
+        padding-right: 20/100rem;
+        .close {
+            font-size: 70/100rem;
+            float: right;
+            width: 88/100rem;
+            height: 88/100rem;
+            line-height: 88/100rem;
+            font-weight: 400;
+            text-align: center;  
+        }
+        
+    }
+    .notPic {
+            width: 100%;
+            height: 580/100rem;
+            background: url(../imgs/in/fail.png) no-repeat center / 750/100rem 580/100rem;
+        }
+        #failScan {
+            width: 710/100rem;
+            margin-left: 20/100rem;
+            color:@MainColor;
+            height: 70/100rem;
+            position: absolute;
+            bottom:100/100rem;
+            border:1px solid @MainColor;
+        }
+}
+.scanCon {
+    width: 100%;
+    height: 1040/100rem;
+    position: absolute;
+    top:0;
+    background: #000;
+    z-index: 9998;
+    display: none;
+    .SCAN {
+        width: 100%;
+        height: 900/100rem;
+    }
+    #cancel {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        color:#fff;
+        height: 70/100rem;
+        line-height: 70/100rem;
+        background: #011;
+        z-index: 9999;
+    }
+    
+}
+.listContainer {
+    width:100%;
+    overflow: auto;
+    #scanText {
+    width:400/100rem;
+    height: 500/100rem;
+    position: fixed;
+    left: 175/100rem;
+    top:200/100rem;
+    background: red;
+    z-index: 1300;
+    display: none;
+    opacity: 0;
+}
+    
+//  tab栏标题
+    .listTitle {
+        width: 50%;
+        height: 88/100rem;
+        font-size: 28/100rem;
+        float: left;
+        color:#ccc;
+        text-align: center;
+        padding-top: 26/100rem;
+        font-weight: bold;
+        box-sizing: border-box;
+        position: relative;
+        background: #fff;
+        i {
+            width: 38/100rem;
+            height: 38/100rem;
+            background: url(../imgs/in/milk.png) no-repeat center / 38/100rem 38/100rem;
+            position: absolute;
+            top:25/100rem;
+            left: 110/100rem;
+        }
+        .medicaIcon {
+            background: url(../imgs/in/medium.png) no-repeat center / 38/100rem 38/100rem;
+        }
+    }
+    .listTitle.select {
+        color:@MainColor;
+        border-bottom: 3px solid @MainColor;
+        i {
+            width: 38/100rem;
+            height: 38/100rem;
+            background: url(../imgs/in/milk_select.png) no-repeat center / 38/100rem 38/100rem;
+            position: absolute;
+            top:25/100rem;
+            left: 110/100rem;
+        }
+        .medicaIcon {
+            background: url(../imgs/in/medium_select.png) no-repeat center / 38/100rem 38/100rem;
+        }
+    }
+//  tab栏内容
+    .tabContainer {
+        width: 100%;
+        height: 700/100rem;
+        display: none;
+    }
+    .diet {
+        display: block;
+        margin-top: 88/100rem;
+        h2 {
+            width: 100%;
+            height: 88/100rem;
+            font-size: 28/100rem;
+            line-height: 88/100rem;
+            padding-left: 20/100rem;
+            color:#333;
+            font-weight: 400;
+            background: #efefef;
+            border-bottom: 1px solid #bdbdbd;
+            
+        }
+        .dietMethod {
+            width: 100%;
+            height: 88/100rem;
+            font-size: 28/100rem;
+            line-height: 88/100rem;
+            padding-left: 20/100rem;
+            background: #fff;
+            color:#333;
+            border-bottom: 1px solid #bdbdbd;
+            .dietNum {
+                margin-left: 20/100rem;
+            }
+        }
+        .dataTime {
+            margin-top: 0;
+            border-top: none;
+        }
+        .items {
+            width: 100%;
+            padding: 0 20/100rem 0 20/100rem;
+            border-top: 1px solid #bdbdbd;
+            border-bottom: 1px solid #bdbdbd;
+            background: #fff;
+            margin-top: 20/100rem;
+            ul {
+                li {
+                    width: 100%;
+                    height: 88/100rem;
+                    border-bottom: 1px solid #bdbdbd;
+                    line-height: 88/100rem;
+                    .selectTime {
+                        width: 20%;
+                        height: 100%;
+                        float: left;
+                        text-align: left;
+                        color:#333;
+                    }
+                    .itemName {
+                        width: 30%;
+                        height: 100%;
+                        float: left;
+                        color:#333;
+                    }
+                    input {
+                        width: 45%;
+                        height: 100%;
+                        float: left;
+                        margin: 0;
+                        padding: 0;
+                        border:0;
+                        text-align: right;
+                        color:#999;
+                    }
+                    input::-webkit-input-placeholder {
+                        color: #999;         
+                    }
+                    .unit {
+                        width:5%;
+                        height: 100%;
+                        float: left;
+                        color:#999;
+                    }
+                }
+                .lastLi {
+                    border:none;
+                }
+            }
+            ul.disabled{
+                li {
+                    .selectTime,.itemName,.itemNum,.unit{
+                        color:#999;
+                    }
+                }
+            }
+        }
+        .items.hasSave {
+            ul {
+                li {
+                   input {
+                        color:#333;
+                    }
+                    input::-webkit-input-placeholder {
+                        color: #333;         
+                    }
+                    .unit {
+                        color:#333;
+                    } 
+                }
+            }
+        }
+    }
+    .medication {
+        padding-bottom: 1000/100rem;
+        .dataTime {
+            margin-top: 108/100rem;
+            line-height: 88/100rem;
+            padding-left: 20/100rem;
+        }
+        h2 {
+            width: 100%;
+            height: 88/100rem;
+            font-size: 28/100rem;
+            line-height: 88/100rem;
+            padding-left: 20/100rem;
+            color:#333;
+            font-weight: 400;
+            background: #efefef;
+            border-bottom: 1px solid #bdbdbd;
+            position: relative;
+            input {
+                width: 20%;
+            }
+            s {
+                width:36/100rem;
+                height: 36/100rem;
+                background: url(../imgs/in/scan_black.png) no-repeat center / 36/100rem 36/100rem;
+                position: absolute;
+                top:26/100rem;
+                right: 20/100rem;
+                box-shadow: 0 0 10/100rem #fff;
+            }
+        }
+        .inDetails {
+            width: 100%;
+            font-size: 28/100rem;
+            line-height: 88/100rem;
+            background: #fff;
+            color:#333;
+            ul {
+                li {
+                    height: 88/100rem;
+                    padding: 0 20/100rem 0 20/100rem;
+                    overflow: hidden;
+                    background: #fff;
+                    border-bottom: 1px solid #bdbdbd;
+                    #OralName {
+                        font-size: 28/100rem;
+                        color:#333;
+                        line-height: 88/100rem;
+                        float: left;
+                    }
+                    .addTime {
+                        height: 86/100rem;
+                        float: right;
+                        color:#ccc;
+                        border:none;
+                        margin-bottom: 0;
+                        padding: 0;
+                    }
+                }
+            }
+            .times {
+                padding-right: 50/100rem;
+                display: flex;
+                flex-wrap: wrap;
+                position: relative;
+                background: #fff;
+                padding-left: 20/100rem;
+                border-bottom: 1px solid #bdbdbd;
+                .singleTime {
+                    width:25%;
+                    display: inline-block;
+                    margin: 0; 
+                    height: 88/100rem;
+                    line-height: 88/100rem; 
+                    border:0;  
+                    color:#999;              
+                }
+                .clearBtn {
+                    width: 42/100rem;
+                    height: 42/100rem;
+                    margin-top: 23/100rem;
+                    background: url(../imgs/observation/delete.png)no-repeat center /42/100rem 42/100rem;
+                    position: absolute;
+                    right: 5/100rem;
+                    top:6/100rem;
+                }
+            }
+        }
+        
+//      输液单展示
+        #InfusionList {
+            padding: 20/100rem;
+            background: #fff;
+            margin-bottom: 100/100rem;
+            min-height: 400/100rem;
+            .infusionGroup {
+                width: 100%;
+                border:1px solid #bdbdbd;
+                border-left: 3px solid @MainColor;
+                margin-bottom: 20/100rem;
+                ul {
+                    li {
+                        width: 100%;
+                        height: 70/100rem;
+                        line-height: 70/100rem;
+                        padding-left: 20/100rem;
+                    }
+                }
+                .groupOper {
+                    width: 100%;
+                    display: none;
+                    flex-wrap: wrap;
+                    button {
+                        width: 25%;
+                        height: 70/100rem;
+                        box-sizing: border-box;
+                        background: #efefef;
+                        border-radius: 0;
+                        border-right: 1px solid #bdbdbd;
+                        &:last-child {
+                            border: none;
+                        }
+                    }
+                    .operPart {
+                        width: 100%;
+                         padding: 0 20/100rem 0 20/100rem;
+                         display: none;
+                        ul {
+                            width: 100%;
+                           
+                            li {
+                               width: 100%;
+                               height: 70/100rem;
+                               border-bottom: 1px solid #bdbdbd;
+                               line-height: 70/100rem; 
+                               span,input {
+                                   width: 50%;
+                                   float: left;
+                                   height: 100%;
+                                   margin: 0;
+                                   border:none;
+                               }
+                               input {
+                                   text-align: right;
+                               }
+                               input[type=checkbox]{
+                                   width:40/100rem;
+                                   height: 40/100rem;
+                                   margin-top: 20/100rem;
+                                   margin-left: 180/100rem;
+                               }
+                               #speedId {
+                                   width: 40%;
+                               }
+                               #inNum {
+                                   width:43%;
+                               }
+                               #updateId {
+                                   float: right;
+                                   width: 25%;
+                               }
+                               
+                            }
+                        }
+                        .sureUpdate {
+                            width: 100%;
+                            background: #efefef;
+                            border:1px solid #bdbdbd;
+                            border-radius: 3px;
+                            text-align: center;
+                            height: 70/100rem;
+                            line-height: 70/100rem;
+                            margin-top: 20/100rem;
+                            margin-bottom: 20/100rem;
+                        }
+                    }
+                }
+                .continumBotton {
+                    width: 100%;
+                    display: none;
+                    button {
+                        width: 100%;
+                        background: #efefef;
+                        border-radius: 0;
+                        height: 70/100rem;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+            .infusionGroup#5 {
+                border-left: 3px solid #f04a4a;
+            }
+        }
+        
+    }
+    
+    .dietSave {
+        position: fixed;
+        bottom:0;
+        #saveBtn {
+        width: 710/100rem;
+        height: 70/100rem;
+        margin-left: 20/100rem;
+        background: @MainColor;
+        color:#fff;
+        margin-bottom: 20/100rem;
+        font-size: 28/100rem;
+        font-weight: bold;
+        
+        }
+    }
+    .medicationSave {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        display: none;
+        background: #efefef;
+        margin-top: 10/100rem;
+        margin-left: 20/100rem;
+        button {
+//          i{
+//              width:30/100rem;
+//              height: 30/100rem;
+//              background: url(../imgs/in/scan.png) no-repeat center / 30/100rem 30/100rem;
+//              position: absolute;
+//              top:18/100rem;
+//              left: 70/100rem;
+//          }
+            width: 710/100rem;
+            height: 70/100rem;
+            background: @MainColor;
+            color:#fff;
+            margin-bottom: 20/100rem;
+            font-size: 28/100rem;
+            font-weight: bold;
+        }
+    }
+}

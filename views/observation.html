@@ -6,9 +6,8 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet/less" href="../less/public.less" />
-		<link rel="stylesheet/less" href="../less/observation.less" />
-		<script src="../lib/less/less.min.js"></script>
+		<link rel="stylesheet" href="../css/public.css" />
+		<link rel="stylesheet" href="../css/observation.css" />
 	</head>
 	
 	<body>
@@ -16,12 +15,9 @@
 		<div class="obervationBox">
 			<!--患者选择-->
 			   <div class="selectArea"id='selectArea'>
-				<h2>请选择<span id='itemName'></span></h2>
-				<div class="liCon">
-					<ul id='itemCon'class="itemCon">
-						<li><span class="hook">√</span><span class="itemConName">左上</span></li>
-						<li><span class="hook">√</span><span class="itemConName">右下</span></li>
-					</ul>
+				<h2>请选择或者输入<span id='itemName'></span></h2>
+				<div class="liCon"id='liCon'>
+					
 				</div>
 				<h2 class="nextOper">
 					<button id='clear'>清除</button>
@@ -46,7 +42,13 @@
 	    		<div id="list">
 	    			<div class="temperature">		
 		    		<ul>
-		    			<li><label for="Temperature"><span>体温</span></label><input type="number" class="testName" name='Temperature'id='Temperature'placeholder="请输入"/><span class="unit">℃</span><i class="tip">请输入1-45之间的数值</i>
+		    			<li>
+		    				<label for="Temperature">
+		    					<span>体温</span>
+		    				</label>
+		    				<input type="number" class="testName" name='Temperature'id='Temperature'placeholder="请输入"/>
+		    				<span class="unit">℃</span>
+		    				<i class="tip">请输入1-45之间的数值</i>
 		    				
 		    			</li>
 		    			<li><label for="Incubator"><span>箱温</span></label><input type="number" class="testName" name='Incubator'id='Incubator'placeholder="请输入"/><span class="unit">℃</span><i class="tip">请输入1-100之间的数值</i></li>
@@ -90,24 +92,29 @@
 		    			</li>
 		    		</ul>
 	    		</div>
+	    		<h3>机械通气</h3>
+	    			<div class="Model">
+			    		<ul>
+			    			<li class="selectItem">
+			    				<span>模式</span>
+			    				<span class="selectRight"name='Model'>请选择</span>
+			    			</li>
+			    			<li><label for="FQCY"><span>频率</span></label><input type="number"name='FQCY'id='FQCY' placeholder="请输入"class="mui-input-clear"/></li>
+			    			<li class="selectItem">
+			    				<span>PIP/PEEP</span>
+			    				<span class="selectRight"name='PiP'>请选择</span>
+			    			</li>
+			    			<li class="selectItem lastLi">
+			    				<span>气管内分泌物</span>
+			    				<span class="selectRight"name='AirPipe'>请选择</span>
+			    			</li>
+			    		</ul>
+	    			</div>
 	    			<div class="weight last">
-		    		<ul>
-		    			<li class="selectItem">
-		    				<span>模式</span>
-		    				<span class="selectRight"name='Model'>请选择</span>
-		    			</li>
-		    			<li><label for="FQCY"><span>频率</span></label><input type="number"name='FQCY'id='FQCY' placeholder="请输入"/></li>
-		    			<li class="selectItem">
-		    				<span>PIP/PEEP</span>
-		    				<span class="selectRight"name='PiP'>请选择</span>
-		    			</li>
-		    			<li class="selectItem">
-		    				<span>气管内分泌物</span>
-		    				<span class="selectRight"name='AirPipe'>请选择</span>
-		    			</li>
-		    			<li class="lastLi"><label for="Weight"><span>体重</span></label><input type="number"name='Weight'id='Weight'placeholder="请输入" /></li>
-		    		</ul>
-	    		</div>
+	    				<ul>
+	    					<li class="lastLi"><label for="Weight"><span>体重</span></label><input type="number"name='Weight'id='Weight'placeholder="请输入" class="testName"/><span class="unit">kg</span></li>
+	    				</ul>
+	    			</div>
 	    		</div>
 	    		<div class="saveBack">
 	    			<button class="save"id='saveBtn'>保存并上传</button>
@@ -124,9 +131,13 @@
 			{{/each}}
 		</script>
 		<script type='text/template'id='selectItemTpl'>
-			{{each list as value i}}
-		    	<li><span class="hook">√</span><span class="itemConName">{{value}}</span></li>
-		    {{/each}}
+			<input type="text"class="selectInput"id='selectInput'placeholder="请输入或选择以下选项" />
+					<ul id='itemCon'class="itemCon">
+					{{each list as value i}}
+		    			<li><span class="hook">√</span><span class="itemConName">{{value}}</span></li>
+		    		{{/each}}
+					</ul>
+			
 		</script>
 		<script type="text/javascript"src="../js/config.js"></script>
 		<script src="../js/tool.js"></script>
@@ -134,8 +145,12 @@
 		<!--时间控件-->
 		<script>
 			var timeArr=[];
+//			获取列表的容器
+			var listContainer=document.getElementsByClassName('listcontainer')[0];
+			
 			function plusReady(){
 			//			处理床位列表传值
+			var detailMain=plus.webview.getWebviewById('detail_main.html');
 			var w=plus.webview.getWebviewById('observation.html');
 			var patientBed=w.PatientBed;
 			var patientName=w.PatientName;
@@ -146,10 +161,12 @@
 			var one=document.getElementsByClassName('one')[0];
 			var two=document.getElementsByClassName('two')[0];
 			//			获取基本操作dom
-			var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');		
 			
-			document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
-			document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+			var inputs=listContainer.getElementsByTagName('input');	
+			
+			listContainer.classList.remove('hasSave');
+			listContainer.classList.remove('OtherData');
+			listContainer.classList.remove('hasChange');
 			var selectRights=document.getElementsByClassName('selectRight');
 			//			验证表单
 			var Temperature=document.getElementById('Temperature');
@@ -254,41 +271,39 @@
 								setTimeout(function(){
 									plus.nativeUI.closeWaiting();
 									if(data.Code==0){
-									if(parseInt(two.innerHTML.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
-										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');										
-										for(var i=0;i<inputs.length;i++){
-											inputs[i].value='';
+										if(parseInt(two.innerHTML.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
+											listContainer.classList.remove('hasSave');										
+											for(var i=0;i<inputs.length;i++){
+												inputs[i].value='';
+											}
+											for(var j=0;j<selectRights.length;j++){
+												selectRights[j].innerHTML='请选择';
+											} 
+											return;
 										}
-										for(var j=0;j<selectRights.length;j++){
-											selectRights[j].innerHTML='请选择';
-										} 
-										return;
-									}
-									for(var key in data.Contents){
-										if(key=='OperateTime'){
-											continue;
+										for(var key in data.Contents){
+											if(key=='OperateTime'){
+												continue;
+											}
+											listContainer.classList.add('hasSave');
+											document.getElementsByName(key)[0].value=data.Contents[key];			
+											document.getElementsByName(key)[0].innerHTML=data.Contents[key]==''?'请选择':data.Contents[key];								
 										}
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
-										document.getElementsByName(key)[0].value=data.Contents[key];			
-										document.getElementsByName(key)[0].innerHTML=data.Contents[key];								
-									}
-								}else {
-									plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
-										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+									}else {
+										plus.nativeUI.closeWaiting();
+										listContainer.classList.remove('hasSave');
 										for(var i=0;i<inputs.length;i++){
 											inputs[i].value='';
 										}
 										for(var j=0;j<selectRights.length;j++){
 											selectRights[j].value='请选择';
 										} 
-								}
+									}
 
 								},2000);
 								
-								console.log(data);
-															}
-							,error:function(){
+						},
+						error:function(){
 					mui.toast('服务器异常，请稍后再试');
 				}
 					})
@@ -324,7 +339,7 @@
 								one.innerHTML=timeArr[tapIndex-1];
 								one.setAttribute('index',tapIndex-1);
 							}									
-						document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+						listContainer.classList.remove('OtherData');
 						mui.ajax({
 							url:url,
 							type:'post',
@@ -348,20 +363,19 @@
 								if(data.Code==0){
 									plus.nativeUI.closeWaiting();
 									if(parseInt(thisInnerHtml.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
-										document.getElementsByClassName('listcontainer')[0].classList.add('OtherData');
+										listContainer.classList.add('OtherData');
 									}
 									for(var key in data.Contents){
 										if(key=='OperateTime'){
 											continue;
 										}
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										listContainer.classList.add('hasSave');
 										document.getElementsByName(key)[0].value=data.Contents[key];
-										document.getElementsByName(key)[0].innerHTML=data.Contents[key];
+										document.getElementsByName(key)[0].innerHTML=data.Contents[key]==''?'请选择':data.Contents[key];
 									}
 								}else {
 									plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
-										var inputs=document.getElementsByClassName('listcontainer')[0].getElementsByTagName('input');
+										listContainer.classList.remove('hasSave');
 										for(var i=0;i<inputs.length;i++){
 											inputs[i].value='';
 										}
@@ -396,7 +410,7 @@
 									three.innerHTML=timeArr[tapIndex+1];
 									three.setAttribute('index',parseInt(tapIndex+1));
 								}	
-						
+						listContainer.classList.remove('OtherData');
 						mui.ajax({
 							url:url,
 							type:'post',
@@ -420,19 +434,19 @@
 								if(data.Code==0){
 									plus.nativeUI.closeWaiting();
 									if(parseInt(thisInnerHtml.substr(0,2))!=parseInt(data.Contents.OperateTime.substring(data.Contents.OperateTime.indexOf(" "),data.Contents.OperateTime.indexOf(":")))){
-										document.getElementsByClassName('listcontainer')[0].classList.add('OtherData');
+										listContainer.classList.add('OtherData');
 									}
 									for(var key in data.Contents){
 										if(key=='OperateTime'){
 											continue;
 										}
-										document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+										listContainer.classList.add('hasSave');
 										document.getElementsByName(key)[0].value=data.Contents[key];
-										document.getElementsByName(key)[0].innerHTML=data.Contents[key];
+										document.getElementsByName(key)[0].innerHTML=data.Contents[key]==''?'请选择':data.Contents[key];
 									}
 								}else {
 									plus.nativeUI.closeWaiting();
-										document.getElementsByClassName('listcontainer')[0].classList.remove('hasSave');
+										listContainer.classList.remove('hasSave');
 									}
 								},
 								error:function(){
@@ -442,9 +456,16 @@
 							});
 										
 //					保存并上传数据
-					document.getElementById('saveBtn').addEventListener('tap',function(e){
+					document.getElementById('saveBtn').addEventListener('tap',saveObservation);
+					var detailMain=plus.webview.getWebviewById('detail_main.html');
+					function saveObservation(){
 					for(var i=0;i<tips.length;i++){
 						if(tips[i].getAttribute('error')=='1'){
+							mui.toast('请输入正确的数据');
+							return;
+						}
+						if(!listContainer.classList.contains('hasChange')){
+							mui.toast('请填写数据');
 							return;
 						}
 					}
@@ -460,7 +481,7 @@
 							saveObj[nameInputAttr]=inputs[i].value;
 						}
 						for(var i=0;i<selectRights.length;i++){
-							saveObj[selectRights[i].getAttribute('name')]=selectRights[i].innerHTML;
+							saveObj[selectRights[i].getAttribute('name')]=selectRights[i].innerHTML=='请选择'?'':selectRights[i].innerHTML;
 						}
 						mui.ajax({
 							url:url,
@@ -482,10 +503,17 @@
 									setTimeout(function(){
 										mui.toast('数据保存成功');
 										plus.nativeUI.closeWaiting();
-									document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
-									document.getElementsByClassName('listcontainer')[0].classList.remove('OtherData');
+										listContainer.classList.add('hasSave');
+										listContainer.classList.remove('OtherData');
+										listContainer.classList.remove('hasChange');
+										mui.fire(detailMain,'getParams',{
+											hasChange:listContainer.classList.contains('hasChange')
+										})
 									},2000);
 									
+								}else{
+									mui.toast('服务器异常');
+									plus.nativeUI.closeWaiting();
 								}
 							},
 							error:function(){
@@ -493,7 +521,36 @@
 								mui.toast('服务器异常，请稍后再试');
 							}
 						})
-					});
+					}
+					for(var i=0;i<inputs.length;i++){
+						inputs[i].addEventListener('change',function(){
+							listContainer.classList.add('hasChange');
+							mui.fire(detailMain,'getParams',{
+								hasChange:listContainer.classList.contains('hasChange')
+							})
+						})
+					
+					}
+					
+//					未保存的提示
+					window.addEventListener('hasChange',function(){
+						mui.confirm('当前存在未保存的数据，是否保存？',function(e){
+							if(e.index==1){
+								saveObservation();
+								mui.fire(detailMain,'selectTrue',{
+									isSave:true
+								})
+							}else {
+								listContainer.classList.remove('hasChange');
+								mui.fire(detailMain,'getParams',{
+									hasChange:listContainer.classList.contains('hasChange')
+								})
+								mui.fire(detailMain,'selectTrue',{
+									isSave:false
+								})
+							}
+						})
+					})
 
 				}
 				,error:function(){
@@ -501,14 +558,17 @@
 					mui.toast('服务器异常，请稍后再试');
 				}
 			})
-
-
+			
+			
+			
 		}
 				if(window.plus){
 					plusReady();
 				}else{
 					document.addEventListener("plusready",plusReady,false);
-				}			
+				}
+				
+
 		</script>
 		<script src="../js/updateTime.js"></script>
 			
@@ -516,6 +576,7 @@
 		<script>
 			var selectDom=document.getElementsByClassName('selectItem');
 			var selectArea=document.getElementById('selectArea');
+			
 			var itemName=document.getElementById('itemName');
 			var hooks=document.getElementsByClassName('hook');
 			var nextPre=document.getElementById('nextPre');
@@ -592,30 +653,52 @@
 						},
 						dataType:'json',
 						success:function(data){
-							console.log(data);
 							if(data.Code==0){
 								var items=data.Contents;
 								var html=template('selectItemTpl',{list:items});
-								document.getElementById('itemCon').innerHTML=html;
+								document.getElementById('liCon').innerHTML=html;
 							}else {
 								data.Contents=[];
 								data.Contents[0]='';
 								var items=data.Contents;
 								var html=template('selectItemTpl',{list:items});
-								document.getElementById('itemCon').innerHTML=html;
+								document.getElementById('liCon').innerHTML=html;
 							}
 							var lis=document.getElementsByClassName('itemCon')[0].getElementsByTagName('li');
+							var selectInput=document.getElementById('selectInput');
+							
+							
 							for(var i=0;i<lis.length;i++){
+								if(lis[i].lastElementChild.innerHTML==ele.lastElementChild.innerHTML){
+									lis[i].firstElementChild.style.display='block';
+								}
 								lis[i].addEventListener('tap',function(){
+									listContainer.classList.add('hasChange');
+									if(window.plus){
+										plusReady();
+									}else{
+										document.addEventListener("plusready",plusReady,false);
+									}
+									function plusReady(){
+										var detailMain=plus.webview.getWebviewById('detail_main.html');
+										mui.fire(detailMain,'getParams',{
+										hasChange:listContainer.classList.contains('hasChange')
+										})
+									}
+									
 									for(var j=0;j<hooks.length;j++){
 										hooks[j].style.display='none';
 									}
+									selectInput.value=this.lastElementChild.innerHTML;
 									this.firstElementChild.style.display='block';
 									this.setAttribute('right','right');
-									ele.lastElementChild.innerHTML=this.lastElementChild.innerHTML;
+									ele.lastElementChild.innerHTML=selectInput.value;
 								})
 								
 							}
+							selectInput.addEventListener('input',function(){
+								ele.lastElementChild.innerHTML=this.value;
+							})
 						}
 				})
 					next=selectDom[parseInt(ele.getAttribute('index'))+1];
@@ -626,10 +709,12 @@
 						for(var j=0;j<hooks.length;j++){
 							hooks[j].style.display='none';
 						}
+						selectInput.value='';
 						selectDom[parseInt(next.getAttribute('index'))-1].lastElementChild.innerHTML='请选择';
 					})
 
-					document.getElementById('nextItem').addEventListener('tap',function(){						
+					document.getElementById('nextItem').addEventListener('tap',function(){	
+						selectInput.value='';
 						for(var j=0;j<hooks.length;j++){
 							hooks[j].style.display='none';
 						}						
@@ -673,7 +758,6 @@
 			}
 			
 		</script>
-
 	</body>
 
 </html>

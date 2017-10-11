@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/public.css" />
+		<link rel="stylesheet" href="../css/bedOperate.css" />
+	</head>
+	<body>
+		<div class="selectArea"id='selectArea'>
+				<h2>请选择<span id='itemName'></span></h2>
+				<div class="liCon">
+					<ul id='itemCon'class="itemCon">
+						
+					</ul>
+				</div>
+			</div>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="OperateBox">
+					<div class="dataTime">
+	    				<span id="currentDate"></span>	    		
+	    			</div>
+	    			<div class="list"id='bedListId'>
+	    				
+	    			</div>    		
+					
+				</div>
+	    		
+			</div>
+			
+		</div> 
+		<div class="saveBack">
+			<button class="save"id='saveBtn'>保存并上传</button>	
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../lib/template/template.js"></script>
+		<script type='text/template'id='selectPatient'>
+			{{each list as value i}}
+			<div class="singleBox"MRN='{{value.MRN}}'PatientName='{{value.PatientName}}'PatientNumber='{{value.PatientNumber}}'id='hisData'>
+			  <a class="single"><span>{{value.Bed}}</span>&nbsp;<span>{{value.PatientName}}</span></a>
+			</div>
+			{{/each}}
+		</script>	
+		<script type='text/template'id='getBedListTpl'>
+			<div class="listcontainer">
+						{{each list as value i}}
+						{{if value.OperateShortName=='口腔黏膜'}}
+			    		<div class="mouth">
+			    			<h2 class="mouthTitle">口腔护理</h2>
+				    		<ul>
+				    		{{if value.OperateInfo.length!=0}}	
+				    			{{each value.OperateInfo as item}}
+				    			<li>
+				    				<span>操作时间</span>				    				
+				    				{{if item.OperateTime}}
+				    				<input type="button"value='{{item.OperateTime.substr(item.OperateTime.indexOf(" "),6)}}' class="selectTime"onclick="pickTime('mouth')"id='mouth'name='{{item.ID}}'/>
+				    				{{else}}
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('mouth')"id='mouth'name='mouth'/>
+				    				{{/if}}
+				    				
+				    			</li>			
+				    			<li class="selectItem lastLi">
+		    						<span class="selectLeft">口腔黏膜</span>
+		    						{{if item.OperateName}}
+		    						<span class="selectRight"name='mouth'id='mouthOperate'>{{item.OperateName}}</span>
+		    						{{else}}
+		    						<span class="selectRight"name='mouth'id='mouthOperate'>请选择</span>
+		    						{{/if}}
+		    					</li>
+		    					{{/each}}
+		    					{{else}}
+		    					<li>
+				    				<span>操作时间</span>				    				
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('mouth')"id='mouth'name=''/>			    				
+				    			</li>			
+				    			<li class="selectItem lastLi">
+		    						<span class="selectLeft">口腔黏膜</span>
+		    						<span class="selectRight"name='mouth'id='mouthOperate'>请选择</span>
+		    					</li>
+		    					{{/if}}
+				    		</ul>
+			    		</div>
+			    		{{/if}}
+			    		{{if value.OperateShortName=='臀红'}}
+			    		{{if value.OperateInfo.length!=0}}
+			    		{{each value.OperateInfo as item}}
+			    		<div class="skin">
+			    			<h2 class="skinTitle">皮肤护理</h2>
+				    		<ul>
+				    			<li>
+				    				<span>操作时间</span>
+				    				{{if item.OperateTime}}
+				    				<input type="button"value='{{item.OperateTime.substr(item.OperateTime.indexOf(" "),6)}}' class="selectTime"onclick="pickTime('skin')"id='skin'name='{{item.ID}}'/>
+				    				{{else}}
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('skin')"id='skin' name='skin'/>
+				    				{{/if}}
+				    			</li>
+				    			<li class="selectItem lastLi">
+		    						<span class="selectLeft">臀红</span>
+		    						{{if item.OperateName}}
+		    						<span class="selectRight"name='skin'id='skinOperate'>{{item.OperateName}}</span>
+		    						{{else}}
+		    						<span class="selectRight"name='skin'id='skinOperate'>请选择</span>
+		    						{{/if}}
+		    					</li>
+				    		</ul>
+			    		</div>
+			    		{{/each}}
+			    		{{else}}
+			    			<div class="skin">
+			    			<h2 class="skinTitle">皮肤护理</h2>
+				    		<ul>
+				    			<li>
+				    				<span>操作时间</span>
+				    			
+				    				<input type="button"value='选择时间' class="selectTime"onclick="pickTime('skin')"id='skin'name=''/>
+				    			</li>
+				    			<li class="selectItem lastLi">
+		    						<span class="selectLeft">臀红</span>
+		    						<span class="selectRight"name='skin'id='skinOperate'>请选择</span>
+		    					</li>
+				    		</ul>
+			    		</div>
+			    		{{/if}}
+			    		{{/if}}
+			    		{{if value.OperateShortName=='插管'}} 
+						<div class="cannula">
+			    			<h2 class="cannulaTitle">插管</h2>
+				    		<ul>
+				    			{{if value.OperateInfo.length!=0}}
+				    			{{ each value.OperateInfo as item i}}
+				    			<li  class='lastLi'>
+				    				<label for="Incubator"><span id='{{item.OperateName+"name"}}'name='{{item.ID}}'>{{item.OperateName}}</span></label>
+				    				<input type="number" class="testName num" name='Incubator'placeholder='请输入'id='{{item.OperateName}}' value='{{item.OperateContent}}'/>
+				    				<span class="unit">mm</span>
+				    			</li>
+				    			{{/each}}
+				    			{{else}}
+				    			<li>
+				    				<label for="Incubator"><span id='插管口径name'name=''>插管口径</span></label>
+				    				<input type="number" class="testName num" name='Incubator'id='插管口径'placeholder='请输入'/>
+				    				<span class="unit">mm</span>
+				    			</li>
+				    			<li class='lastLi'>
+				    				<label for="Incubator"><span id='插管深度name'name=''>插管深度</span></label>
+				    				<input type="number" class="testName num" name='Incubator'id='插管深度'placeholder='请输入'/>
+				    				<span class="unit">mm</span>
+				    			</li>
+				    			{{/if}}
+				    		</ul>
+			    		</div>
+			    		{{/if}}
+			    		{{if value.OperateShortName=='光疗'}}
+			    		{{if value.OperateInfo.length!=0}}
+			    		<div class="light">
+			    			<h2 class="lightTitle">光疗</h2>
+			    			{{each value.OperateInfo as item i}}
+				    		<ul class='item'id='光疗'name='{{item.ID}}'>
+				    			<li>
+				    				<span class='OperateName'>{{item.OperateName}}</span>
+
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('lightTimes')"name='' />
+				    			</li>
+				    			<div class="times"id='lightTimes'name='{{item.OperateName}}'>
+				    			<span class="clearBtn"></span>
+				    			{{if item.OperateContent.length!=0}}
+				    			{{each item.OperateContent.split('-') as content}}
+				    				<span class="singleTime">{{content}}</span>	
+				    			{{/each}}
+				    			{{/if}}
+				    		</div>
+				    		</ul>
+				    		
+				    		{{/each}}
+			    		</div>
+			    		{{/if}}
+			    		{{/if}}
+			    		{{if value.OperateShortName=='吸痰'}}
+			    		<div class="sputum">
+			    		{{if value.OperateInfo.length!=0}}
+			    			<h2 class="sputumTitle">吸痰</h2>
+			    			{{each value.OperateInfo as item}}
+				    		<ul class='item'id='吸痰'name='{{item.ID}}'>
+				    			<li class="lastLi">
+				    				<span class='OperateName'>{{item.OperateName}}</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('{{item.OperateName+"times"}}')"name='' />
+				    			</li>
+				    			<div class="times"id='{{item.OperateName+"times"}}'>
+				    			<span class="clearBtn"></span>
+				    			{{if item.OperateContent.length!=0}}
+				    			{{each item.OperateContent.split('-') as content}}
+				    				<span class="singleTime">{{content}}</span>	
+				    			{{/each}}
+				    			{{/if}}
+				    		</div>
+				    		</ul>
+				    		
+				    		{{/each}}
+				    	
+				    	{{/if}}
+			    		</div>
+			    		{{/if}}
+			    		{{if value.OperateShortName=='其他'}}
+			    		{{if value.OperateInfo.length!=0}}
+			    		<div class="other">
+			    			<h2 class="otherTitle">其他</h2>
+			    			{{each value.OperateInfo as item}}
+				    		<ul class='item'id='其他'name='{{item.ID}}'>
+				    			<li>
+				    				<span class='OperateName'>{{item.OperateName}}</span>
+				    				<input type="button"value='添加时间' class="selectTime"onclick="pickTimes('{{item.OperateName+"times"}}')"/>
+				    			</li>
+				    			<div class="times"id='{{item.OperateName+"times"}}'>
+				    				<span class="clearBtn"></span>
+				    				{{if item.OperateContent.length!=0}}
+				    					{{each item.OperateContent.split('-') as content}}
+				    						<span class="singleTime">{{content}}</span>	
+				    					{{/each}}
+				    				{{/if}}
+				    			</div>
+				    		</ul>
+				    		{{/each}}
+			    		</div>
+			    		{{/if}}
+			    		{{/if}}
+			    		{{/each}}
+	    			</div>	
+	    			
+	    			
+	    			
+		</script>
+		<script type='text/template'id='selectItemTpl'>
+			{{each list as value i}}
+		    	<li><span class="itemConName">{{value}}</span></li>
+		    {{/each}}
+		</script>
+		<script src="../js/config.js"></script>
+		<script src="../js/tool.js"></script>
+		<script src="../js/public.js"></script>
+		<script>
+			//		下拉刷新
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						contentrefresh: '正在加载...',
+						callback: pulldownRefresh
+					}
+				}
+			});
+
+			// H5 plus事件处理
+			var listContainer=document.getElementsByClassName('list')[0];
+			
+			function pickTime(id){
+				var detailMain=plus.webview.getWebviewById('detail_main.html');
+				listContainer.classList.add('hasChange');
+							mui.fire(detailMain,'getParams',{
+								hasChange:listContainer.classList.contains('hasChange')
+				})
+				plus.nativeUI.pickTime( function(e){
+					var d=e.date;
+					var h=d.getHours()<10?'0'+d.getHours():d.getHours();
+					var m=d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes();
+					document.getElementById(id).value=h+":"+m;
+				},function(e){
+					console.log( "未选择时间："+e.message );
+				});
+			}
+			function pickTimes(id){
+				var detailMain=plus.webview.getWebviewById('detail_main.html');
+				listContainer.classList.add('hasChange');
+							mui.fire(detailMain,'getParams',{
+								hasChange:listContainer.classList.contains('hasChange')
+							})
+					plus.nativeUI.pickTime( function(e){
+					var d=e.date;
+					var h=d.getHours()<10?'0'+d.getHours():d.getHours();
+					var m=d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes();
+					var newTime=document.createElement('span');
+					newTime.classList.add('singleTime');
+					newTime.innerHTML=h+":"+m
+					document.getElementById(id).appendChild(newTime);
+					document.getElementById(id).previousElementSibling.style.border='none';
+					document.getElementById(id).style.display='block';
+					},function(e){
+						console.log( "未选择时间："+e.message );
+					});
+		
+				}
+
+			var getData='';
+			var MRN='';
+			function plusReady(){
+				//			处理床位列表传值
+//					var w=plus.webview.currentWebview();
+//					var patientBed=w.PatientBed;
+//					var patientName=w.PatientName;
+//					var patientNumber=w.PatientNumber;
+//					MRN=w.MRN;
+					var self = plus.webview.currentWebview();
+					var patientBed = self.PatientBed;
+					var patientName = self.PatientName;
+					var patientNumber=self.PatientNumber; 
+					MRN=self.MRN;
+					var detailMain=plus.webview.getWebviewById('detail_main.html');
+					
+				//		获取要处理的dom
+				var bedList=document.getElementById('bedListId');
+						
+	//			获取数据	
+				
+				getData=function (){
+					mui.ajax({
+					url:url,
+					type:'get',
+					data:{
+						msgBody:JSON.stringify({
+	                    PatientMRN:MRN,
+	                    StartTime:new Date().Format('yyyy-MM-dd')+" 07:01:00",
+	                    EndTime:getNextDay()+' 07:00:00'
+	                }),                   
+	                	msgHeader:JSON.stringify({
+	                    ServerName:'GetBedSide',
+	                    Format: 'json',
+	                    CallOperator: '',
+	                    Certificate:'123456'})
+					},
+					beforeSend:function(){
+						plus.nativeUI.showWaiting('正在加载中…');
+					},
+					dataType:'json',
+					success:function(data){
+						plus.nativeUI.closeWaiting();
+						var html=template('getBedListTpl',{list:data.Contents});
+						bedList.innerHTML=html;
+						var inputs=document.getElementsByClassName('num');
+						for(var i=0;i<inputs.length;i++){
+							inputs[i].addEventListener('change',function(){
+								listContainer.classList.add('hasChange');
+								mui.fire(detailMain,'getParams',{
+									hasChange:listContainer.classList.contains('hasChange')
+								})
+							})
+						
+						}
+	//					添加时间
+						var times=document.getElementsByClassName('times');
+						var clearBtns=document.getElementsByClassName('clearBtn');
+							for(var i=0;i<times.length;i++){
+								if(times[i].children.length==1){
+									times[i].style.display='none';
+								}else {
+									times[i].style.display='block';
+								}
+							}
+						mui('.times').on('tap','.clearBtn',function(){			
+							this.parentNode.removeChild(this.parentNode.lastElementChild);
+							if(!this.nextElementSibling){
+								this.parentNode.style.display='none';
+								this.parentNode.previousElementSibling.style.borderBottom='1px solid #bebebe';
+							}
+						});
+	//					下拉选项
+						var selectDom=document.getElementsByClassName('selectItem');
+						var selectRights=document.getElementsByClassName('selectRight');
+						var selectArea=document.getElementById('selectArea');
+						var itemName=document.getElementById('itemName');
+						var mask = mui.createMask(function(){
+							selectArea.style.display='none';
+							selectArea.classList.remove('hasShow');
+						});
+						function selectInfo(ele,arr){
+							if(ele.classList.contains('hasShow')){
+									ele.classList.remove('hasShow');
+									selectArea.style.display='none';
+									mask.close();
+									return;
+								}else {
+									ele.classList.add('hasShow');
+									selectArea.style.display='block';
+									mask.show();
+								}
+								var html=template('selectItemTpl',{list:arr});
+								document.getElementById('itemCon').innerHTML=html;
+								
+								var lis=document.getElementsByClassName('itemCon')[0].getElementsByTagName('li');
+										for(var i=0;i<lis.length;i++){
+											lis[i].addEventListener('tap',function(){
+												ele.lastElementChild.innerHTML=this.firstElementChild.innerHTML;				
+												listContainer.classList.add('hasChange');
+												mui.fire(detailMain,'getParams',{
+													hasChange:listContainer.classList.contains('hasChange')
+												})
+												selectArea.style.display='none';
+												mask.close();
+											})
+											
+										}
+								
+						}
+						var selectArr=[['完整','不完整','其他'],['无','有']];
+						
+						for(var i=0;i<selectDom.length;i++){
+							selectDom[i].addEventListener('tap',(function(n){
+								return function (){
+									selectInfo(this,selectArr[n]);
+								}	
+							})(i));
+						}
+			
+							}
+						})
+	
+				}
+				getData();
+	//			保存数据
+				document.getElementById('saveBtn').addEventListener('tap',saveOperate);
+				function saveOperate(){
+					function getFixedTime(id){
+						var timeDom=document.getElementById(id);
+						if(timeDom.value=='选择时间'){
+							return '';
+						}else {
+							return currentDate.innerHTML+' '+timeDom.value+':00';
+						}
+					}
+					if(!listContainer.classList.contains('hasChange')){
+								mui.toast('请填写数据');
+								return;
+							}
+					var mouthValue=document.getElementById('mouthOperate').innerHTML=='请选择'?'':document.getElementById('mouthOperate').innerHTML;
+					var skinValue=document.getElementById('skinOperate').innerHTML=='请选择'?'':document.getElementById('skinOperate').innerHTML;
+					var SideList=[
+				{"ID":document.getElementById('mouth').getAttribute('name'),"OperateTime":getFixedTime('mouth'),"OperateName":mouthValue,"OperateShortName":"口腔黏膜","OperateContent":""},
+				{"ID":document.getElementById('skin').getAttribute('name'),"OperateTime":getFixedTime('skin'),"OperateName":skinValue,"OperateShortName":"臀红","OperateContent":""},
+				{"ID":document.getElementById('插管口径name').getAttribute('name'),"OperateTime":new Date().Format("yyyy-MM-dd hh:mm:ss"),
+				"OperateName":document.getElementById('插管口径name').innerHTML,
+				"OperateShortName":"插管",
+				"OperateContent":document.getElementById('插管口径').value},
+				{"ID":document.getElementById('插管深度name').getAttribute('name'),"OperateTime":new Date().Format("yyyy-MM-dd hh:mm:ss"),
+				"OperateName":document.getElementById('插管深度name').innerHTML,
+				"OperateShortName":"插管",
+				"OperateContent":document.getElementById('插管深度').value}
+					]; 
+				
+				
+				var items=document.getElementsByClassName('item');
+				for(var i=0;i<items.length;i++){
+					var id=items[i].getAttribute('name');
+					var operateName=items[i].getElementsByClassName('OperateName')[0].innerHTML;
+					var operateContent=items[i].getElementsByClassName('times')[0].getElementsByClassName('singleTime');
+					var contents='';
+					var operateShortName=items[i].getAttribute('id');
+					for(var j=0;j<operateContent.length;j++){
+						contents+=operateContent[j].innerHTML+'-';
+					}
+					contents=contents.substr(0,contents.length-1);
+					SideList.push({
+						"ID":id,
+						"OperateTime":new Date().Format("yyyy-MM-dd hh:mm:ss"),
+						"OperateName":operateName,
+						"OperateShortName":operateShortName,
+						"OperateContent":contents
+					});
+				}
+				
+							mui.ajax({
+								url:url,
+								type:'post',
+								data:{
+									msgBody:JSON.stringify({
+										"PatientMRN":MRN,
+										"OperateTime":new Date().Format("yyyy-MM-dd hh:mm:ss"),
+										"SideList":SideList
+									}),
+			                		msgHeader:JSON.stringify({
+			                    	ServerName:'SaveBedSide',
+			                    	Format: 'json',
+			                    	CallOperator: '',
+			                    	Certificate:'123456'})
+								},
+								beforeSend:function(){
+									plus.nativeUI.showWaiting('正在保存中…');
+								},
+								dataType:'json',
+								success:function(data){
+									if(data.Code==0){
+										setTimeout(function(){
+											mui.toast('数据保存成功');
+											plus.nativeUI.closeWaiting();
+											document.getElementsByClassName('listcontainer')[0].classList.add('hasSave');
+											listContainer.classList.remove('hasChange');
+											mui.fire(detailMain,'getParams',{
+												hasChange:listContainer.classList.contains('hasChange')
+											})
+											getData();
+										},2000);
+										
+									}else {
+										mui.toast('服务器出错');
+										plus.nativeUI.closeWaiting();
+									}
+								},
+								error:function(){
+									plus.nativeUI.closeWaiting();
+									mui.toast('服务器异常，请稍后再试');
+								}
+							})
+				
+				}
+				
+				
+		
+			//	未保存的提示
+				window.addEventListener('hasChange',function(){
+							mui.confirm('当前存在未保存的数据，是否保存？',function(e){
+								if(e.index==1){
+									saveOperate();
+									mui.fire(detailMain,'selectTrue',{
+										isSave:true
+									})
+								}else {
+									listContainer.classList.remove('hasChange');
+									mui.fire(detailMain,'getParams',{
+										hasChange:listContainer.classList.contains('hasChange')
+									})
+									mui.fire(detailMain,'selectTrue',{
+										isSave:false
+									})
+								}
+							})
+						})
+		
+			}
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
+	
+		
+					/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				mui.ajax({
+						url:url,
+						type:'get',
+						data:{
+							msgBody:JSON.stringify({
+									PatientMRN:MRN,
+									startTime:new Date().Format("yyyy-MM-dd")+' 07:00:01',
+									endTime:getNextDay()+' 07:00:00'
+							}),
+		                	msgHeader:JSON.stringify({
+		                    	ServerName:'SynchronizeOrderStart',
+		                    	Format: 'json',
+		                    	CallOperator: '',
+		                    	Certificate:'123456'})
+						},
+						dataType:'json',
+						success:function(data){
+							if(data.Code==0){
+								getData();
+							}else {
+								mui.toast('同步医嘱失败');
+								
+							}
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						},error:function(){
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						}
+					})
+				
+				setTimeout(function() {
+					
+					 //refresh completed
+				},2000);
+			}
+
+		</script>
+
+	</body>
+</html>

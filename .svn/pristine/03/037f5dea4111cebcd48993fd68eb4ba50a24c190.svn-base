@@ -1,0 +1,179 @@
+@charset "utf-8";
+
+@import "var";
+
+@import "mixin";
+
+@import "normalize";
+
+@import "adpater";
+
+.selectArea {
+    h2 {
+        padding: 0;
+        input {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px 5px 0 0;
+            border:none;
+            color:@MainColor;
+            padding: 0;
+            padding-left: 20/100rem;
+            font-weight: bold;
+        }
+    }
+    .selectContainer {
+        width: 100%;
+        height: 538/100rem;
+        position: relative;
+        .liCon {
+        
+        height: 450/100rem;
+        }
+        button {
+        width: 100%;
+        height: 88/100rem;
+        background: @MainColor;
+        color:#fff;
+        font-weight: bold;
+        position: absolute;
+        bottom:0;
+    }
+        
+    }
+    
+    
+}
+/*主体容器*/
+.obervationBox {
+    position: relative;
+    
+    .listcontainer {
+        .amoutBox {
+        }
+        .amount {
+            width:100%;
+            margin-top: 22/100rem;           
+            border-top: 1px solid #bebebe;
+            border-bottom: 1px solid #bebebe;
+            ul {
+                width: 100%;
+                padding: 0 20/100rem 0 20/100rem;
+                background: #fff;              
+                li {
+                    width:100%;
+                    height: 88/100rem;
+                    background: #fff;
+                    border-bottom: 1px solid #bebebe;
+                    overflow: hidden;
+                }
+            .selectItem {
+                span {
+                    width: 50%;
+                    display: block;
+                    float: left;
+                    height: 88/100rem;
+                    font-size: 28/100rem;
+                    color:#333;
+                    line-height: 88/100rem;
+                    
+                }
+                .selectRight {
+                    text-align: right;
+                    padding-right: 55/100rem;
+                    position: relative;
+                    color:#999;
+                    span {
+                        width: 100%;
+                        height: 100%;
+                        display: inline-block;
+                        color:#999;
+                        text-align: right;
+                    }
+                    i{
+                       width:26/100rem;
+                       height: 15/100rem;
+                       background: url(../imgs/observation/down.png)no-repeat center/ 26/100rem 15/100rem; 
+                       position: absolute;
+                       right: 20/100rem;
+                       top:25/100rem;
+                    }
+                }
+            }
+            .selectNum {
+                input {
+                    width:90%;
+                    height: 86/100rem;
+                    font-size: 28/100rem;
+                    float: left;
+                    text-align: right;
+                    border: none;
+                    padding: 0;
+                    margin-bottom: 0;
+                    color:#999;
+                }
+                input::-webkit-input-placeholder {
+                /* placeholder颜色  */
+                    color: #999;         }
+                }
+                .unit {
+                    width:10%;
+                    display: block;
+                    float: left;
+                    height: 88/100rem;
+                    font-size: 28/100rem;
+                    line-height: 88/100rem;
+                    text-align: right;
+                    padding-right: 20/100rem;
+                    color:#999;
+                }
+            }
+            .lastLi {
+                border: none;
+            }
+            }
+        }
+        .submitBtn {
+                width:100%;
+                margin-top: 15/100rem;
+                position: fixed;
+                bottom:10/100rem;
+                .save {
+                    width:710/100rem;
+                    height: 68/100rem;
+                    background: @MainColor;
+                    color:#fff;
+                    margin-left: 20/100rem;
+                    font-size: 28/100rem;
+                    font-weight: bold;
+                    margin-bottom: 10/100rem;
+                }
+            }
+        
+    
+    .listcontainer.hasSave {
+        .amount {
+            ul {
+                .selectNum{
+                    input {
+                    color:#333;
+                }
+                input::-webkit-input-placeholder {
+                /* placeholder颜色  */
+                    color: #333;         }
+                }
+                
+                    .selectItem .selectRight {
+                    color:#333;
+                    span {
+                        color:#333;
+                    }
+                }
+                .unit{
+                    color:#333;
+                }
+            }
+                }
+                
+        }
+}
