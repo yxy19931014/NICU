@@ -1,0 +1,541 @@
+@charset "utf-8";
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+a {
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 1em 40px;
+}
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+pre {
+  overflow: auto;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+input {
+  line-height: normal;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+}
+optgroup {
+  font-weight: bold;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+/*适配模块*/
+@media (min-width: 320px) {
+  html {
+    font-size: 42.66666667px;
+  }
+}
+@media (min-width: 360px) {
+  html {
+    font-size: 48px;
+  }
+}
+@media (min-width: 375px) {
+  html {
+    font-size: 50px;
+  }
+}
+@media (min-width: 384px) {
+  html {
+    font-size: 51.2px;
+  }
+}
+@media (min-width: 412px) {
+  html {
+    font-size: 54.93333333px;
+  }
+}
+@media (min-width: 414px) {
+  html {
+    font-size: 55.2px;
+  }
+}
+@media (min-width: 424px) {
+  html {
+    font-size: 56.53333333px;
+  }
+}
+@media (min-width: 480px) {
+  html {
+    font-size: 64px;
+  }
+}
+@media (min-width: 540px) {
+  html {
+    font-size: 72px;
+  }
+}
+@media (min-width: 720px) {
+  html {
+    font-size: 96px;
+  }
+}
+@media (min-width: 750px) {
+  html {
+    font-size: 100px;
+  }
+}
+/*样式处理*/
+body,
+form,
+input,
+button,
+fieldset,
+p {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+body {
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+}
+*,
+::before,
+::after,
+input[type="search"] {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+.clearfix::after,
+.clearfix::before {
+  content: "";
+  display: block;
+  visibility: hidden;
+  height: 0;
+  line-height: 0;
+  clear: both;
+}
+/*主体容器*/
+.mui-bar {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.mui-bar-nav {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.bedBox header {
+  width: 100%;
+  height: 1rem;
+  background: #48bebb;
+  position: fixed;
+}
+.bedBox header h1 {
+  width: 100%;
+  text-align: center;
+  font-size: 0.36rem;
+  color: #fff;
+  font-weight: bold;
+  line-height: 1rem;
+}
+.bedBox header .leftUser {
+  positon: absolute;
+  top: 0;
+  left: 0.2rem;
+  width: 1.4rem;
+  height: 1rem;
+}
+.bedBox header .leftUser a {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  cursor: pointer;
+}
+.bedBox header .leftUser a .leftIcon {
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  left: 0.2rem;
+  top: 0.35rem;
+  background: url(../imgs/bed/user_gray.png) no-repeat center / 0.29rem 0.29rem;
+  cursor: pointer;
+}
+.bedBox header .leftUser a .text {
+  font-size: 0.28rem;
+  color: #fff;
+  line-height: 1.1rem;
+  margin-left: 0.3rem;
+  cursor: pointer;
+}
+.bedBox header .leftUser #outLogin {
+  width: 100%;
+  height: 100%;
+  line-height: 1rem;
+  background: #6acccc;
+  display: none;
+  cursor: pointer;
+  margin-left: -0.2rem;
+  text-align: center;
+}
+.bedBox header .leftUser #outLogin p {
+  color: #fff;
+}
+.bedBox header .mui-table-view-cell.mui-active {
+  background-color: #48bebb;
+}
+.bedBox header .rightOnline {
+  width: 1.4rem;
+  position: absolute;
+  right: 0.2rem;
+  top: 0;
+  z-index: 99;
+}
+.bedBox header .rightOnline a {
+  width: 100%;
+  font-size: 0.28rem;
+  height: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  color: #fff;
+  background: #48bebb;
+  position: absolute;
+}
+.bedBox header .rightOnline a .downIcon {
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  background: url(../imgs/bed/down.png) no-repeat center / 0.3rem 0.3rem;
+  top: 0.35rem;
+  right: 0rem;
+}
+.bedBox header .rightOnline #downContent {
+  width: 100%;
+  height: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  text-align: center;
+  font-size: 0.28rem;
+  line-height: 1rem;
+  background: #6acccc;
+  margin-right: -0.2rem;
+}
+.bedBox header .rightOnline #downContent #all,
+.bedBox header .rightOnline #downContent #outLine {
+  width: 100%;
+  height: 100%;
+  line-height: 1rem;
+  background: #6acccc;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+}
+.bedBox .search {
+  width: 100%;
+  height: 0.75rem;
+  background: #48bebb;
+  position: fixed;
+  top: 1rem;
+}
+.bedBox .search .search_box {
+  width: 100%;
+  height: 0.6rem;
+  margin: 0 auto;
+  background: #fff;
+  position: relative;
+  background: #48bebb;
+}
+.bedBox .search .search_box form {
+  width: 100%;
+  padding-left: 0.2rem;
+  padding-right: 0.75rem;
+  outline: none;
+}
+.bedBox .search .search_box form .mui-input-row {
+  height: 0.58rem;
+}
+.bedBox .search .mui-input-row .mui-input-clear~.mui-icon-clear {
+	top:5px;
+}
+.bedBox .search .search_box form input {
+  width: 100%;
+  height: 0.58rem;
+  border-radius: 0.3rem;
+  padding-left: 0.2rem;
+  padding-top: 0.28rem;
+  background: #fff;
+  text-align: left;
+  outline: none;
+  border: none;
+}
+.bedBox .search .search_box .search_btn {
+  width: 0.42rem;
+  height: 0.42rem;
+  position: absolute;
+  background: url(../imgs/bed/searchBox.png) no-repeat center / 0.41rem 0.41rem;
+  top: 0.09rem;
+  right: 0.2rem;
+}
+.bedBox .beds {
+  width: 100%;
+  padding-top: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 1.5rem;
+  margin-top: 1.75rem;
+}
+.bedBox .beds .bedBox {
+  width: 50%;
+  height: 1.2rem;
+  margin-bottom: 0.1rem;
+}
+.bedBox .beds .bedBox:nth-child(2n+1) {
+  padding-left: 0.2rem;
+  padding-right: 0.05rem;
+}
+.bedBox .beds .bedBox:nth-child(2n) {
+  padding-left: 0.05rem;
+  padding-right: 0.2rem;
+}
+.bedBox .beds .bedBox .bed {
+  background: #fff;
+  height: 100%;
+  border-radius: 8px;
+}
+.bedBox .beds .bedBox .bed .bedNum {
+  font-size: 0.36rem;
+  color: #333;
+  font-weight: bold;
+  padding-top: 0.18rem;
+  padding-left: 0.15rem;
+  margin-bottom: 0.1rem;
+}
+.bedBox .beds .bedBox .bed .bedNum .name {
+  font-size: 0.28rem;
+  color: #333;
+  line-height: 0.3rem;
+  margin-left: 0.15rem;
+  font-weight: 400;
+}
+.bedBox .beds .bedBox .bed .bedNum .name.empty {
+  color: #ccc;
+}
+.bedBox .beds .bedBox .bed .bedNum.medium {
+  color: #2084ff;
+}
+.bedBox .beds .bedBox .bed .bedNum.danger {
+  color: #49bcbc;
+}
+.bedBox .beds .bedBox .bed .bedNum.serious {
+  color: #ffa10e;
+}
+.bedBox .beds .bedBox .bed .bedNum.special {
+  color: #f04a4a;
+}
+.bedBox .beds .bedBox .bed .formale {
+  width: 0.3rem;
+  height: 0.3rem;
+  display: inline-block;
+  background: url(../imgs/bed/formale.png) no-repeat center / 0.29rem 0.29rem;
+  margin-left: 0.15rem;
+}
+.bedBox .beds .bedBox .bed .male {
+  width: 0.3rem;
+  height: 0.3rem;
+  display: inline-block;
+  background: url(../imgs/bed/male.png) no-repeat center / 0.29rem 0.29rem;
+  margin-left: 0.15rem;
+}
+.bedBox .beds .bedBox .bed .inTime {
+  font-size: 0.28rem;
+  color: #333;
+  line-height: 0.3rem;
+  margin-left: 0.65rem;
+}
+.bedBox .footer {
+  height: 0.88rem;
+}
+.bedBox .footer a span.mui-icon {
+  width: 0.46rem;
+  height: 0.46rem;
+}
+.bedBox .footer a span.bedview {
+  background: url(../imgs/bed/bed_gray.png) no-repeat center / 0.46rem 0.46rem;
+}
+.bedBox .footer a span.two {
+  background: url(../imgs/bed/search_gray.png) no-repeat center / 0.46rem 0.46rem;
+}
+.bedBox .footer a span.three {
+  background: url(../imgs/bed/knowledge_gray.png) no-repeat center / 0.46rem 0.46rem;
+}
+.bedBox .footer a span.mui-tab-label {
+  font-size: 0.24rem;
+  color: #999;
+}
+.bedBox .footer .active span.mui-tab-label {
+  font-size: 0.24rem;
+  color: #48bebb;
+}
+.bedBox .footer .active .bedview {
+  background: url(../imgs/bed/bed.png) no-repeat center / 0.46rem 0.46rem;
+}
+.bedBox .footer .active .two {
+  background: url(../imgs/bed/search.png) no-repeat center / 0.46rem 0.46rem;
+}
+.bedBox .footer .active .three {
+  background: url(../imgs/bed/knowledge.png) no-repeat center / 0.46rem 0.46rem;
+}

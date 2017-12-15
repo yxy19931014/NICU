@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		html {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		
+		body {
+			height: 100%;
+			background: #fff;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.box {
+			padding-top: 100px;
+		}
+		
+		.tipImg {
+			width: 100%;
+			/*margin-top: 100px;*/
+			position: relative;
+		}
+		
+		.tipImg img {
+			width: 100%;
+			height: 100%;
+		}
+		
+		.tipText {
+			width: 45%;
+			position: absolute;
+			left: 50px;
+			top: 40px;
+		}
+		
+		.jumpBtn {
+			width: 100%;
+			margin-top: 50px;
+		}
+		
+		.jumpBtn button {
+			width: 90%;
+			display: block;
+			margin-left: 5%;
+			border: none;
+			background: #48bebb;
+			color: #fff;
+			margin-top: 20px;
+		}
+		
+		.reScan {
+			width: 100%;
+			margin-top: 100px;
+		}
+		
+		.reScan button {
+			width: 90%;
+			display: block;
+			margin-left: 5%;
+			border: none;
+			background: #48bebb;
+			color: #fff;
+		}
+		.failBtn {
+			display: none;
+		}
+		.failImg {
+			display: none;
+		}
+		.tipText {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div class="box">
+			<div class="tipImg">
+				<img src="../imgs/in/patientFail.png"id='pImg'class="failImg" alt="" />
+				<img src="../imgs/in/medFail.png"id='mImg'class="failImg" alt="" />
+				<div class='tipText'id='pc1'>
+					扫错腕带啦！是否切换至<span id="pc1Bed">1502</span><span id="pc1Name">王蓉蓉之子</span>？
+				</div>
+				<div class='tipText'id='mc1'>
+					不是本宝宝液体！是否切换至<span id="mc1Bed">1502</span><span id="mc1Name">王蓉蓉之子</span>？
+				</div>
+				<div class="tipText"id='pc2'>
+					扫错腕带啦！请重新扫描吧！
+				</div>
+				<div class="tipText"id='mc2'>
+					不是本宝宝液体！请重新扫描吧！
+				</div>
+			</div>
+			<div class="jumpBtn failBtn"id='c1'>
+				<button id='nextPatient'>是，切换</button>
+				<button class="reScan">否，重新扫描</button>
+			</div>
+			<div class="reScan failBtn"id='c2'>
+				<button class="reScan">重新扫描</button>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			localStorage.removeItem('medScan');
+			localStorage.removeItem('patientScan');
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+
+			function plusReady() {
+				var self = plus.webview.currentWebview();
+				var MRN = self.MRN;
+				var PATIENTNAME = self.PatientName;
+				var PATIENTNUMBER = self.PatientNumber;
+				var PATIENTBED = self.PatientBed;
+				var systemDate = self.systemDate;
+				var isPatient = self.isPatient;
+				var count = self.count;
+				var scanData=self.scanData;
+				function hideAll(){
+					var failImgs=document.getElementsByClassName('failImg');
+					for(var i=0;i<failImgs.length;i++){
+						failImgs[i].style.display='none';
+					}
+					var tipTexts=document.getElementsByClassName('tipText');
+					for(var i=0;i<tipTexts.length;i++){
+						tipTexts[i].style.display='none';
+					}
+					var failBtns=document.getElementsByClassName('failBtn');
+					for(var i=0;i<failBtns.length;i++){
+						failBtns[i].style.display='none';
+					}
+				}
+				hideAll();
+				if(isPatient && count==2){
+					document.getElementById('pImg').style.display='block';
+					document.getElementById('pc2').style.display='block';
+					document.getElementById('c2').style.display='block';
+				}else if(!isPatient && count==2){
+					document.getElementById('mImg').style.display='block';
+					document.getElementById('mc2').style.display='block';
+					document.getElementById('c2').style.display='block';
+				}else if(isPatient && count==1){
+					document.getElementById('pImg').style.display='block';
+					document.getElementById('pc1').style.display='block';
+					document.getElementById('pc1Bed').innerHTML=PATIENTBED;
+					document.getElementById('pc1Name').innerHTML=PATIENTNAME;
+					document.getElementById('c1').style.display='block';
+				}else if(!isPatient && count==1){
+					document.getElementById('mImg').style.display='block';
+					document.getElementById('mc1Bed').innerHTML=PATIENTBED;
+					document.getElementById('mc1Name').innerHTML=PATIENTNAME;
+					document.getElementById('mc1').style.display='block';
+					document.getElementById('c1').style.display='block';
+				}
+				document.getElementById('nextPatient').addEventListener('tap',function(){
+					var mainPage=plus.webview.getWebviewById('detail_main.html');
+					mui.fire(mainPage, 'newPatient', {
+											PatientName: PATIENTNAME,
+											PatientNumber: PATIENTNUMBER,
+											PatientBed: PATIENTBED,
+											MRN: MRN,
+											scanData:scanData
+									});
+					
+				})
+				var reScans=document.getElementsByClassName('reScan');
+				for(var i=0;i<reScans.length;i++){
+					reScans[i].addEventListener('tap',function(){
+						self.close();
+					})
+				}
+			}
+		</script>
+	</body>
+
+</html>

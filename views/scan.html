@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>扫码页面</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/scan.css" />
+	</head>
+
+	<body>
+		<!--第一次扫描完成的操作页面-->
+
+		<div class="firstScan" id='firstScan'>
+			<div class="firstScanCon">
+				<h3><span class="close"id='close'>×</span></h3>
+				<h4>患者信息</h4>
+				<div class="patientInfo">
+					<span id="patientTip" style='color:#999;'>按住左侧扫描键，对准患儿腕带条码进行扫描</span>
+					<span id='Name' style='color:#333;'></span> &nbsp;&nbsp;
+					<span id='BedNo' style='color:#333;'></span>
+				</div>
+				<h4 class="medTitle">
+								液体名称
+								<div id="operPart">
+									<span class="operName"id='operName'>操作<i class="mui-icon mui-icon-arrowdown"></i></span>
+									<div class="stop operItem"id='stop'>
+										<ul>
+											<li id="continue"status='5'>继续</li>
+										</ul>
+									</div>
+									<div class="active operItem"id='active'>
+										<ul>
+											<li class="liObj"status='1'>修改泵速</li>
+											<li class="liObj"status='7'>已用量</li>
+											<li class="liObj"status='6'>暂停</li>
+											<li class="liObj"status='4'>停止</li>
+										</ul>
+									</div>
+							</div>
+							</h4>
+				<ul class="medicationScan" id='medicationScan'>
+					<li class="scanTip">按住左侧扫描键，对准当前患儿输液条码进行扫描</li>
+				</ul>
+				<ul class="scanDetail" id='scanDetail'>
+					<li><span class="liquid">泵速</span><span class="liquidNum" id='liquidNum'>4ml/h</span></li>
+					<li><span class="liquid">执行时间</span><span class="liquidNum"><input type="button" onclick='selectTime("activeTime")' id="activeTime" value="选择时间" /></span></li>
+				</ul>
+				<ul class="scanDetail" id='reScanDetail'>
+					<li><span class="liquid">总量</span><span class="liquidUnit">ml</span><span class="liquidNum" id='total'></span></li>
+					<li><span class="liquid">已用量</span><span class="liquidUnit">ml</span><span class="liquidNum" id='actual'></span></li>
+					<li><span class="liquid">泵速</span><span class="liquidUnit">ml/h</span><span class="liquidNum"><input type="text" id='speed'/></span></li>
+					<ul id="changePart">
+
+					</ul>
+				</ul>
+			</div>
+
+			<div class="scanOper">
+				<button id='firstSure' class="saveBack">确认执行</button>
+				<!--<button id='restart'>重新扫描</button>-->
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/tool.js"></script>
+		<script src="../lib/template/template.js"></script>
+		<!--用药的模板-->
+		<script type='text/template' id='updateTpl'>
+			<li><span class="liquid">时间</span><span class="liquidNum"><input type="button" onclick='updateTime("doTime")' id="doTime" value="选择时间" /></span></li>
+			<li><span class="liquid">实入量</span><span class="liquidNum"><input type="text"  placeholder='请输入'id='actualNum'/>ml</span></li>
+		</script>
+		<script type='text/template' id='hasUseTpl'>
+			<li><span class="liquid">已完成</span><span class="liquidNum"><input type="checkBox"id='isComplete'/></span></li>
+			<li><span class="liquid">时间</span><span class="liquidNum"><input type="button" onclick='updateTime("doTime")' id="doTime" value="选择时间" /></span></li>
+			<li><span class="liquid">实入量</span><span class="liquidNum"><input type="text"  placeholder='请输入'id='actualNum'/>ml</span></li>
+
+		</script>
+		<script type='text/template' id='pauseTpl'>
+			<li><span class="liquid">时间</span><span class="liquidNum"><input type="button" onclick='updateTime("doTime")' id="doTime" value="选择时间" /></span></li>
+			<li><span class="liquid">实入量</span><span class="liquidNum"><input type="text"  placeholder='请输入'id='actualNum'/>ml</span></li>
+
+		</script>
+		<script type='text/template' id='stopTpl'>
+			<li><span class="liquid">时间</span><span class="liquidNum"><input type="button" onclick='updateTime("doTime")' id="doTime" value="选择时间" /></span></li>
+			<li><span class="liquid">实入量</span><span class="liquidNum"><input type="text"  placeholder='请输入'id='actualNum'/>ml</span></li>
+		</script>
+		<script type='text/template' id='continueTpl'>
+			<li><span class="liquid">时间</span><span class="liquidNum"><input type="button" onclick='updateTime("doTime")' id="doTime" value="选择时间" /></span></li>
+		</script>
+		<script>
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+			//				获取页面的传值
+			function plusReady() {
+
+				var w = plus.webview.currentWebview();
+				var patientBed = w.PatientBed;
+				var patientName = w.PatientName;
+				var patientNumber = w.PatientNumber;
+				var MRN = w.MRN;
+				var DeptCode = JSON.parse(localStorage.getItem('loginInfo')).DeptCode;
+				var systemDate = w.systemDate;
+				var scanData = w.scanData;
+
+				//				关闭页面
+				function closeSubScan() {
+					w.close();
+					localStorage.removeItem('patientScan');
+					localStorage.removeItem('medScan');
+				}
+				document.getElementById('close').addEventListener('tap', function() {
+					closeSubScan();
+				})
+
+				//				获取需要的dom
+				var sureActive = document.getElementById('firstSure');
+				var operPart = document.getElementById('operPart');
+				var operName = document.getElementById('operName');
+				var total = document.getElementById('total');
+				var actual = document.getElementById('actual');
+				var speed = document.getElementById('speed');
+				var liquidNum = document.getElementById('liquidNum');
+				var activeTime = document.getElementById('activeTime');
+				//				下拉选项
+				var stop = document.getElementById('stop');
+				var active = document.getElementById('active');
+				var firstSure = document.getElementById('firstSure');
+				if(scanData) {
+					scanData = JSON.parse(scanData);
+					if(scanData.STATUS == 0) {
+						document.getElementById('Name').innerHTML = scanData.Name;
+						document.getElementById('BedNo').innerHTML = scanData.BedNo;
+						document.getElementById('patientTip').style.display = 'none';
+						localStorage.setItem('patientScan', true);
+					} else {
+						localStorage.setItem('medScan', true);
+						if(scanData.Contents[0].OperateStatus == '-1') {
+							//													扫的是本宝宝的液体,但是未导入
+							document.getElementById('medicationScan').innerHTML = '';
+							for(var i = 0; i < scanData.Contents.length; i++) {
+								var liObj = document.createElement('li');
+								liObj.innerHTML = scanData.Contents[i].Remarks;
+								document.getElementById('medicationScan').appendChild(liObj);
+							}
+							document.getElementById('scanDetail').style.display = 'block';
+							document.getElementById('liquidNum').innerHTML = scanData.Contents[0].PumpSpeed;
+							document.getElementById('activeTime').value = scanData.Contents[0].OperateTime.substr(scanData.Contents[0].OperateTime.indexOf(' '), 6);
+							firstSure.setAttribute('Order', scanData.intentCode);
+							firstSure.setAttribute('isRescan', 0)
+
+						} else if(scanData.Contents[0].OperateStatus != '-1') {
+							//													扫的是本宝宝的液体,但是已经导入,可以进行相关操作
+							document.getElementById('medicationScan').innerHTML = '';
+							for(var i = 0; i < scanData.Contents.length; i++) {
+								var liObj = document.createElement('li');
+								liObj.innerHTML = scanData.Contents[i].Remarks;
+								document.getElementById('medicationScan').appendChild(liObj);
+							}
+							document.getElementById('reScanDetail').style.display = 'block';
+							total.innerHTML = scanData.Contents[0].IntakeTotal;
+							actual.innerHTML = scanData.Contents[0].IntakeUsed;
+							speed.value = scanData.Contents[0].PumpSpeed;
+							total.setAttribute('IntakeCode', scanData.Contents[0].IntakeCode);
+							operPart.style.display = 'block';
+							var status=scanData.Contents[0].OperateStatus;
+							if(status == 0 || status == 1 || status == 5 || status == 7) {
+								operName.classList.remove('stop');
+
+							} else if(status == 4 || status == 8 || status == 9) {
+								closeSubScan();
+								mui.toast('该组液体无法继续操作');
+							} else if(status == 6) {
+								operName.classList.add('stop');
+							}
+
+							//				下拉的显示
+							operName.addEventListener('tap', function() {
+								if(this.classList.contains('show')) {
+									stop.style.display = 'none';
+									active.style.display = 'none';
+									this.classList.remove('show');
+								} else {
+									if(this.classList.contains('stop')) {
+										active.style.display = 'none';
+										stop.style.display = 'block';
+									} else {
+										active.style.display = 'block';
+										stop.style.display = 'none';
+									}
+									this.classList.add('show');
+								}
+							})
+							//				点击下拉的按钮
+							var liObjs = document.getElementsByClassName('liObj');
+							var continumBtn = document.getElementById('continue');
+							continumBtn.addEventListener('tap', function() {
+								operName.innerHTML = this.innerHTML;
+								operName.setAttribute('status', this.getAttribute('status'));
+								operName.setAttribute('isover', '0');
+								var html = template('continueTpl', {});
+								changePart.innerHTML = html;
+								stop.style.display = 'none';
+							})
+							var changePart = document.getElementById('changePart');
+							for(var i = 0; i < liObjs.length; i++) {
+								liObjs[i].addEventListener('tap', function() {
+									operName.innerHTML = this.innerHTML;
+									operName.setAttribute('status', this.getAttribute('status'));
+									operName.setAttribute('isover', '0');
+									if(this.innerHTML == '修改泵速') {
+										var html = template('updateTpl', {});
+										changePart.innerHTML = html;
+									} else if(this.innerHTML == '已用量') {
+										var html = template('hasUseTpl', {});
+										changePart.innerHTML = html;
+										document.getElementById('isComplete').addEventListener('change', function() {
+											if(this.checked) {
+												operName.setAttribute('status', 9);
+												operName.setAttribute('isover', '1');
+												document.getElementById('actualNum').value = total.innerHTML - actual.innerHTML;
+											} else {
+												operName.setAttribute('status', 7);
+												document.getElementById('actualNum').value = '';
+												operName.setAttribute('isover', '0');
+											}
+										})
+									} else if(this.innerHTML == '暂停') {
+										var html = template('pauseTpl', {});
+										changePart.innerHTML = html;
+									} else if(this.innerHTML == '停止') {
+										var html = template('stopTpl', {});
+										changePart.innerHTML = html;
+									}
+									active.style.display = 'none';
+								})
+							}
+							//				重复扫码时点击确认执行的操作
+							firstSure.setAttribute('isRescan', 1)
+
+						}
+					}
+				}
+				firstSure.addEventListener('tap', function() {
+					if(localStorage.getItem('patientScan') && localStorage.getItem('medScan')) {
+						if(this.getAttribute('isRescan')==0) {
+							
+							mui.ajax({
+								url: url,
+								type: 'post',
+								data: {
+									msgBody: JSON.stringify({
+										PatientMRN: MRN,
+										StartTime: systemDate + ' 07:00:01',
+										EndTime: getNextDay(systemDate) + " 07:00:00",
+										ImportType: "2",
+										OrderNo: this.getAttribute('Order'),
+										OperateTime: systemDate + document.getElementById('activeTime').value + ':00',
+										UserCode: JSON.parse(window.localStorage.getItem('loginInfo')).UserName,
+										UserName: JSON.parse(window.localStorage.getItem('loginInfo')).Name,
+									}),
+									msgHeader: JSON.stringify({
+										ServerName: 'ImportOrderItem',
+										Format: 'json',
+										CallOperator: '',
+										Certificate: '123456'
+									})
+								},
+								beforeSend: function() {
+									plus.nativeUI.showWaiting('液体导入中');
+								},
+								dataType: 'json',
+								success: function(data) {
+									if(data.Code == 0) {
+										plus.nativeUI.closeWaiting();
+
+										mui.toast('液体导入成功');
+										
+										var inPage = plus.webview.getWebviewById('in.html');
+										mui.fire(inPage, 'tabMed');
+										mui.fire(inPage, 'getMedListFun');
+										closeSubScan();
+									} else {
+										plus.nativeUI.closeWaiting();
+										mui.toast('液体导入失败');
+									}
+								}
+							})
+
+						} else {
+							if(!operName.getAttribute('status')) {
+								mui.toast('请选择对该液体的操作');
+								return;
+							}
+							if(document.getElementById('doTime').value == '选择时间') {
+								mui.toast('请选择对该液体操作时间');
+								return;
+							}
+							var actualNum = document.getElementById('actualNum') ? document.getElementById('actualNum').value : '0';
+							mui.ajax({
+								url: url,
+								type: 'post',
+								data: {
+									msgBody: JSON.stringify({
+										OperateType: operName.getAttribute('status'),
+										IntakeCode: total.getAttribute('IntakeCode'),
+										PumpSpeed: speed.value,
+										OperateTime: systemDate + document.getElementById('doTime').value + ':00',
+										UserCode: JSON.parse(window.localStorage.getItem('loginInfo')).UserName,
+										UserName: JSON.parse(window.localStorage.getItem('loginInfo')).Name,
+										IntakeNumber: actualNum,
+										IsOver: operName.getAttribute('isover')
+									}),
+									msgHeader: JSON.stringify({
+										ServerName: 'SaveIntakeOperate',
+										Format: 'json',
+										CallOperator: '',
+										Certificate: '123456'
+									})
+								},
+								dataType: 'json',
+								beforeSend: function() {
+									plus.nativeUI.showWaiting('正在修改数据...');
+								},
+								success: function(data) {
+									if(data.Code == 0) {
+										mui.toast('操作成功');
+										plus.nativeUI.closeWaiting();
+										var inPage = plus.webview.getWebviewById('in.html');
+										mui.fire(inPage, 'tabMed');
+										mui.fire(inPage, 'getMedListFun');
+										closeSubScan();
+									} else {
+										plus.nativeUI.closeWaiting();
+										mui.toast(data.Msg);
+									}
+								}
+							})
+						}
+					} else {
+						mui.toast('请扫描输液条码或者患者腕带条码');
+					}
+
+				})
+
+				//				扫码
+				var context = plus.android.importClass('android.content.Context'); //上下文
+				var main = plus.android.runtimeMainActivity(); //获取activity
+				var receiver = plus.android.implements('io.dcloud.feature.internal.reflect.BroadcastReceiver', {
+					onReceive: doReceive //实现onReceiver回调函数
+				});
+				var IntentFilter = plus.android.importClass('android.content.IntentFilter');
+				var Intent = plus.android.importClass('android.content.Intent');
+				var filter = new IntentFilter();
+
+				filter.addAction("lachesis_barcode_value_notice_broadcast"); //监听扫码状态
+				main.registerReceiver(receiver, filter); //注册监听
+				function doReceive(context, intent) {
+					var intentCode = intent.getStringExtra("lachesis_barcode_value_notice_broadcast_data_string");
+					if(/^\d{7}$/.test(intentCode)) {
+						mui.ajax({
+							url: url,
+							type: 'get',
+							data: {
+								msgBody: JSON.stringify({     
+									"OrderNo": intentCode
+								}),
+								msgHeader: JSON.stringify({
+									ServerName: 'ScanSearch',
+									Format: 'json',
+									CallOperator: '',
+									Certificate: '123456'
+								})
+							},
+							dataType: 'json',
+							beforeSend: function() {
+									plus.nativeUI.showWaiting('数据加载中...');
+								},
+							success: function(data) {
+								plus.nativeUI.closeWaiting();
+								if(data.Code == 0) {
+									data.intentCode=intentCode;
+									var scanData=JSON.stringify(data);
+									if(data.STATUS == 0) {
+										//												扫的码是患者的二维码
+										if(data.MRN == MRN) {
+											//													扫描的是当前患者
+											document.getElementById('Name').innerHTML = data.Name;
+											document.getElementById('BedNo').innerHTML = data.BedNo;
+											document.getElementById('patientTip').style.display = 'none';
+											localStorage.setItem('patientScan', true);
+										} else {
+											//													扫描的不是当前患者
+											if(localStorage.getItem('medScan')) {
+												mui.openWindow({
+													url: 'failed.html',
+													id: 'failed.html',
+													extras: {
+														MRN: data.MRN,
+														PatientName: data.Name,
+														PatientNumber: data.PATIENTNUMBER,
+														PatientBed: data.BedNo,
+														systemDate: systemDate.innerHTML,
+														isPatient: true,
+														count: 2
+													},
+													show: {
+														aniShow: 'none'
+													}
+												});
+											} else {
+												//													判断是否扫过液体
+												//													如果扫液体成功,跳到重新扫描
+
+												//													如果没有扫液体成功,跳到患者的重新扫描和跳转(传患者信息还有扫描信息)
+												mui.openWindow({
+													url: 'failed.html',
+													id: 'failed.html',
+													extras: {
+														MRN: data.MRN,
+														PatientName: data.Name,
+														PatientNumber: data.PATIENTNUMBER,
+														PatientBed: data.BedNo,
+														systemDate: systemDate.innerHTML,
+														isPatient: true,
+														count: 1,
+														scanData:scanData
+													},
+													show: {
+														aniShow: 'none'
+													}
+												});
+											}
+
+										}
+									} else {
+										//												扫的码是液体的码
+										if(data.MRN != MRN) {
+											//													扫的不是该宝宝的液体
+											if(localStorage.getItem('patientScan')) {
+												//												患者的数据已经有了
+												mui.openWindow({
+													url: 'failed.html',
+													id: 'failed.html',
+													extras: {
+														MRN: data.MRN,
+														PatientName: data.Name,
+														PatientNumber: data.PATIENTNUMBER,
+														PatientBed: data.BedNo,
+														systemDate: systemDate.innerHTML,
+														isPatient: false,
+														count: 2
+													},
+													show: {
+														aniShow: 'none'
+													}
+												});
+											} else {
+												//												先扫的液体
+												mui.openWindow({
+													url: 'failed.html',
+													id: 'failed.html',
+													extras: {
+														MRN: data.MRN,
+														PatientName: data.Name,
+														PatientNumber: data.PATIENTNUMBER,
+														PatientBed: data.BedNo,
+														systemDate: systemDate.innerHTML,
+														isPatient: false,
+														count: 1,
+														scanData:scanData
+													},
+													show: {
+														aniShow: 'none'
+													}
+												});
+											}
+
+										} else {
+											//													扫的是该宝宝的液体
+											localStorage.setItem('medScan', true);
+											if(data.Contents[0].OperateStatus == '-1') {
+												//													扫的是本宝宝的液体,但是未导入
+												document.getElementById('medicationScan').innerHTML = '';
+												for(var i = 0; i < data.Contents.length; i++) {
+													var liObj = document.createElement('li');
+													liObj.innerHTML = data.Contents[i].Remarks;
+													document.getElementById('medicationScan').appendChild(liObj);
+												}
+												document.getElementById('scanDetail').style.display = 'block';
+												document.getElementById('liquidNum').innerHTML = data.Contents[0].PumpSpeed;
+												document.getElementById('activeTime').value = data.Contents[0].OperateTime.substr(data.Contents[0].OperateTime.indexOf(' '), 6);
+												firstSure.setAttribute('Order', intentCode);
+												firstSure.setAttribute('isRescan', 0)
+											} else if(data.Contents[0].OperateStatus != '-1') {
+												//													扫的是本宝宝的液体,但是已经导入,可以进行相关操作
+												document.getElementById('medicationScan').innerHTML = '';
+												for(var i = 0; i < data.Contents.length; i++) {
+													var liObj = document.createElement('li');
+													liObj.innerHTML = data.Contents[i].Remarks;
+													document.getElementById('medicationScan').appendChild(liObj);
+												}
+												document.getElementById('reScanDetail').style.display = 'block';
+												total.innerHTML = data.Contents[0].IntakeTotal;
+												actual.innerHTML = data.Contents[0].IntakeUsed;
+												speed.value = data.Contents[0].PumpSpeed;
+												total.setAttribute('IntakeCode', data.Contents[0].IntakeCode);
+												operPart.style.display = 'block';
+												var status=data.Contents[0].OperateStatus;
+												if(status == 0 || status == 1 || status == 5 || status == 7) {
+													operName.classList.remove('stop');
+
+												} else if(status == 4 || status == 8 || status == 9) {
+													closeSubScan();
+													mui.toast('该组液体无法继续操作');
+												} else if(status == 6) {
+													operName.classList.add('stop');
+												}
+
+												//				下拉的显示
+												operName.addEventListener('tap', function() {
+													if(this.classList.contains('show')) {
+														stop.style.display = 'none';
+														active.style.display = 'none';
+														this.classList.remove('show');
+													} else {
+														if(this.classList.contains('stop')) {
+															active.style.display = 'none';
+															stop.style.display = 'block';
+														} else {
+															active.style.display = 'block';
+															stop.style.display = 'none';
+														}
+														this.classList.add('show');
+													}
+												})
+												//				点击下拉的按钮
+												var liObjs = document.getElementsByClassName('liObj');
+												var continumBtn = document.getElementById('continue');
+												continumBtn.addEventListener('tap', function() {
+													operName.innerHTML = this.innerHTML;
+													operName.setAttribute('status', this.getAttribute('status'));
+													operName.setAttribute('isover', '0');
+													var html = template('continueTpl', {});
+													changePart.innerHTML = html;
+													stop.style.display = 'none';
+												})
+												var changePart = document.getElementById('changePart');
+												for(var i = 0; i < liObjs.length; i++) {
+													liObjs[i].addEventListener('tap', function() {
+														operName.innerHTML = this.innerHTML;
+														operName.setAttribute('status', this.getAttribute('status'));
+														operName.setAttribute('isover', '0');
+														if(this.innerHTML == '修改泵速') {
+															var html = template('updateTpl', {});
+															changePart.innerHTML = html;
+														} else if(this.innerHTML == '已用量') {
+															var html = template('hasUseTpl', {});
+															changePart.innerHTML = html;
+															document.getElementById('isComplete').addEventListener('change', function() {
+																if(this.checked) {
+																	operName.setAttribute('status', 9);
+																	operName.setAttribute('isover', '1');
+																	document.getElementById('actualNum').value = total.innerHTML - actual.innerHTML;
+																} else {
+																	operName.setAttribute('status', 7);
+																	document.getElementById('actualNum').value = '';
+																	operName.setAttribute('isover', '0');
+																}
+															})
+														} else if(this.innerHTML == '暂停') {
+															var html = template('pauseTpl', {});
+															changePart.innerHTML = html;
+														} else if(this.innerHTML == '停止') {
+															var html = template('stopTpl', {});
+															changePart.innerHTML = html;
+														}
+														active.style.display = 'none';
+													})
+												}
+												firstSure.setAttribute('isRescan', 1)
+											}
+										}
+									}
+
+								}
+							},
+							error: function() {
+								plus.nativeUI.closeWaiting();
+								notHave.style.display = 'block';
+
+							}
+						})
+
+					} else {
+						mui.toast('请扫描正确的二维码');
+					}
+				}
+
+			};
+		</script>
+		<script src="../js/updateTime.js"></script>
+		<script>
+			window.onresize = function() {
+				var windowHeight = document.documentElement.clientHeight;
+				if(windowHeight > 400) {
+					if(document.body.querySelector('.saveBack')) {
+						document.body.querySelector('.saveBack').style.display = 'block';
+					}
+				} else if(windowHeight < 400) {
+					if(document.body.querySelector('.saveBack')) {
+						document.body.querySelector('.saveBack').style.display = 'none';
+					}
+				}
+
+			}
+		</script>
+	</body>
+
+</html>

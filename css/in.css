@@ -4,9 +4,11 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
 body {
   margin: 0;
+  height: 100%;
 }
 article,
 aside,
@@ -234,225 +236,66 @@ th {
     font-size: 100px;
   }
 }
-.firstScan,
-.rescan {
-  width: 100%;
-  height: 11rem;
+.dietSave {
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1200;
-  background: #fff;
+  bottom: 0;
+}
+
+.dietSave #saveBtn {
+  width: 7.1rem;
+  height: 0.7rem;
+  margin-left: 0.2rem;
+  background: #48bebb;
+  color: #fff;
+  margin-bottom: 0.2rem;
+  font-size: 0.28rem;
+  font-weight: bold;
+  
+}
+.medicationSave {
+  width: 100%;
+  position: fixed;
+  bottom: 0rem;
   display: none;
-}
-.firstScan .firstScanCon,
-.rescan .firstScanCon {
-  width: 100%;
-  height: 8.5rem;
-  overflow: auto;
-}
-.firstScan h3,
-.rescan h3 {
-  width: 100%;
-  height: 0.88rem;
-  margin: 0;
-  padding: 0;
-  padding-right: 0.2rem;
-}
-.firstScan h3 .close,
-.rescan h3 .close {
-  font-size: 0.7rem;
-  float: right;
-  width: 0.88rem;
-  height: 0.88rem;
-  line-height: 0.88rem;
-  font-weight: 400;
-  text-align: center;
-}
-.firstScan .medicationScan,
-.rescan .medicationScan {
+  background: #efefef;
+  margin-top: 0.1rem;
   padding-left: 0.2rem;
 }
-.firstScan .medicationScan li,
-.rescan .medicationScan li {
+.medicationSave button {
+  width: 3.5rem;
   height: 0.7rem;
-  line-height: 0.7rem;
-  width: 100%;
-}
-.firstScan .scanDetail,
-.rescan .scanDetail {
-  padding: 0 0.2rem 0 0.2rem;
-}
-.firstScan .scanDetail li,
-.rescan .scanDetail li {
-  width: 100%;
-  height: 0.88rem;
-  line-height: 0.88rem;
-  border-bottom: 1px solid #bdbdbd;
-  overflow: hidden;
-}
-.firstScan .scanDetail li .liquid,
-.rescan .scanDetail li .liquid {
-  float: left;
-}
-.firstScan .scanDetail li .liquidNum,
-.rescan .scanDetail li .liquidNum {
-  float: right;
-}
-.firstScan .scanDetail li .liquidNum #activeTime,
-.rescan .scanDetail li .liquidNum #activeTime,
-.firstScan .scanDetail li .liquidNum #doTime,
-.rescan .scanDetail li .liquidNum #doTime {
-  height: 0.88rem;
-  border: none;
-}
-.firstScan .scanDetail li .liquidNum input,
-.rescan .scanDetail li .liquidNum input {
-  border: none;
-  text-align: right;
-}
-.firstScan .scanDetail li .liquidUnit,
-.rescan .scanDetail li .liquidUnit {
-  float: right;
-}
-.firstScan .scanDetail li:last-child,
-.rescan .scanDetail li:last-child {
-  border: none;
-}
-.firstScan .scanOper,
-.rescan .scanOper {
-  position: absolute;
-  bottom: 0.7rem;
-}
-.firstScan .scanOper #firstSure,
-.rescan .scanOper #firstSure {
-  width: 7.1rem;
+  line-height: 0.8rem;
   background: #48bebb;
-  height: 0.7rem;
-  margin-left: 0.2rem;
+  color: #fff;
   margin-bottom: 0.2rem;
-  color: #fff;
-  font-weight: 700;
+  font-size: 0.28rem;
+  font-weight: bold;
 }
-.firstScan .scanOper #restart,
-.rescan .scanOper #restart {
-  width: 7.1rem;
-  background: #48bebb;
-  height: 0.7rem;
-  margin-left: 0.2rem;
-  margin-bottom: 0.3rem;
-  color: #fff;
-  font-weight: 700;
+.medicationSave i {
+	width: .3rem;
+	height: .3rem;
+	background: url(../imgs/in/scan.png) no-repeat center / 0.3rem 0.3rem;
+	display: inline-block;
+	margin-right: .1rem;
+	vertical-align: middle;
 }
-.firstScan .scanOper #sure,
-.rescan .scanOper #sure {
-  width: 7.1rem;
-  background: #48bebb;
-  height: 0.7rem;
-  margin-left: 0.2rem;
-  margin-bottom: 0.2rem;
-  color: #fff;
-  font-weight: 700;
-}
-.firstScan .scanOper #rescanBtn,
-.rescan .scanOper #rescanBtn {
-  width: 7.1rem;
-  background: #48bebb;
-  height: 0.7rem;
-  margin-left: 0.2rem;
-  margin-bottom: 0.3rem;
-  color: #fff;
-  font-weight: 700;
-}
-.rescan .rescanCon {
-  width: 100%;
-  height: 8.5rem;
-  overflow: auto;
-}
-.rescan #ActiveTime {
-  height: 0.88rem;
-  border: none;
-}
-.rescan h4 {
-  width: 100%;
-  background: #48bebb;
-  height: 0.88rem;
-  padding-right: 0.2rem;
-  position: relative;
-}
-.rescan h4 .operName {
-  color: #fff;
-  line-height: 0.88rem;
-  float: right;
-  position: relative;
-  padding-right: 0.4rem;
-}
-.rescan h4 .operName i {
-  width: 0.3rem;
-  height: 0.3rem;
-  background: url(../imgs/in/down.png) no-repeat center / 0.3rem 0.3rem;
-  position: absolute;
-  top: 0.25rem;
-  right: 0.07rem;
-}
-.rescan h4 .operItem {
-  width: 2rem;
-  position: absolute;
-  top: 0.88rem;
-  right: 0;
-  display: none;
-}
-.rescan h4 .operItem li {
-  height: 0.88rem;
-  color: #fff;
-  width: 100%;
-  border-bottom: 1px solid #fff;
-  line-height: 0.88rem;
-  background: #48bebb;
-  font-weight: 400;
-  text-align: center;
-}
-.notHave {
-  width: 100%;
-  height: 11rem;
+
+.overSelect.selectArea {
+  width: 80%;
+  left: 50%;
+  margin-left: -40%;
   position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1200;
-  background: #fff;
+  top: 4.3rem;
+  z-index: 999;
   display: none;
+  color: #fff;
 }
-.notHave h3 {
-  width: 100%;
-  height: 0.88rem;
-  margin: 0;
-  padding: 0;
-  padding-right: 0.2rem;
+.overSelect.selectArea ul li:last-child {
+	border-radius: 0 0 10px 10px;
+	border-top:1px solid #ccc;
 }
-.notHave h3 .close {
-  font-size: 0.7rem;
-  float: right;
-  width: 0.88rem;
-  height: 0.88rem;
-  line-height: 0.88rem;
-  font-weight: 400;
-  text-align: center;
-}
-.notHave .notPic {
-  width: 100%;
-  height: 5.8rem;
-  background: url(../imgs/in/fail.png) no-repeat center / 7.5rem 5.8rem;
-  margin-top: 70px;
-}
-.notHave #failScan {
-  width: 7.1rem;
-  margin-left: 0.2rem;
-  color: #48bebb;
-  height: 0.7rem;
-  position: absolute;
-  bottom: 1rem;
-  border: 1px solid #48bebb;
-}
+
+
 .scanCon {
   width: 100%;
   height: 10.4rem;
@@ -532,12 +375,13 @@ th {
 }
 .listContainer .tabContainer {
   width: 100%;
-  height: 7rem;
   display: none;
+  
 }
 .listContainer .diet {
   display: block;
   margin-top: 0.88rem;
+  
 }
 .listContainer .diet h2 {
   width: 100%;
@@ -566,14 +410,12 @@ th {
 .listContainer .diet .dataTime {
   margin-top: 0;
   border-top: none;
+  border-bottom: none;
 }
 .listContainer .diet .items {
   width: 100%;
   padding: 0 0.2rem 0 0.2rem;
-  border-top: 1px solid #bdbdbd;
-  border-bottom: 1px solid #bdbdbd;
   background: #fff;
-  margin-top: 0.2rem;
 }
 .listContainer .diet .items ul li {
   width: 100%;
@@ -635,7 +477,6 @@ th {
   color: #333;
 }
 .listContainer .medication {
-  padding-bottom: 10rem;
 }
 .listContainer .medication .dataTime {
   margin-top: 1.08rem;
@@ -722,16 +563,23 @@ th {
   top: 0.06rem;
 }
 .listContainer .medication #InfusionList {
-  padding: 0.2rem;
+  padding: 0 0.2rem 0 0.2rem;
   background: #fff;
-  margin-bottom: 1rem;
-  min-height: 4rem;
 }
 .listContainer .medication #InfusionList .infusionGroup {
   width: 100%;
   border: 1px solid #bdbdbd;
   border-left: 3px solid #48bebb;
   margin-bottom: 0.2rem;
+}
+.listContainer .medication #InfusionList .infusionGroup.hasStop {
+	border-left: 3px solid #ff6f6f;
+}
+.listContainer .medication #InfusionList .infusionGroup:first-of-type {
+	margin-top: .2rem;
+}
+.listContainer .medication #InfusionList .infusionGroup:last-of-type {
+	margin-bottom: 1rem;
 }
 .listContainer .medication #InfusionList .infusionGroup ul li {
   width: 100%;
@@ -751,33 +599,38 @@ th {
   background: #efefef;
   border-radius: 0;
   border-right: 1px solid #bdbdbd;
+  border-top: 1px solid #BDBDBD;
+}
+.listContainer .medication #InfusionList .infusionGroup .groupOper button:last-of-type {
+	border-right: none;
 }
 .listContainer .medication #InfusionList .infusionGroup .groupOper button:last-child {
   border: none;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart {
+.listContainer .medication #InfusionList .infusionGroup .operPart {
   width: 100%;
   padding: 0 0.2rem 0 0.2rem;
   display: none;
+  
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul {
   width: 100%;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li {
   width: 100%;
   height: 0.7rem;
   border-bottom: 1px solid #bdbdbd;
   line-height: 0.7rem;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li span,
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li input {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li span,
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li input {
   width: 50%;
   float: left;
   height: 100%;
   margin: 0;
   border: none;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li input {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li input {
   text-align: right;
 }
 .listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li input[type=checkbox] {
@@ -786,17 +639,17 @@ th {
   margin-top: 0.2rem;
   margin-left: 1.8rem;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li #speedId {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li #speedId {
   width: 40%;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li #inNum {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li #inNum {
   width: 43%;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart ul li #updateId {
+.listContainer .medication #InfusionList .infusionGroup .operPart ul li #updateId {
   float: right;
   width: 25%;
 }
-.listContainer .medication #InfusionList .infusionGroup .groupOper .operPart .sureUpdate {
+.listContainer .medication #InfusionList .infusionGroup .operPart .sureUpdate {
   width: 100%;
   background: #efefef;
   border: 1px solid #bdbdbd;
@@ -817,39 +670,10 @@ th {
   border-radius: 0;
   height: 0.7rem;
   box-sizing: border-box;
+  border-top:1px solid #BDBDBD;
+  border-bottom:1px solid #BDBDBD;
 }
+
 .listContainer .medication #InfusionList .infusionGroup#5 {
   border-left: 3px solid #f04a4a;
-}
-.listContainer .dietSave {
-  position: fixed;
-  bottom: 0;
-}
-.listContainer .dietSave #saveBtn {
-  width: 7.1rem;
-  height: 0.7rem;
-  margin-left: 0.2rem;
-  background: #48bebb;
-  color: #fff;
-  margin-bottom: 0.2rem;
-  font-size: 0.28rem;
-  font-weight: bold;
-}
-.listContainer .medicationSave {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  display: none;
-  background: #efefef;
-  margin-top: 0.1rem;
-  padding-left: 0.2rem;
-}
-.listContainer .medicationSave button {
-  width: 7.1rem;
-  height: 0.7rem;
-  background: #48bebb;
-  color: #fff;
-  margin-bottom: 0.2rem;
-  font-size: 0.28rem;
-  font-weight: bold;
 }

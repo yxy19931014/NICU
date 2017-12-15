@@ -7,7 +7,7 @@
 	"id": "H5921B550",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "NICU",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.0",/*应用版本名称*/
+		"name": "1.0.1",/*应用版本名称*/
 		"code": "83"
 	},
 	"description": "",/*应用描述信息*/
@@ -273,7 +273,8 @@
 					"js/config.js",
 					"js/index.js",
 					"imgs/login/welcome.png",
-					"js/mui.js"
+					"js/mui.js",
+					"js/updateVersion.js"
 				],
 				"refer": [
 					"views/bedList.html"
@@ -309,7 +310,8 @@
 					"css/public.css"
 				],
 				"refer": [
-					"views/bedList.html"
+					"views/bedList.html",
+					"views/setting.html"
 				],
 				"priority": 0
 			},
@@ -604,7 +606,10 @@
 					"views/bedOperate.html",
 					"views/bedOperSub.html",
 					"views/detail_main.html",
-					"views/selectPatient.html"
+					"views/selectPatient.html",
+					"views/bedOperate_sub.html",
+					null,
+					"views/scan.html"
 				],
 				"priority": 0
 			},
@@ -622,7 +627,8 @@
 					"lib/template/template.js",
 					"js/mui.min.js",
 					"js/config.js",
-					"css/selectPatient.css"
+					"css/selectPatient.css",
+					"views/selectPatient.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -657,7 +663,10 @@
 					"css/public.css",
 					"css/in.css"
 				],
-				"refer": [],
+				"refer": [
+					"views/scan.html",
+					"views/failed.html"
+				],
 				"priority": 0
 			},
 			"views/bedList.html": {
@@ -685,7 +694,9 @@
 					"imgs/bed/bed_gray.png",
 					"fonts/mui.ttf",
 					"imgs/bed/knowledge.png",
-					"css/bed.css"
+					"css/bed.css",
+					"views/bedList.html",
+					"js/tool.js"
 				],
 				"refer": [
 					"views/detail_main.html",
@@ -703,7 +714,47 @@
 					"js/public.js",
 					"css/mui.min.css",
 					"css/public.css",
+					"js/config.js",
+					"js/mui.js",
+					null
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"views/setting.html": {
+				"resources": [
+					"js/mui.min.js",
 					"js/config.js"
+				],
+				"refer": [
+					"views/login.html"
+				],
+				"priority": 0
+			},
+			"views/scan.html": {
+				"resources": [
+					"css/scan.css",
+					"lib/template/template.js",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"js/config.js",
+					"js/public.js",
+					"js/updateTime.js",
+					"js/tool.js",
+					"imgs/in/down.png",
+					"fonts/mui.ttf"
+				],
+				"refer": [
+					"views/failed.html"
+				],
+				"priority": 0
+			},
+			"views/failed.html": {
+				"resources": [
+					"imgs/in/patientFail.png",
+					"imgs/in/medFail.png",
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0

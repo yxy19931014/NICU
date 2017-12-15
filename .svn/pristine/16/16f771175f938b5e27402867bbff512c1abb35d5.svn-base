@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+	</head>
+	<body>
+		<h2>设置</h2>
+		<div class="setting">
+			<p>设置系统的ip地址<input type="text" id='ipValue'/></p>
+			<p>设置系统端口号<input type="text" id='portValue'/></p>
+			
+			<input type="button"id='settingSure'value='确定' />
+			<input type="button"id='settingCancel'value='取消' />
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<!--<script src="../js/config.js"></script>-->
+		<script>
+			
+			function plusReady(){
+				var settingBtn=document.getElementById('settingSure');
+				var settingCancel=document.getElementById('settingCancel');
+				var ipValue=document.getElementById('ipValue');
+				var portValue=document.getElementById('portValue');
+				ipValue.value=localStorage.getItem('ip');
+				portValue.value=localStorage.getItem('port');
+				settingBtn.addEventListener('tap',function(){
+					if(ipValue.value.length==0){
+						ipValue.style.border='1px solid red';
+						return;
+					}
+					localStorage.setItem('ip',ipValue.value);
+					if(portValue.value.length==0){
+						localStorage.setItem('port','8080');
+					}else {
+						localStorage.setItem('port',portValue.value);
+					}
+					localStorage.setItem('isUpdate',true);
+					closePage();
+				})
+				settingCancel.addEventListener('tap',function(){
+					closePage();
+				});
+				function closePage(){
+					plus.webview.open('login.html', 'login.html', {
+							top: 0
+						}, {
+							aniShow: 'none'
+						}, {
+							duration: '1ms'
+						}, function() {
+
+							var currentBedList = plus.webview.currentWebview();
+							plus.webview.close(currentBedList);
+
+						});
+
+				}
+			}
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
+		</script>
+	</body>
+</html>

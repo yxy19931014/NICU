@@ -24,6 +24,7 @@
 	<body>
 		<img src="imgs/login/welcome.png" alt="" />
 		<script src="js/mui.min.js"></script>
+		<script src="js/updateVersion.js"></script>
 		<script>
 			if(window.plus) {
 				plusReady();
@@ -33,7 +34,7 @@
 
 			function plusReady() {
 				setTimeout(function() {
-					if(!localStorage.getItem('loginInfo')) {
+//					if(!localStorage.getItem('loginInfo')) {
 
 						plus.webview.open('views/login.html', 'login.html', {
 							top: 0
@@ -47,19 +48,19 @@
 							plus.webview.close(currentBedList);
 
 						});
-					} else {
-
-						plus.webview.open('views/bedList.html', 'bedList.html', {
-							top: 0
-						}, {
-							aniShow: 'none'
-						}, {
-							duration: '1ms'
-						}, function() {
-							var currentBedList = plus.webview.currentWebview();
-							plus.webview.close(currentBedList);
-						});
-					}
+//					} else {
+//						
+//						plus.webview.open('views/bedList.html', 'bedList.html', {
+//							top: 0
+//						}, {
+//							aniShow: 'none'
+//						}, {
+//							duration: '1ms'
+//						}, function() {
+//							var currentBedList = plus.webview.currentWebview();
+//							plus.webview.close(currentBedList);
+//						});
+//					}
 				}, 2000);
 
 			}

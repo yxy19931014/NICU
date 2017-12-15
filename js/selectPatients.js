@@ -68,7 +68,7 @@ function sendAjax(strWhere){
 		},
 		dataType:'json',
 		success:function(data){
-			console.log(data);
+			
 			if(data.Code==0){
 				var datas=data.Contents;
 				var html=template('selectPatient',{list:datas});

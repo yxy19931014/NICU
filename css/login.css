@@ -249,9 +249,8 @@ th {
   left: 50%;
   margin-left: -40%;
   position: fixed;
-  top: 4rem;
+  top: 4.5rem;
   z-index: 999;
-  border: 1px solid #ccc;
   display: none;
   color: #fff;
 }
@@ -274,6 +273,9 @@ th {
   padding-left: 0.2rem;
   color: #48bebb;
 }
+.loginBox .selectArea ul li:last-child {
+	border-radius: 0 0 10px 10px;
+}
 .loginBox .top {
   width: 100%;
   height: 3.9rem;
@@ -295,6 +297,13 @@ th {
   margin-top: 3.1rem;
   text-align: center;
   text-shadow: 0 2px 2px #49bcbc;
+}
+.loginBox .top #setting {
+	color:#fff;
+	font-style: normal;
+	position: absolute;
+	right: 0.2rem;
+	top:0.2rem;
 }
 .loginBox .content {
   width: 100%;

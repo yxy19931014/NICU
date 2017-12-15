@@ -317,7 +317,7 @@ ul {
 .bedBox header .leftUser a .text {
   font-size: 0.28rem;
   color: #fff;
-  line-height: 1rem;
+  line-height: 1.1rem;
   margin-left: 0.3rem;
   cursor: pointer;
 }
@@ -373,6 +373,20 @@ ul {
   line-height: 1rem;
   background: #6acccc;
   margin-right: -0.2rem;
+}
+.bedBox .SynchronizePatient {
+	width: 100%;
+	height: 1rem;
+	line-height: 1rem;
+  text-align: center;
+  color: #fff;
+  background: #6acccc;
+	position: absolute;
+  top: 2rem;
+  right: 0;
+}
+.bedBox .SynchronizePatient p {
+	color:#fff;
 }
 .bedBox header .rightOnline #downContent #all,
 .bedBox header .rightOnline #downContent #outLine {

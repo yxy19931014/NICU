@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" href="../css/public.css" />
+	</head>
+
+	<body>
+		<!--头部-->
+		<div class="observationBox">
+			<!--患者选择-->
+			<header class="mui-bar mui-bar-nav">
+				<h1 class="mui-title"><span id='selectDown'><span id='bedId'></span>&nbsp;<span id='titleId'></span><span class="mui-icon mui-icon-arrowdown title_icon"id='downSelect'></span></span></h1>
+				<div class="leftBack">
+					<a class="text" href="javascript:;" id='backId'>床位概览</a>
+				</div>
+			</header>
+			<nav class="mui-bar mui-bar-tab footer" id='footer'>
+				<a id="defaultTab" class="mui-tab-item mui-active active" href="observation.html">
+					<span class="mui-icon oberItem"></span>
+					<span class="mui-tab-label">观察项</span>
+				</a>
+				<a class="mui-tab-item" href="bedOperate.html">
+					<span class="mui-icon bedOper"></span>
+					<span class="mui-tab-label">床旁操作</span>
+				</a>
+				<a class="mui-tab-item" href="out.html">
+					<span class="mui-icon out"></span>
+					<span class="mui-tab-label">出量</span>
+				</a>
+				<a class="mui-tab-item" href="in.html">
+					<span class="mui-icon in"></span>
+					<span class="mui-tab-label">入量</span>
+				</a>
+				<a class="mui-tab-item" href="life.html">
+					<span class="mui-icon life"></span>
+					<span class="mui-tab-label">生命体征</span>
+				</a>
+			</nav>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/tool.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			//			从床位列表页面获取参数
+
+			//mui初始化
+			mui.init();
+
+			window.addEventListener('deleteClass', function() {
+				document.getElementById('selectDown').classList.remove('hasShow');
+			})
+
+			mui.plusReady(function() {
+				//				获取床位列表的参数信息
+				var w = plus.webview.currentWebview();
+				var patientBed = w.PatientBed;
+				var patientName = w.PatientName;
+				var patientNumber = w.PatientNumber;
+				var MRN = w.MRN;
+				var DeptCode = JSON.parse(localStorage.getItem('loginInfo')).DeptCode;
+				var hasChange = false;
+				window.addEventListener('getParams', function(event) {
+					hasChange = event.detail.hasChange;
+				})
+				//				设置头部的信息显示
+				document.getElementById('titleId').innerHTML = patientName;
+				document.getElementById('bedId').innerHTML = patientBed;
+				document.getElementById('bedId').setAttribute('currentMRN', MRN);
+				document.getElementById('bedId').setAttribute('currentNumber', patientNumber);
+				//				创建子页面，并显示第一个页面
+				var subpages = ['observation.html', 'bedOperate.html', 'out.html', 'in.html', 'life.html'];
+				var width = window.screen.width;
+				var t = width / 750 * 100 + 'px';
+				var subpage_style = {
+					top: t,
+					bottom: t
+				};
+				var aniShow = {};
+				var self = plus.webview.currentWebview();
+				var startExtras = {
+					MRN: MRN,
+					PatientName: patientName,
+					PatientNumber: patientNumber,
+					PatientBed: patientBed
+				};
+
+				createPages(startExtras, 0);
+				//选项卡点击事件
+				document.getElementById('backId').addEventListener('tap', function() {
+					var showPageIndex = localStorage.getItem('pageSize');
+					if(hasChange) {
+						
+						var showPage = plus.webview.getWebviewById(subpages[showPageIndex]);
+						mui.fire(showPage, 'hasChange');
+						window.addEventListener('selectTrue', function(e) {
+							var isSave = e.detail.isSave;
+							if(!isSave) {
+								mui.openWindow({
+									url: 'bedList.html',
+									id: 'bedList.html',
+									show: {
+										aniShow: 'none'
+									}
+								});
+								for(var i = 0; i < subpages.length; i++) {
+									plus.webview.close(subpages[i]);
+								}
+								var selfPage = plus.webview.getWebviewById('selectPatient.html');
+								plus.webview.close(selfPage);
+								var detailPage = plus.webview.currentWebview();
+								plus.webview.close(detailPage);
+							}
+						})
+						return;
+					}
+					mui.openWindow({
+						url: 'bedList.html',
+						id: 'bedList.html',
+						show: {
+							aniShow: 'none'
+						}
+					});
+					for(var i = 0; i < subpages.length; i++) {
+						plus.webview.close(subpages[i]);
+					}
+					var selfPage = plus.webview.getWebviewById('selectPatient.html');
+					plus.webview.close(selfPage);
+					var detailPage = plus.webview.currentWebview();
+					plus.webview.close(detailPage);
+				});
+				localStorage.setItem('pageSize', 0);
+				//				点击下拉按钮
+
+				mui('.mui-title').on('tap', '#selectDown', function() {
+					if(this.classList.contains('hasShow')) {
+						var selectPatientPage = plus.webview.getWebviewById('selectPatient.html');
+						selectPatientPage.close();
+						this.classList.remove('hasShow');
+					} else {
+						if(!plus.webview.getWebviewById('selectPatient.html')) {
+							var sub_select = {
+								top: t
+							};
+							var selectPage = plus.webview.create('selectPatient.html', 'selectPatient.html', sub_select, {
+								MRN: this.firstElementChild.getAttribute('currentMRN'),
+								PatientName: this.lastElementChild.previousElementSibling.innerHTML,
+								PatientNumber: this.firstElementChild.getAttribute('currentNumber'),
+								PatientBed: this.firstElementChild.innerHTML,
+								DeptCode: DeptCode
+							});
+							self.append(selectPage);
+						}
+						this.classList.add('hasShow');
+					}
+
+				});
+				//当前激活选项
+				var activeTab = subpages[0];
+
+				mui('.mui-bar-tab').on('tap', 'a', function(e) {
+					var _this = this;
+					var targetTab = this.getAttribute('href');
+					var showPageIndex = localStorage.getItem('pageSize');
+
+					if(hasChange) {
+						var showPage = plus.webview.getWebviewById(subpages[showPageIndex]);	
+						var operate_sub=plus.webview.getWebviewById('bedOperate_sub.html');
+						if(showPageIndex==1){
+							mui.fire(operate_sub,'hasChange');
+						}else {
+							mui.fire(showPage, 'hasChange');
+						}
+						window.addEventListener('selectTrue', function(e) {
+							var isSave = e.detail.isSave;
+							if(!isSave) {
+								var aObjs = document.getElementsByClassName('mui-tab-item');
+								for(var i = 0; i < aObjs.length; i++) {
+									aObjs[i].classList.remove('active');
+									aObjs[i].setAttribute('index', i);
+								}
+								localStorage.setItem('pageSize', _this.getAttribute('index'));
+								_this.classList.add('active');
+
+								if(targetTab == activeTab) {
+									return;
+								}
+								//显示目标选项卡
+								//若为iOS平台或非首次显示，则直接显示
+								if(mui.os.ios || aniShow[targetTab]) {
+									plus.webview.show(targetTab);
+									var target = plus.webview.getWebviewById(targetTab);
+									target.reload(true);
+									
+								} else {
+									//否则，使用fade-in动画，且保存变量
+									var temp = {};
+									temp[targetTab] = "true";
+									mui.extend(aniShow, temp);
+									plus.webview.show(targetTab,'fade-in','300');
+									var target = plus.webview.getWebviewById(targetTab);
+									target.reload(true);
+									
+								}
+								//隐藏当前;
+								plus.webview.hide(activeTab);
+								//更改当前活跃的选项卡
+								activeTab = targetTab;
+							}
+						})
+						return;
+					}
+					var aObjs = document.getElementsByClassName('mui-tab-item');
+					for(var i = 0; i < aObjs.length; i++) {
+						aObjs[i].classList.remove('active');
+						aObjs[i].setAttribute('index', i);
+					}
+					localStorage.setItem('pageSize', this.getAttribute('index'));
+					this.classList.add('active');
+
+					if(targetTab == activeTab) {
+						return;
+					}
+					//显示目标选项卡
+					//若为iOS平台或非首次显示，则直接显示
+					if(mui.os.ios || aniShow[targetTab]) {
+						var target = plus.webview.getWebviewById(targetTab);
+						plus.webview.show(targetTab);
+						target.reload(true);
+
+					} else {
+						//否则，使用fade-in动画，且保存变量
+						var temp = {};
+						temp[targetTab] = "true";
+						mui.extend(aniShow, temp);
+						plus.webview.show(targetTab,'fade-in','300');
+						var target = plus.webview.getWebviewById(targetTab);
+						target.reload(true);
+					}
+					//隐藏当前;
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+
+				});
+
+				function createPages(extras, num) {
+					for(var i = 0; i < 5; i++) {
+						var temp = {};
+						var sub = plus.webview.create(subpages[i], subpages[i], subpage_style, extras);
+						if(i != num) {
+							sub.hide();
+						} else {
+							temp[subpages[i]] = "true";
+							mui.extend(aniShow, temp);
+						}
+						self.append(sub);
+					}
+
+				}
+				//				tab栏的自定义事件
+				window.addEventListener('newPatient', function(e) {
+					var selectedExtras = {
+						PatientName: e.detail.PatientName,
+						PatientNumber: e.detail.PatientNumber,
+						PatientBed: e.detail.PatientBed,
+						MRN: e.detail.MRN
+					};
+					for(var i = 0; i < subpages.length; i++) {
+						plus.webview.close(subpages[i]);
+					}
+					createPages(selectedExtras, localStorage.getItem('pageSize'));
+					var selfPage = plus.webview.getWebviewById('selectPatient.html');
+					plus.webview.close(selfPage);
+					document.getElementById('titleId').innerHTML = e.detail.PatientName;
+					document.getElementById('bedId').innerHTML = e.detail.PatientBed;
+					document.getElementById('bedId').setAttribute('currentMRN', e.detail.MRN);
+					document.getElementById('bedId').setAttribute('currentNumber', e.detail.PatientNumber);
+				})
+
+			});
+			//				底部导航栏的显示和隐藏
+			var footer = document.getElementById('footer');
+			window.addEventListener('footerShow', function(e) {
+				footer.style.display = 'table';
+			})
+			window.addEventListener('footerHide', function(e) {
+				footer.style.display = 'none';
+//				document.body.style.display='none';
+				
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+	</head>
+	<body>
+		<div class="mui-content">
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script>
+			if(window.plus){
+				plusReady();
+			}else{
+				document.addEventListener("plusready",plusReady,false);
+			}
+			function plusReady(){
+				//			处理床位列表传值
+					var w=plus.webview.currentWebview();
+					var patientBed=w.PatientBed;
+					var patientName=w.PatientName;
+					var patientNumber=w.PatientNumber;
+					MRN=w.MRN;
+					mui.init({
+						subpages:[{ 
+							url:'bedOperate_sub.html',
+							id:'bedOperate_sub.html',
+							styles:{
+								top: '0px',
+								bottom: '0px', 
+							},
+							extras:{
+								MRN:MRN,
+								PatientBed:patientBed,
+								PatientName:patientName,
+								PatientNumber:patientNumber
+							}
+						}] 
+					});
+					var target = plus.webview.getWebviewById('bedOperate_sub.html');
+					target.reload(true);
+			}
+	
+		</script>
+			
+		
+	</body>
+</html>

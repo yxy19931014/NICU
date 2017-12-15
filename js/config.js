@@ -1,5 +1,10 @@
-//var url='http://192.168.0.74:9000/ICUMobileInterface.asmx/CallInterface';
-//var url='http://192.168.6.8:8088/ICUMobileInterface.asmx/CallInterface';
+//if(!localStorage.getItem('isUpdate')){
+//	localStorage.setItem('ip','10.244.7.180');
+//	localStorage.setItem('port','8080');
+//}
+//var ipValue=localStorage.getItem('ip');
+//var portValue=localStorage.getItem('port');
+//var url='http://'+ipValue+':'+portValue+'/ICUMobileInterface.asmx/CallInterface'; 
 var url='http://pub.tunnel.echomod.cn/ICUMobileInterface.asmx/CallInterface';
-//var url='http://10.244.7.180/ICUMobileInterface.asmx/CallInterface';
-//var url='http://192.168.100.210:8080/ICUMobileInterface.asmx/CallInterface';
+//var url='http://10.244.200.142/ICUMobileInterface.asmx/CallInterface';
+//var url='http://172.16.2.155:8080/ICUMobileInterFace.asmx/CallInterface';

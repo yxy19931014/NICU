@@ -43,7 +43,8 @@
 			"js/config.js",
 			"js/index.js",
 			"imgs/login/welcome.png",
-			"js/mui.js"
+			"js/mui.js",
+			"js/updateVersion.js"
 		],
 		"refer": [
 			"views/login.html",
@@ -85,7 +86,8 @@
 		],
 		"refer": [
 			"index.html",
-			"views/bedList.html"
+			"views/bedList.html",
+			"views/setting.html"
 		]
 	},
 	"views/obervation.html": {
@@ -408,7 +410,9 @@
 			"views/life.html",
 			"views/bedOperSub.html",
 			"views/detail_main.html",
-			"views/selectPatient.html"
+			"views/selectPatient.html",
+			"views/bedOperate_sub.html",
+			"views/scan.html"
 		]
 	},
 	"views/selectPatient.html": {
@@ -425,7 +429,11 @@
 			"lib/template/template.js",
 			"js/mui.min.js",
 			"js/config.js",
-			"css/selectPatient.css"
+			"css/selectPatient.css",
+			"views/selectPatient.html"
+		],
+		"refer": [
+			"views/selectPatient.html"
 		]
 	},
 	"views/in.html": {
@@ -457,6 +465,10 @@
 			"less/scan.less",
 			"css/public.css",
 			"css/in.css"
+		],
+		"refer": [
+			"views/scan.html",
+			"views/failed.html"
 		]
 	},
 	"views/bedList.html": {
@@ -484,11 +496,14 @@
 			"imgs/bed/bed_gray.png",
 			"fonts/mui.ttf",
 			"imgs/bed/knowledge.png",
-			"css/bed.css"
+			"css/bed.css",
+			"views/bedList.html",
+			"js/tool.js"
 		],
 		"refer": [
 			"views/detail_main.html",
-			"views/login.html"
+			"views/login.html",
+			"views/bedList.html"
 		]
 	},
 	"views/bedOperate_sub.html": {
@@ -501,7 +516,42 @@
 			"js/public.js",
 			"css/mui.min.css",
 			"css/public.css",
+			"js/config.js",
+			"js/mui.js"
+		]
+	},
+	"views/setting.html": {
+		"resources": [
+			"js/mui.min.js",
 			"js/config.js"
+		],
+		"refer": [
+			"views/login.html"
+		]
+	},
+	"views/scan.html": {
+		"resources": [
+			"css/scan.css",
+			"lib/template/template.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/config.js",
+			"js/public.js",
+			"js/updateTime.js",
+			"js/tool.js",
+			"imgs/in/down.png",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"views/failed.html"
+		]
+	},
+	"views/failed.html": {
+		"resources": [
+			"imgs/in/patientFail.png",
+			"imgs/in/medFail.png",
+			"js/mui.min.js",
+			"css/mui.min.css"
 		]
 	}
 }
